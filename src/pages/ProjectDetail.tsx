@@ -13,7 +13,6 @@ import {
 } from '@heroicons/react/24/outline'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 
 const S = 1
@@ -161,12 +160,12 @@ export default function ProjectDetail() {
   const [stems, setStems]                     = useState(initialStems)
   const [busSends, setBusSends]               = useState(initialBusSends)
   const [bpm, setBpm]                         = useState(120)
-  const [songKey, setSongKey]                 = useState('A min')
+  const [songKey]                              = useState('A min')
   const [genre, setGenre]                     = useState('Pop')
   const [showGenreMenu, setShowGenreMenu]     = useState(false)
   const [showExportMenu, setShowExportMenu]   = useState(false)
   const [exportFormat, setExportFormat]       = useState<'WAV' | 'MP3' | 'FLAC' | 'STEMS'>('WAV')
-  const [tapTimes, setTapTimes]               = useState<number[]>([])
+  const [, setTapTimes]                        = useState<number[]>([])
   const [analyzing, setAnalyzing]             = useState(false)
   const [aiMixActive, setAiMixActive]         = useState(false)
   const [canUndo]                             = useState(false)

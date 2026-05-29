@@ -20,7 +20,6 @@ import {
   SpeakerWaveIcon,
   AdjustmentsHorizontalIcon,
   PlayCircleIcon,
-  ChartBarIcon,
   PlusCircleIcon,
   DocumentDuplicateIcon,
   PresentationChartLineIcon,
@@ -91,7 +90,6 @@ const exports = [
 ]
 
 export default function Dashboard() {
-  const [activeNav, setActiveNav] = useState('Dashboard') // kept for tab UI below
   const [activeTab, setActiveTab] = useState<'projects' | 'exports'>('projects')
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
