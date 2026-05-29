@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+@theme {
+  /* Tipografía */
+  /* Adobe Fonts slug: neue-haas-grotesk-display — activar en fonts.adobe.com y pegar kit en index.html */
+  --font-sans: "neue-haas-grotesk-display", "Neue Haas Grotesk Display Pro", "Helvetica Neue", Arial, ui-sans-serif, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Colores base INMIX (dark-first) */
+  --color-background: oklch(9% 0.005 285);
+  --color-foreground: oklch(98% 0.005 285);
+
+  --color-card: oklch(12% 0.008 285);
+  --color-card-foreground: oklch(98% 0.005 285);
+
+  --color-popover: oklch(12% 0.008 285);
+  --color-popover-foreground: oklch(98% 0.005 285);
+
+  --color-primary: #73ABBF;
+  --color-primary-foreground: oklch(98% 0.005 285);
+
+  --color-secondary: oklch(18% 0.01 285);
+  --color-secondary-foreground: oklch(90% 0.005 285);
+
+  --color-muted: oklch(18% 0.01 285);
+  --color-muted-foreground: oklch(55% 0.01 285);
+
+  --color-accent: oklch(25% 0.02 275);
+  --color-accent-foreground: oklch(90% 0.005 285);
+
+  --color-destructive: oklch(55% 0.22 25);
+  --color-destructive-foreground: oklch(98% 0.005 285);
+
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-input: #1D1C22;
+  --color-ring: #73ABBF;
+
+  /* Gradientes */
+  --gradient-bg: linear-gradient(160deg, #000000 0%, #1D1C22 100%);
+  --gradient-sidebar: linear-gradient(180deg, #000000 0%, #1D1C22 100%);
+  --gradient-card: linear-gradient(145deg, #0a0a0a 0%, #1a191f 100%);
+
+  /* Border radius */
+  --radius: 0.5rem;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+    box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 99px;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
+  }
+}
