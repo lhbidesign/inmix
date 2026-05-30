@@ -248,7 +248,7 @@ export default function ProjectDetail() {
                 <ChevronLeftIcon className="w-4 h-4" strokeWidth={S} />
               </button>
               {/* Mobile close */}
-              <button className="lg:hidden p-1 rounded-md" style={{ color: 'var(--color-muted-foreground)' }} onClick={() => setSidebarOpen(false)}>
+              <button className="lg:hidden p-1 rounded-md hover:text-white transition-colors" style={{ color: 'var(--color-muted-foreground)' }} onClick={() => setSidebarOpen(false)}>
                 <XMarkIcon className="w-5 h-5" strokeWidth={S} />
               </button>
             </div>
@@ -351,7 +351,7 @@ export default function ProjectDetail() {
             {/* Left — mobile hamburger + breadcrumb + genre */}
             <div className="flex items-center gap-2 min-w-0">
               {/* Mobile hamburger */}
-              <button className="lg:hidden p-1.5 rounded-lg flex-shrink-0" style={{ color: 'var(--color-muted-foreground)' }} onClick={() => setSidebarOpen(true)}>
+              <button className="lg:hidden p-1.5 rounded-lg flex-shrink-0 hover:text-white transition-colors" style={{ color: 'var(--color-muted-foreground)' }} onClick={() => setSidebarOpen(true)}>
                 <Bars3Icon className="w-5 h-5" strokeWidth={S} />
               </button>
               <Link to="/projects" className="hidden sm:flex items-center gap-1 text-sm transition-colors hover:text-white flex-shrink-0" style={{ color: 'var(--color-muted-foreground)' }}>
@@ -365,7 +365,7 @@ export default function ProjectDetail() {
               <div className="relative hidden md:block flex-shrink-0">
                 <button
                   onClick={() => setShowGenreMenu(v => !v)}
-                  className="flex items-center gap-1 px-2 py-0.5 rounded-md text-xs border transition-colors hover:border-[var(--color-primary)]"
+                  className="flex items-center gap-1 px-2 py-0.5 rounded-md text-xs border transition-colors hover:text-white hover:border-white/40"
                   style={{ borderColor: 'rgba(255,255,255,0.12)', color: 'var(--color-muted-foreground)', background: 'var(--color-input)' }}
                 >
                   {genre}
@@ -393,7 +393,7 @@ export default function ProjectDetail() {
               <div className="flex gap-1 p-1 rounded-lg" style={{ background: 'var(--color-accent)' }}>
                 {(['mix', 'arrange'] as const).map(m => (
                   <button key={m} onClick={() => setMode(m)}
-                    className="px-3 py-1 rounded-md text-xs transition-all capitalize"
+                    className="px-3 py-1 rounded-md text-xs transition-all capitalize hover:text-white"
                     style={mode === m
                       ? { background: '#000', color: '#ffffff', fontWeight: 400 }
                       : { color: 'var(--color-muted-foreground)' }
@@ -403,11 +403,11 @@ export default function ProjectDetail() {
                 ))}
               </div>
               <div className="w-px h-4 hidden sm:block" style={{ background: 'rgba(255,255,255,0.1)' }} />
-              <Button variant="ghost" size="icon" className="h-7 w-7" disabled={!canUndo}
+              <Button variant="ghost" size="icon" className="h-7 w-7 hover:text-white" disabled={!canUndo}
                 style={{ color: canUndo ? 'var(--color-foreground)' : 'rgba(255,255,255,0.2)' }}>
                 <ArrowUturnLeftIcon className="w-4 h-4" strokeWidth={S} />
               </Button>
-              <Button variant="ghost" size="icon" className="h-7 w-7" disabled={!canRedo}
+              <Button variant="ghost" size="icon" className="h-7 w-7 hover:text-white" disabled={!canRedo}
                 style={{ color: canRedo ? 'var(--color-foreground)' : 'rgba(255,255,255,0.2)' }}>
                 <ArrowUturnRightIcon className="w-4 h-4" strokeWidth={S} />
               </Button>
@@ -525,7 +525,7 @@ export default function ProjectDetail() {
 
             {/* Analyze */}
             <button onClick={handleAnalyze}
-              className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-xs font-medium transition-all"
+              className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-xs font-medium transition-all hover:text-white"
               style={{
                 color: analyzing ? 'var(--color-primary)' : 'var(--color-muted-foreground)',
                 background: analyzing ? 'var(--color-accent)' : 'transparent',
@@ -580,7 +580,7 @@ export default function ProjectDetail() {
             </Button>
             <button
               onClick={() => setLoop(!loop)}
-              className="h-8 w-8 flex items-center justify-center rounded-md transition-colors"
+              className="h-8 w-8 flex items-center justify-center rounded-md transition-colors hover:text-white"
               style={{ color: loop ? 'var(--color-primary)' : 'rgba(255,255,255,0.35)' }}
             >
               <ArrowPathIcon className="w-4 h-4" strokeWidth={S} />
@@ -824,7 +824,7 @@ export default function ProjectDetail() {
                     <div className="flex items-center gap-1 flex-shrink-0">
                       <button
                         onClick={() => updateStem(stem.id, { muted: !stem.muted })}
-                        className="w-6 h-6 rounded text-xs font-bold transition-all"
+                        className="w-6 h-6 rounded text-xs font-bold transition-all hover:text-white"
                         style={{
                           background: stem.muted ? 'rgba(251,191,36,0.18)' : 'var(--color-input)',
                           color: stem.muted ? '#fbbf24' : 'var(--color-muted-foreground)',
@@ -833,7 +833,7 @@ export default function ProjectDetail() {
                       >M</button>
                       <button
                         onClick={() => updateStem(stem.id, { soloed: !stem.soloed })}
-                        className="w-6 h-6 rounded text-xs font-bold transition-all"
+                        className="w-6 h-6 rounded text-xs font-bold transition-all hover:text-white"
                         style={{
                           background: stem.soloed ? `${accent}28` : 'var(--color-input)',
                           color: stem.soloed ? accent : 'var(--color-muted-foreground)',
@@ -915,7 +915,7 @@ export default function ProjectDetail() {
           </div>
           <button
             onClick={() => setMasteringEnabled(!masteringEnabled)}
-            className="px-5 py-2 rounded-full text-sm font-medium transition-all"
+            className="px-5 py-2 rounded-full text-sm font-medium transition-all hover:text-white"
             style={masteringEnabled
               ? { background: 'var(--color-primary)', color: '#000' }
               : { border: '1px solid rgba(255,255,255,0.15)', color: 'var(--color-muted-foreground)', background: 'transparent' }
