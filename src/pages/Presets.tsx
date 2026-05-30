@@ -149,7 +149,7 @@ export default function Presets() {
               key={label}
               to={href}
               className={cn(
-                'w-full flex items-center rounded-lg text-sm font-medium transition-colors hover:text-[var(--color-primary)]',
+                'w-full flex items-center rounded-lg text-sm font-medium transition-colors hover:text-white',
                 sidebarCollapsed ? 'justify-center p-2.5' : 'gap-3 px-3 py-2.5'
               )}
               style={isNavActive(label)
@@ -309,7 +309,7 @@ export default function Presets() {
                       <button
                         key={g}
                         onClick={() => { setGenre(g); setShowGenreMenu(false) }}
-                        className="w-full text-left px-4 py-2 text-sm transition-colors hover:text-[var(--color-primary)]"
+                        className="w-full text-left px-4 py-2 text-sm transition-colors hover:text-white"
                         style={{ color: g === genre ? 'var(--color-primary)' : 'var(--color-muted-foreground)', background: g === genre ? 'var(--color-accent)' : 'transparent' }}
                       >
                         {g}

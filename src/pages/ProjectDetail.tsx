@@ -354,7 +354,7 @@ export default function ProjectDetail() {
               <button className="lg:hidden p-1.5 rounded-lg flex-shrink-0" style={{ color: 'var(--color-muted-foreground)' }} onClick={() => setSidebarOpen(true)}>
                 <Bars3Icon className="w-5 h-5" strokeWidth={S} />
               </button>
-              <Link to="/projects" className="hidden sm:flex items-center gap-1 text-sm transition-colors hover:text-[var(--color-primary)] flex-shrink-0" style={{ color: 'var(--color-muted-foreground)' }}>
+              <Link to="/projects" className="hidden sm:flex items-center gap-1 text-sm transition-colors hover:text-white flex-shrink-0" style={{ color: 'var(--color-muted-foreground)' }}>
                 <ChevronLeftIcon className="w-4 h-4" strokeWidth={S} />
                 Projects
               </Link>
@@ -377,7 +377,7 @@ export default function ProjectDetail() {
                     <div className="absolute left-0 top-full mt-1 z-50 rounded-lg border overflow-hidden py-1" style={{ background: '#0f0e13', borderColor: 'rgba(255,255,255,0.12)', minWidth: '110px' }}>
                       {['Pop', 'Rock', 'Jazz', 'Hip-Hop', 'Electronic', 'R&B', 'Classical'].map(g => (
                         <button key={g} onClick={() => { setGenre(g); setShowGenreMenu(false) }}
-                          className="w-full text-left px-3 py-1.5 text-xs transition-colors hover:text-[var(--color-primary)]"
+                          className="w-full text-left px-3 py-1.5 text-xs transition-colors hover:text-white"
                           style={{ color: genre === g ? 'var(--color-primary)' : 'var(--color-muted-foreground)', background: genre === g ? 'var(--color-accent)' : 'transparent' }}>
                           {g}
                         </button>
@@ -432,7 +432,7 @@ export default function ProjectDetail() {
               <div className="w-px h-4 hidden lg:block" style={{ background: 'rgba(255,255,255,0.1)' }} />
 
               {/* Preview */}
-              <Button variant="ghost" size="sm" className="hidden md:flex gap-1.5 text-xs hover:text-[var(--color-primary)]" style={{ color: 'var(--color-muted-foreground)' }}>
+              <Button variant="ghost" size="sm" className="hidden md:flex gap-1.5 text-xs hover:text-white" style={{ color: 'var(--color-muted-foreground)' }}>
                 <PlayIcon className="w-3.5 h-3.5" strokeWidth={S} />
                 Preview
               </Button>
@@ -458,7 +458,7 @@ export default function ProjectDetail() {
                     <div className="absolute right-0 top-full mt-1 z-50 rounded-lg border overflow-hidden py-1" style={{ background: '#0f0e13', borderColor: 'rgba(255,255,255,0.12)', minWidth: '100px' }}>
                       {(['WAV', 'MP3', 'FLAC', 'STEMS'] as const).map(fmt => (
                         <button key={fmt} onClick={() => { setExportFormat(fmt); setShowExportMenu(false) }}
-                          className="w-full text-left px-3 py-1.5 text-xs transition-colors hover:text-[var(--color-primary)]"
+                          className="w-full text-left px-3 py-1.5 text-xs transition-colors hover:text-white"
                           style={{ color: exportFormat === fmt ? 'var(--color-primary)' : 'var(--color-muted-foreground)', background: exportFormat === fmt ? 'var(--color-accent)' : 'transparent' }}>
                           {fmt}
                         </button>
@@ -476,19 +476,19 @@ export default function ProjectDetail() {
               <div className="w-px h-4 hidden md:block" style={{ background: 'rgba(255,255,255,0.1)' }} />
 
               {/* Refresh */}
-              <Button variant="ghost" size="sm" className="hidden md:flex gap-1.5 text-xs hover:text-[var(--color-primary)]" style={{ color: 'var(--color-muted-foreground)' }}>
+              <Button variant="ghost" size="sm" className="hidden md:flex gap-1.5 text-xs hover:text-white" style={{ color: 'var(--color-muted-foreground)' }}>
                 <ArrowPathIcon className="w-3.5 h-3.5" strokeWidth={S} />
                 Refresh
               </Button>
 
               {/* Versions */}
-              <Button variant="ghost" size="sm" className="hidden md:flex gap-1.5 text-xs hover:text-[var(--color-primary)]" style={{ color: 'var(--color-muted-foreground)' }}>
+              <Button variant="ghost" size="sm" className="hidden md:flex gap-1.5 text-xs hover:text-white" style={{ color: 'var(--color-muted-foreground)' }}>
                 <ClockIcon className="w-3.5 h-3.5" strokeWidth={S} />
                 Versions
               </Button>
 
               {/* Share */}
-              <Button variant="ghost" size="sm" className="hidden md:flex gap-1.5 text-xs hover:text-[var(--color-primary)]" style={{ color: 'var(--color-muted-foreground)' }}>
+              <Button variant="ghost" size="sm" className="hidden md:flex gap-1.5 text-xs hover:text-white" style={{ color: 'var(--color-muted-foreground)' }}>
                 <ShareIcon className="w-3.5 h-3.5" strokeWidth={S} />
                 Share
               </Button>
@@ -502,12 +502,12 @@ export default function ProjectDetail() {
             <span className="font-mono text-xs font-medium tabular-nums ml-1" style={{ color: 'var(--color-foreground)' }}>{bpm}</span>
             <span className="text-xs mr-1.5" style={{ color: 'var(--color-muted-foreground)' }}>BPM</span>
             <button onClick={handleTap}
-              className="px-2 py-0.5 rounded text-xs font-medium transition-colors hover:text-[var(--color-primary)]"
+              className="px-2 py-0.5 rounded text-xs font-medium transition-colors hover:text-white"
               style={{ color: 'var(--color-muted-foreground)', background: 'var(--color-input)', fontSize: '10px' }}>
               TAP
             </button>
             <button
-              className="ml-1 px-2 py-0.5 rounded text-xs font-medium transition-colors hover:text-[var(--color-primary)]"
+              className="ml-1 px-2 py-0.5 rounded text-xs font-medium transition-colors hover:text-white"
               style={{ color: 'var(--color-muted-foreground)', background: 'var(--color-input)', fontSize: '10px' }}>
               AUTO
             </button>
@@ -516,7 +516,7 @@ export default function ProjectDetail() {
 
             {/* KEY */}
             <MusicalNoteIcon className="w-3.5 h-3.5 flex-shrink-0" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
-            <button className="font-mono text-xs font-medium ml-1 transition-colors hover:text-[var(--color-primary)]" style={{ color: 'var(--color-foreground)' }}>
+            <button className="font-mono text-xs font-medium ml-1 transition-colors hover:text-white" style={{ color: 'var(--color-foreground)' }}>
               {songKey}
             </button>
             <span className="text-xs" style={{ color: 'var(--color-muted-foreground)', fontSize: '10px' }}>KEY</span>
@@ -733,7 +733,7 @@ export default function ProjectDetail() {
                     style={{ accentColor: '#0011FF' }}
                   />
                   <button
-                    className="flex items-center gap-1 text-xs transition-colors hover:text-[var(--color-primary)] self-start"
+                    className="flex items-center gap-1 text-xs transition-colors hover:text-white self-start"
                     style={{ color: 'var(--color-muted-foreground)' }}
                   >
                     FX <ChevronDownIcon className="w-3 h-3" strokeWidth={S} />
@@ -778,7 +778,7 @@ export default function ProjectDetail() {
 
                     {/* Name + type label + dropdown */}
                     <button
-                      className="flex items-center gap-1.5 text-sm font-medium min-w-0 flex-shrink-0 transition-colors hover:text-[var(--color-primary)]"
+                      className="flex items-center gap-1.5 text-sm font-medium min-w-0 flex-shrink-0 transition-colors hover:text-white"
                       style={{ opacity: stem.muted ? 0.4 : 1 }}
                     >
                       <span className="truncate max-w-[100px]">{stem.name}</span>
@@ -845,7 +845,7 @@ export default function ProjectDetail() {
                     {/* Options + delete — visible on hover */}
                     <Button
                       variant="ghost" size="icon"
-                      className="h-6 w-6 opacity-0 group-hover:opacity-60 hover:!opacity-100 transition-opacity hover:text-[var(--color-primary)]"
+                      className="h-6 w-6 opacity-0 group-hover:opacity-60 hover:!opacity-100 transition-opacity hover:text-white"
                       style={{ color: 'var(--color-muted-foreground)' }}
                     >
                       <EllipsisHorizontalIcon className="w-4 h-4" strokeWidth={S} />

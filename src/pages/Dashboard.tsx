@@ -251,7 +251,7 @@ export default function Dashboard() {
           >
             <Bars3Icon className="w-5 h-5" strokeWidth={S} />
           </button>
-          <Button variant="ghost" size="icon" className="relative hover:text-[var(--color-primary)]">
+          <Button variant="ghost" size="icon" className="relative hover:text-white">
             <BellIcon className="w-[18px] h-[18px]" strokeWidth={S} />
             <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full" style={{ background: 'var(--color-primary)' }} />
           </Button>
@@ -266,7 +266,7 @@ export default function Dashboard() {
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between px-6 py-5 gap-4">
               <h1 className="font-light text-2xl lg:text-[36px]" style={{ color: '#ffffff' }}>Welcome back, David</h1>
               <div className="flex items-center gap-3">
-                <Button variant="ghost" size="icon" className="relative hover:text-[var(--color-primary)] hidden lg:inline-flex">
+                <Button variant="ghost" size="icon" className="relative hover:text-white hidden lg:inline-flex">
                   <BellIcon className="w-[18px] h-[18px]" strokeWidth={S} />
                   <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full" style={{ background: 'var(--color-primary)' }} />
                 </Button>
@@ -393,13 +393,13 @@ export default function Dashboard() {
                             </td>
                             <td className="px-4 py-3.5">
                               <div className="flex items-center gap-1 justify-end">
-                                <Button variant="ghost" size="icon" className="h-7 w-7 hover:text-[var(--color-primary)]">
+                                <Button variant="ghost" size="icon" className="h-7 w-7 hover:text-white">
                                   <PlayIcon className="w-3.5 h-3.5" strokeWidth={S} />
                                 </Button>
-                                <Button variant="ghost" size="icon" className="h-7 w-7 hover:text-[var(--color-primary)]">
+                                <Button variant="ghost" size="icon" className="h-7 w-7 hover:text-white">
                                   <ArrowDownTrayIcon className="w-3.5 h-3.5" strokeWidth={S} />
                                 </Button>
-                                <Button variant="ghost" size="icon" className="h-7 w-7 hover:text-[var(--color-primary)]">
+                                <Button variant="ghost" size="icon" className="h-7 w-7 hover:text-white">
                                   <EllipsisHorizontalIcon className="w-3.5 h-3.5" strokeWidth={S} />
                                 </Button>
                               </div>
@@ -452,10 +452,10 @@ export default function Dashboard() {
                               <Badge variant={ex.status === 'ready' ? 'success' : 'warning'}>
                                 {ex.status === 'ready' ? 'Ready' : 'Processing'}
                               </Badge>
-                              <Button variant="ghost" size="icon" className="h-7 w-7 hover:text-[var(--color-primary)]">
+                              <Button variant="ghost" size="icon" className="h-7 w-7 hover:text-white">
                                 <ArrowDownTrayIcon className="w-3.5 h-3.5" strokeWidth={S} />
                               </Button>
-                              <Button variant="ghost" size="icon" className="h-7 w-7 hover:text-[var(--color-primary)]">
+                              <Button variant="ghost" size="icon" className="h-7 w-7 hover:text-white">
                                 <EllipsisHorizontalIcon className="w-3.5 h-3.5" strokeWidth={S} />
                               </Button>
                             </div>
