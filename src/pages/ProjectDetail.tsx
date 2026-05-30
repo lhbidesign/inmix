@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import {
-  Squares2X2Icon, FolderOpenIcon, MusicalNoteIcon, Cog6ToothIcon,
-  MagnifyingGlassIcon, XMarkIcon, Bars3Icon, ChevronLeftIcon, ChevronRightIcon,
+  MusicalNoteIcon,
+  MagnifyingGlassIcon, XMarkIcon, Bars3Icon, ChevronLeftIcon,
   EllipsisHorizontalIcon, EllipsisVerticalIcon, PlayIcon,
-  ArrowPathIcon, ArrowUturnLeftIcon, ArrowUturnRightIcon, ArrowUpTrayIcon, ArrowRightOnRectangleIcon,
+  ArrowPathIcon, ArrowUturnLeftIcon, ArrowUturnRightIcon, ArrowUpTrayIcon,
   SpeakerWaveIcon, AdjustmentsHorizontalIcon, TrashIcon,
-  DocumentDuplicateIcon, PlayCircleIcon, UsersIcon, BoltIcon, ClockIcon,
+  BoltIcon, ClockIcon,
   SparklesIcon, SunIcon, ChevronDownIcon, ArrowsPointingOutIcon,
   FilmIcon, CloudIcon, StarIcon, ArrowDownTrayIcon, ShareIcon,
   MapPinIcon, TrophyIcon, GlobeAltIcon,
@@ -17,19 +17,11 @@ import {
 } from '@heroicons/react/24/solid'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator'
+import { AppSidebar } from '@/components/AppSidebar'
 
 const S = 1
 
 // ── Data ──────────────────────────────────────────────────────────────────────
-
-const navItems = [
-  { icon: Squares2X2Icon,       label: 'Dashboard',    href: '/dashboard' },
-  { icon: FolderOpenIcon,       label: 'Projects',      href: '/projects'  },
-  { icon: DocumentDuplicateIcon, label: 'Presets',      href: '/presets'   },
-  { icon: PlayCircleIcon,       label: 'Listen',        href: '/dashboard' },
-  { icon: UsersIcon,            label: 'Collaborators', href: '/dashboard' },
-]
 
 const masterPresets = [
   { name: 'Clean',     desc: 'Transparent, flat response',       icon: SparklesIcon           },
@@ -146,15 +138,6 @@ const initialStems = [
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function ProjectDetail() {
-  const location = useLocation()
-  const navigate = useNavigate()
-
-  function isNavActive(label: string) {
-    if (label === 'Dashboard') return location.pathname === '/dashboard'
-    if (label === 'Projects')  return location.pathname.startsWith('/projects')
-    if (label === 'Presets')   return location.pathname === '/presets'
-    return false
-  }
   const [sidebarOpen, setSidebarOpen]         = useState(false)
   const [mode, setMode]                       = useState<'mix' | 'arrange'>('mix')
   const [isPlaying, setIsPlaying]             = useState(false)
@@ -174,7 +157,7 @@ export default function ProjectDetail() {
   const [aiMixActive, setAiMixActive]         = useState(false)
   const [canUndo]                             = useState(false)
   const [canRedo]                             = useState(false)
-  const [sidebarCollapsed, setSidebarCollapsed]   = useState(false)
+  const [showMobileMenu, setShowMobileMenu]        = useState(false)
   const [mixConsoleOpen, setMixConsoleOpen]       = useState(false)
   const [mixIntensity, setMixIntensity]           = useState<'subtle' | 'balanced' | 'aggressive'>('balanced')
   const [mixFocus, setMixFocus]                   = useState<Set<string>>(new Set(['Balanced']))
@@ -209,133 +192,7 @@ export default function ProjectDetail() {
     <>
     <div className="flex h-screen overflow-hidden" style={{ background: 'var(--gradient-bg)', color: 'var(--color-foreground)' }}>
 
-      {/* Mobile backdrop */}
-      {sidebarOpen && (
-        <div className="fixed inset-0 z-40 bg-black/60 lg:hidden" onClick={() => setSidebarOpen(false)} />
-      )}
-
-      {/* ── Sidebar ─────────────────────────────────────────────────────────── */}
-      <aside
-        className={cn(
-          'w-[90vw] flex-shrink-0 flex-col border-r transition-all duration-300 overflow-hidden',
-          sidebarOpen ? 'flex fixed inset-y-0 left-0 z-50' : 'hidden lg:flex',
-          sidebarCollapsed ? 'lg:w-14' : 'lg:w-60'
-        )}
-        style={{ borderColor: 'rgba(255,255,255,0.08)', background: 'var(--gradient-sidebar)' }}
-      >
-        {sidebarCollapsed ? (
-          <div className="flex items-center justify-center px-2 py-[18px] flex-shrink-0">
-            <button
-              className="hidden lg:flex p-1 rounded-md transition-colors hover:opacity-70"
-              style={{ color: '#ffffff' }}
-              onClick={() => setSidebarCollapsed(false)}
-              title="Expand sidebar"
-            >
-              <ChevronRightIcon className="w-4 h-4" strokeWidth={S} />
-            </button>
-          </div>
-        ) : (
-          <div className="flex items-center justify-between px-5 py-5 flex-shrink-0">
-            <Link to="/dashboard"><img src="/logo.svg" alt="INMIX" style={{ height: '22px', width: 'auto' }} /></Link>
-            <div className="flex items-center gap-1">
-              {/* Collapse (desktop) */}
-              <button
-                className="hidden lg:flex p-1 rounded-md transition-colors hover:opacity-70"
-                style={{ color: '#ffffff' }}
-                onClick={() => setSidebarCollapsed(true)}
-                title="Collapse sidebar"
-              >
-                <ChevronLeftIcon className="w-4 h-4" strokeWidth={S} />
-              </button>
-              {/* Mobile close */}
-              <button className="lg:hidden p-1 rounded-md hover:text-white transition-colors" style={{ color: 'var(--color-muted-foreground)' }} onClick={() => setSidebarOpen(false)}>
-                <XMarkIcon className="w-5 h-5" strokeWidth={S} />
-              </button>
-            </div>
-          </div>
-        )}
-
-        <Separator />
-
-        <nav className={cn('flex-1 py-4 space-y-0.5', sidebarCollapsed ? 'px-2' : 'px-3')}>
-          {navItems.map(({ icon: Icon, label, href }) => (
-            <Link
-              key={label}
-              to={href}
-              className={cn(
-                'w-full flex items-center rounded-lg text-sm font-medium transition-colors',
-                sidebarCollapsed ? 'justify-center p-2.5' : 'gap-3 px-3 py-2.5'
-              )}
-              style={isNavActive(label)
-                ? { background: 'rgba(255,255,255,0.18)', color: '#ffffff' }
-                : { color: 'var(--color-primary)' }
-              }
-              title={sidebarCollapsed ? label : undefined}
-            >
-              <Icon className="w-[18px] h-[18px] flex-shrink-0" strokeWidth={S} />
-              {!sidebarCollapsed && label}
-            </Link>
-          ))}
-        </nav>
-
-        <Separator />
-
-        <div className={cn('py-4 space-y-0.5', sidebarCollapsed ? 'px-2' : 'px-3')}>
-          {sidebarCollapsed ? (
-            <>
-              <Link
-                to="/settings"
-                className="w-full flex justify-center p-2.5 rounded-lg transition-colors hover:opacity-80"
-                style={{ color: 'var(--color-primary)' }}
-                title="Settings"
-              >
-                <Cog6ToothIcon className="w-[18px] h-[18px]" strokeWidth={S} />
-              </Link>
-              <button
-                onClick={() => navigate('/login')}
-                className="w-full flex justify-center p-2.5 rounded-lg transition-colors"
-                style={{ color: 'rgba(239,68,68,0.7)' }}
-                title="Log out"
-                onMouseEnter={e => (e.currentTarget.style.color = '#ef4444')}
-                onMouseLeave={e => (e.currentTarget.style.color = 'rgba(239,68,68,0.7)')}
-              >
-                <ArrowRightOnRectangleIcon className="w-[18px] h-[18px]" strokeWidth={S} />
-              </button>
-              <div className="flex justify-center py-1">
-                <img src="/images/IMG_3993-min.jpg" alt="David Suarez" className="w-7 h-7 rounded-full object-cover flex-shrink-0" />
-              </div>
-            </>
-          ) : (
-            <>
-              <Link
-                to="/settings"
-                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors text-left hover:opacity-80"
-                style={{ color: 'var(--color-primary)' }}
-              >
-                <Cog6ToothIcon className="w-[18px] h-[18px]" strokeWidth={S} />
-                Settings
-              </Link>
-              <button
-                onClick={() => navigate('/login')}
-                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors text-left"
-                style={{ color: 'rgba(239,68,68,0.7)' }}
-                onMouseEnter={e => (e.currentTarget.style.color = '#ef4444')}
-                onMouseLeave={e => (e.currentTarget.style.color = 'rgba(239,68,68,0.7)')}
-              >
-                <ArrowRightOnRectangleIcon className="w-[18px] h-[18px]" strokeWidth={S} />
-                Log out
-              </button>
-              <div className="flex items-center gap-3 px-3 py-2.5">
-                <img src="/images/IMG_3993-min.jpg" alt="David Suarez" className="w-7 h-7 rounded-full object-cover flex-shrink-0" />
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-medium truncate" style={{ color: 'var(--color-primary)' }}>David Suarez</p>
-                  <p className="text-xs truncate" style={{ color: 'var(--color-muted-foreground)' }}>Pro Plan</p>
-                </div>
-              </div>
-            </>
-          )}
-        </div>
-      </aside>
+      <AppSidebar open={sidebarOpen} onOpenChange={setSidebarOpen} />
 
       {/* ── Main ────────────────────────────────────────────────────────────── */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
@@ -418,7 +275,7 @@ export default function ProjectDetail() {
               {/* AI MIX */}
               <button
                 onClick={() => setMixConsoleOpen(true)}
-                className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all flex-shrink-0"
+                className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all flex-shrink-0"
                 style={{
                   background: aiMixActive ? 'rgba(0,17,255,0.22)' : 'rgba(0,17,255,0.1)',
                   border: `1px solid ${aiMixActive ? 'rgba(0,17,255,0.7)' : 'rgba(0,17,255,0.4)'}`,
@@ -429,7 +286,7 @@ export default function ProjectDetail() {
                 AI MIX
               </button>
 
-              <div className="w-px h-4 hidden lg:block" style={{ background: 'rgba(255,255,255,0.1)' }} />
+              <div className="w-px h-4 hidden md:block" style={{ background: 'rgba(255,255,255,0.1)' }} />
 
               {/* Preview */}
               <Button variant="ghost" size="sm" className="hidden md:flex gap-1.5 text-xs hover:text-white text-[--color-muted-foreground]">
@@ -492,6 +349,47 @@ export default function ProjectDetail() {
                 <ShareIcon className="w-3.5 h-3.5" strokeWidth={S} />
                 Share
               </Button>
+
+              {/* Mobile (...) — groups all hidden actions */}
+              <div className="relative md:hidden">
+                <button
+                  onClick={() => setShowMobileMenu(v => !v)}
+                  className="p-1.5 rounded-lg transition-colors hover:text-white"
+                  style={{ color: 'var(--color-muted-foreground)' }}
+                >
+                  <EllipsisHorizontalIcon className="w-5 h-5" strokeWidth={S} />
+                </button>
+                {showMobileMenu && (
+                  <>
+                    <div className="fixed inset-0 z-40" onClick={() => setShowMobileMenu(false)} />
+                    <div className="absolute right-0 top-full mt-1 z-50 rounded-xl border overflow-hidden py-1.5" style={{ background: '#0f0e13', borderColor: 'rgba(255,255,255,0.12)', minWidth: '160px' }}>
+                      <button
+                        onClick={() => { setMixConsoleOpen(true); setShowMobileMenu(false) }}
+                        className="w-full flex items-center gap-2.5 px-4 py-2 text-xs transition-colors hover:text-white"
+                        style={{ color: '#6680ff' }}
+                      >
+                        <BoltIcon className="w-3.5 h-3.5" strokeWidth={S} />
+                        AI MIX
+                      </button>
+                      {[
+                        { icon: PlayIcon,     label: 'Preview'  },
+                        { icon: ArrowPathIcon, label: 'Refresh' },
+                        { icon: ClockIcon,    label: 'Versions' },
+                        { icon: ShareIcon,    label: 'Share'    },
+                      ].map(({ icon: Icon, label }) => (
+                        <button key={label}
+                          onClick={() => setShowMobileMenu(false)}
+                          className="w-full flex items-center gap-2.5 px-4 py-2 text-xs transition-colors hover:text-white"
+                          style={{ color: 'var(--color-muted-foreground)' }}
+                        >
+                          <Icon className="w-3.5 h-3.5" strokeWidth={S} />
+                          {label}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
           </div>
 
@@ -502,13 +400,13 @@ export default function ProjectDetail() {
             <span className="font-mono text-xs font-medium tabular-nums ml-1" style={{ color: 'var(--color-foreground)' }}>{bpm}</span>
             <span className="text-xs mr-1.5" style={{ color: 'var(--color-muted-foreground)' }}>BPM</span>
             <button onClick={handleTap}
-              className="px-2 py-0.5 rounded text-xs font-medium transition-colors hover:text-white"
-              style={{ color: 'var(--color-muted-foreground)', background: 'var(--color-input)', fontSize: '10px' }}>
+              className="px-2 py-0.5 rounded text-[10px] font-medium transition-colors hover:text-white"
+              style={{ color: 'var(--color-muted-foreground)', background: 'var(--color-input)' }}>
               TAP
             </button>
             <button
-              className="ml-1 px-2 py-0.5 rounded text-xs font-medium transition-colors hover:text-white"
-              style={{ color: 'var(--color-muted-foreground)', background: 'var(--color-input)', fontSize: '10px' }}>
+              className="ml-1 px-2 py-0.5 rounded text-[10px] font-medium transition-colors hover:text-white"
+              style={{ color: 'var(--color-muted-foreground)', background: 'var(--color-input)' }}>
               AUTO
             </button>
 
@@ -519,7 +417,7 @@ export default function ProjectDetail() {
             <button className="font-mono text-xs font-medium ml-1 transition-colors hover:text-white" style={{ color: 'var(--color-foreground)' }}>
               {songKey}
             </button>
-            <span className="text-xs" style={{ color: 'var(--color-muted-foreground)', fontSize: '10px' }}>KEY</span>
+            <span className="text-[10px]" style={{ color: 'var(--color-muted-foreground)' }}>KEY</span>
 
             <div className="w-px h-3 mx-3" style={{ background: 'rgba(255,255,255,0.1)' }} />
 
@@ -536,7 +434,7 @@ export default function ProjectDetail() {
 
             {/* Track count — pushed right */}
             <div className="ml-auto flex items-center gap-1.5">
-              <span className="text-xs font-mono tracking-wider" style={{ color: 'var(--color-muted-foreground)', fontSize: '10px' }}>
+              <span className="text-[10px] font-mono tracking-wider" style={{ color: 'var(--color-muted-foreground)' }}>
                 {stems.length} TRACKS
               </span>
             </div>
@@ -640,15 +538,15 @@ export default function ProjectDetail() {
               style={{ borderLeft: '1px solid rgba(255,255,255,0.06)', minWidth: '80px' }}
             >
               <div className="flex items-center gap-1.5">
-                <span className="font-mono" style={{ color: 'var(--color-muted-foreground)', fontSize: '9px' }}>LUFS</span>
-                <span className="font-mono tabular-nums" style={{ color: 'var(--color-primary)', fontSize: '9px' }}>C 0.0</span>
+                <span className="font-mono text-[10px]" style={{ color: 'var(--color-muted-foreground)' }}>LUFS</span>
+                <span className="font-mono text-[10px] tabular-nums" style={{ color: 'var(--color-primary)' }}>C 0.0</span>
               </div>
               <div className="flex items-center">
-                <span className="font-mono tabular-nums" style={{ color: 'rgba(255,255,255,0.25)', fontSize: '9px' }}>L 0.0</span>
+                <span className="font-mono text-[10px] tabular-nums" style={{ color: 'rgba(255,255,255,0.25)' }}>L 0.0</span>
               </div>
               <div className="flex items-center gap-2 mt-0.5">
-                <span className="font-mono" style={{ color: 'rgba(255,255,255,0.25)', fontSize: '9px' }}>CMP</span>
-                <span className="font-mono" style={{ color: 'rgba(255,255,255,0.25)', fontSize: '9px' }}>LIM</span>
+                <span className="font-mono text-[10px]" style={{ color: 'rgba(255,255,255,0.25)' }}>CMP</span>
+                <span className="font-mono text-[10px]" style={{ color: 'rgba(255,255,255,0.25)' }}>LIM</span>
               </div>
             </div>
           </div>
@@ -695,8 +593,8 @@ export default function ProjectDetail() {
                       style={{ color: active ? 'var(--color-foreground)' : 'var(--color-foreground)' }}>
                       {name}
                     </p>
-                    <p className="text-xs leading-tight line-clamp-2 hidden lg:block"
-                      style={{ color: 'var(--color-muted-foreground)', fontSize: '10px' }}>
+                    <p className="text-[10px] leading-tight line-clamp-2 hidden lg:block"
+                      style={{ color: 'var(--color-muted-foreground)' }}>
                       {desc}
                     </p>
                   </button>
@@ -782,7 +680,7 @@ export default function ProjectDetail() {
                       style={{ opacity: stem.muted ? 0.4 : 1 }}
                     >
                       <span className="truncate max-w-[100px]">{stem.name}</span>
-                      <span className={cn('text-xs flex-shrink-0', typeColors[stem.type])} style={{ fontSize: '10px', opacity: 0.75 }}>
+                      <span className={cn('text-[10px] flex-shrink-0', typeColors[stem.type])} style={{ opacity: 0.75 }}>
                         {stem.type}
                       </span>
                       <ChevronDownIcon className="w-3 h-3 flex-shrink-0" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
@@ -800,14 +698,14 @@ export default function ProjectDetail() {
                         className="w-24 h-1 rounded-full cursor-pointer"
                         style={{ accentColor: '#0011FF', opacity: stem.muted ? 0.3 : 1 }}
                       />
-                      <span className="font-mono text-xs tabular-nums w-5 text-right flex-shrink-0" style={{ color: 'var(--color-muted-foreground)', fontSize: '11px', opacity: stem.muted ? 0.4 : 1 }}>
+                      <span className="font-mono text-xs tabular-nums w-5 text-right flex-shrink-0" style={{ color: 'var(--color-muted-foreground)', opacity: stem.muted ? 0.4 : 1 }}>
                         {stem.volume}
                       </span>
                     </div>
 
                     {/* Pan */}
                     <div className="hidden md:flex items-center gap-1.5 flex-shrink-0">
-                      <span className="text-xs flex-shrink-0" style={{ color: 'var(--color-muted-foreground)', fontSize: '10px' }}>PAN</span>
+                      <span className="text-[10px] flex-shrink-0" style={{ color: 'var(--color-muted-foreground)' }}>PAN</span>
                       <input
                         type="range" min={-100} max={100}
                         value={stem.pan}
@@ -815,7 +713,7 @@ export default function ProjectDetail() {
                         className="w-16 h-1 rounded-full cursor-pointer"
                         style={{ accentColor: '#0011FF' }}
                       />
-                      <span className="font-mono text-xs tabular-nums w-5 text-right flex-shrink-0" style={{ color: 'var(--color-muted-foreground)', fontSize: '10px' }}>
+                      <span className="font-mono text-[10px] tabular-nums w-5 text-right flex-shrink-0" style={{ color: 'var(--color-muted-foreground)' }}>
                         {panLabel}
                       </span>
                     </div>
@@ -978,7 +876,7 @@ export default function ProjectDetail() {
                       </div>
                       <div className="min-w-0">
                         <p className="text-xs font-semibold tracking-wide leading-none mb-1" style={{ color: 'var(--color-foreground)' }}>{name}</p>
-                        <p className="text-[11px] leading-snug" style={{ color: 'var(--color-muted-foreground)' }}>{desc}</p>
+                        <p className="text-xs leading-snug" style={{ color: 'var(--color-muted-foreground)' }}>{desc}</p>
                       </div>
                     </div>
                     <button className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors"
@@ -1015,7 +913,7 @@ export default function ProjectDetail() {
                     <Icon className="w-4 h-4 flex-shrink-0 mt-0.5" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
                     <div>
                       <p className="text-xs font-semibold tracking-wide leading-none mb-0.5" style={{ color: 'var(--color-foreground)' }}>{name}</p>
-                      <p className="text-[11px]" style={{ color: 'var(--color-muted-foreground)' }}>{desc}</p>
+                      <p className="text-xs" style={{ color: 'var(--color-muted-foreground)' }}>{desc}</p>
                     </div>
                   </div>
                 ))}
@@ -1031,7 +929,7 @@ export default function ProjectDetail() {
                 <div className="flex items-center gap-1 p-1 rounded-lg" style={{ background: 'var(--color-accent)' }}>
                   {(['subtle', 'balanced', 'aggressive'] as const).map(v => (
                     <button key={v} onClick={() => setMixIntensity(v)}
-                      className="flex-1 py-1.5 rounded-md text-[11px] capitalize transition-all"
+                      className="flex-1 py-1.5 rounded-md text-xs capitalize transition-all"
                       style={mixIntensity === v
                         ? { background: '#000', color: '#ffffff', fontWeight: 400 }
                         : { color: 'var(--color-muted-foreground)', background: 'transparent' }
@@ -1041,7 +939,7 @@ export default function ProjectDetail() {
                     </button>
                   ))}
                 </div>
-                <p className="text-[11px] mt-2" style={{ color: 'var(--color-muted-foreground)' }}>
+                <p className="text-xs mt-2" style={{ color: 'var(--color-muted-foreground)' }}>
                   {mixIntensity === 'subtle' ? 'Light touch, natural sound' : mixIntensity === 'balanced' ? 'Pro-level corrective mix' : 'Bold, heavily processed'}
                 </p>
               </div>
@@ -1059,7 +957,7 @@ export default function ProjectDetail() {
                           if (next.has(chip)) next.delete(chip); else next.add(chip)
                           return next
                         })}
-                        className="px-2.5 py-1 rounded-full text-[11px] font-medium transition-all border"
+                        className="px-2.5 py-1 rounded-full text-xs font-medium transition-all border"
                         style={active
                           ? { background: 'rgba(115,171,191,0.15)', borderColor: 'var(--color-primary)', color: 'var(--color-primary)' }
                           : { background: 'transparent', borderColor: 'rgba(255,255,255,0.12)', color: 'var(--color-muted-foreground)' }
@@ -1084,7 +982,7 @@ export default function ProjectDetail() {
                   <ArrowUpTrayIcon className="w-3.5 h-3.5" strokeWidth={S} />
                   Match a reference
                 </button>
-                <p className="text-[11px] mt-2 text-center" style={{ color: 'var(--color-muted-foreground)' }}>Optional — match the sound of a song you love</p>
+                <p className="text-xs mt-2 text-center" style={{ color: 'var(--color-muted-foreground)' }}>Optional — match the sound of a song you love</p>
               </div>
             </div>
           </div>

@@ -1,24 +1,12 @@
 import { useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
 import {
-  Squares2X2Icon, FolderOpenIcon, Cog6ToothIcon,
-  XMarkIcon, Bars3Icon, ChevronLeftIcon, ChevronRightIcon,
-  ArrowRightOnRectangleIcon, MagnifyingGlassIcon,
-  ChevronDownIcon, DocumentDuplicateIcon, PlayCircleIcon,
-  UsersIcon, ArrowUpTrayIcon, CheckIcon, SparklesIcon,
+  Bars3Icon, MagnifyingGlassIcon,
+  ChevronDownIcon, ArrowUpTrayIcon, CheckIcon, SparklesIcon,
 } from '@heroicons/react/24/outline'
-import { cn } from '@/lib/utils'
-import { Separator } from '@/components/ui/separator'
+import { AppSidebar } from '@/components/AppSidebar'
+import { TabGroup } from '@/components/ui/tab-group'
 
 const S = 1
-
-const navItems = [
-  { icon: Squares2X2Icon,        label: 'Dashboard',     href: '/dashboard' },
-  { icon: FolderOpenIcon,        label: 'Projects',       href: '/dashboard' },
-  { icon: DocumentDuplicateIcon, label: 'Presets',        href: '/presets'   },
-  { icon: PlayCircleIcon,        label: 'Listen',         href: '/dashboard' },
-  { icon: UsersIcon,             label: 'Collaborators',  href: '/dashboard' },
-]
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 
@@ -70,22 +58,11 @@ const genres = ['All Genres', 'HIP-HOP', 'R&B', 'EDM', 'POP', 'LO-FI', 'ACOUSTIC
 
 export default function Presets() {
   const [sidebarOpen, setSidebarOpen]           = useState(false)
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [activeTab, setActiveTab]               = useState<'official' | 'community' | 'mine'>('official')
   const [search, setSearch]                     = useState('')
   const [genre, setGenre]                       = useState('All Genres')
   const [showGenreMenu, setShowGenreMenu]       = useState(false)
   const [installed, setInstalled]               = useState<Set<number>>(new Set())
-
-  const location = useLocation()
-  const navigate = useNavigate()
-
-  function isNavActive(label: string) {
-    if (label === 'Dashboard') return location.pathname === '/dashboard'
-    if (label === 'Projects')  return location.pathname.startsWith('/projects')
-    if (label === 'Presets')   return location.pathname === '/presets'
-    return false
-  }
 
   const filtered = allPresets.filter(p => {
     const matchTab    = activeTab === 'official' ? p.type === 'official' : activeTab === 'community' ? p.type === 'community' : installed.has(p.id)
@@ -97,131 +74,7 @@ export default function Presets() {
   return (
     <div className="flex h-screen overflow-hidden" style={{ background: 'var(--gradient-bg)', color: 'var(--color-foreground)' }}>
 
-      {/* Mobile backdrop */}
-      {sidebarOpen && (
-        <div className="fixed inset-0 z-40 bg-black/60 lg:hidden" onClick={() => setSidebarOpen(false)} />
-      )}
-
-      {/* ── Sidebar ── */}
-      <aside
-        className={cn(
-          'w-[90vw] flex-shrink-0 flex-col border-r transition-all duration-300 overflow-hidden',
-          sidebarOpen ? 'flex fixed inset-y-0 left-0 z-50' : 'hidden lg:flex',
-          sidebarCollapsed ? 'lg:w-14' : 'lg:w-60'
-        )}
-        style={{ borderColor: 'rgba(255,255,255,0.08)', background: 'var(--gradient-sidebar)' }}
-      >
-        {sidebarCollapsed ? (
-          <div className="flex items-center justify-center px-2 py-[18px] flex-shrink-0">
-            <button
-              className="hidden lg:flex p-1 rounded-md transition-colors hover:opacity-70"
-              style={{ color: '#ffffff' }}
-              onClick={() => setSidebarCollapsed(false)}
-              title="Expand sidebar"
-            >
-              <ChevronRightIcon className="w-4 h-4" strokeWidth={S} />
-            </button>
-          </div>
-        ) : (
-          <div className="flex items-center justify-between px-5 py-5 flex-shrink-0">
-            <Link to="/dashboard"><img src="/logo.svg" alt="INMIX" style={{ height: '22px', width: 'auto' }} /></Link>
-            <div className="flex items-center gap-1">
-              <button
-                className="hidden lg:flex p-1 rounded-md transition-colors hover:opacity-70"
-                style={{ color: '#ffffff' }}
-                onClick={() => setSidebarCollapsed(true)}
-                title="Collapse sidebar"
-              >
-                <ChevronLeftIcon className="w-4 h-4" strokeWidth={S} />
-              </button>
-              <button className="lg:hidden p-1 rounded-md" style={{ color: 'var(--color-muted-foreground)' }} onClick={() => setSidebarOpen(false)}>
-                <XMarkIcon className="w-5 h-5" strokeWidth={S} />
-              </button>
-            </div>
-          </div>
-        )}
-
-        <Separator />
-
-        <nav className={cn('flex-1 py-4 space-y-0.5', sidebarCollapsed ? 'px-2' : 'px-3')}>
-          {navItems.map(({ icon: Icon, label, href }) => (
-            <Link
-              key={label}
-              to={href}
-              className={cn(
-                'w-full flex items-center rounded-lg text-sm font-medium transition-colors hover:text-white',
-                sidebarCollapsed ? 'justify-center p-2.5' : 'gap-3 px-3 py-2.5'
-              )}
-              style={isNavActive(label)
-                ? { background: 'rgba(255,255,255,0.18)', color: '#ffffff' }
-                : { color: 'var(--color-primary)' }
-              }
-              title={sidebarCollapsed ? label : undefined}
-            >
-              <Icon className="w-[18px] h-[18px] flex-shrink-0" strokeWidth={S} />
-              {!sidebarCollapsed && label}
-            </Link>
-          ))}
-        </nav>
-
-        <Separator />
-
-        <div className={cn('py-4 space-y-0.5', sidebarCollapsed ? 'px-2' : 'px-3')}>
-          {sidebarCollapsed ? (
-            <>
-              <Link
-                to="/settings"
-                className="w-full flex justify-center p-2.5 rounded-lg transition-colors hover:opacity-80"
-                style={{ color: 'var(--color-primary)' }}
-                title="Settings"
-              >
-                <Cog6ToothIcon className="w-[18px] h-[18px]" strokeWidth={S} />
-              </Link>
-              <button
-                onClick={() => navigate('/login')}
-                className="w-full flex justify-center p-2.5 rounded-lg transition-colors"
-                style={{ color: 'rgba(239,68,68,0.7)' }}
-                title="Log out"
-                onMouseEnter={e => (e.currentTarget.style.color = '#ef4444')}
-                onMouseLeave={e => (e.currentTarget.style.color = 'rgba(239,68,68,0.7)')}
-              >
-                <ArrowRightOnRectangleIcon className="w-[18px] h-[18px]" strokeWidth={S} />
-              </button>
-              <div className="flex justify-center py-1">
-                <img src="/images/IMG_3993-min.jpg" alt="David Suarez" className="w-7 h-7 rounded-full object-cover flex-shrink-0" />
-              </div>
-            </>
-          ) : (
-            <>
-              <Link
-                to="/settings"
-                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors text-left hover:opacity-80"
-                style={{ color: 'var(--color-primary)' }}
-              >
-                <Cog6ToothIcon className="w-[18px] h-[18px]" strokeWidth={S} />
-                Settings
-              </Link>
-              <button
-                onClick={() => navigate('/login')}
-                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors text-left"
-                style={{ color: 'rgba(239,68,68,0.7)' }}
-                onMouseEnter={e => (e.currentTarget.style.color = '#ef4444')}
-                onMouseLeave={e => (e.currentTarget.style.color = 'rgba(239,68,68,0.7)')}
-              >
-                <ArrowRightOnRectangleIcon className="w-[18px] h-[18px]" strokeWidth={S} />
-                Log out
-              </button>
-              <div className="flex items-center gap-3 px-3 py-2.5">
-                <img src="/images/IMG_3993-min.jpg" alt="David Suarez" className="w-7 h-7 rounded-full object-cover flex-shrink-0" />
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-medium truncate" style={{ color: 'var(--color-primary)' }}>David Suarez</p>
-                  <p className="text-xs truncate" style={{ color: 'var(--color-muted-foreground)' }}>Pro Plan</p>
-                </div>
-              </div>
-            </>
-          )}
-        </div>
-      </aside>
+      <AppSidebar open={sidebarOpen} onOpenChange={setSidebarOpen} />
 
       {/* ── Main ── */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
@@ -255,24 +108,17 @@ export default function Presets() {
           </div>
 
           {/* Tabs */}
-          <div className="flex gap-1 p-1 rounded-xl mb-5 w-fit" style={{ background: 'var(--color-input)', border: '1px solid rgba(255,255,255,0.06)' }}>
-            {([
-              { id: 'official',  label: 'Official'   },
-              { id: 'community', label: 'Community'  },
-              { id: 'mine',      label: 'My Presets' },
-            ] as const).map(({ id, label }) => (
-              <button
-                key={id}
-                onClick={() => setActiveTab(id)}
-                className="px-5 py-2 rounded-lg text-sm font-medium transition-all"
-                style={activeTab === id
-                  ? { background: 'var(--color-accent)', color: 'var(--color-primary)', border: '1px solid rgba(255,255,255,0.08)' }
-                  : { color: 'var(--color-muted-foreground)', border: '1px solid transparent' }
-                }
-              >
-                {label}
-              </button>
-            ))}
+          <div className="mb-5">
+            <TabGroup
+              tabs={[
+                { id: 'official',  label: 'Official'   },
+                { id: 'community', label: 'Community'  },
+                { id: 'mine',      label: 'My Presets' },
+              ]}
+              active={activeTab}
+              onChange={setActiveTab}
+              size="md"
+            />
           </div>
 
           {/* Filters */}
@@ -412,7 +258,7 @@ function PresetCard({ preset, installed, onInstall }: {
               <span className="text-xs font-medium tabular-nums" style={{ fontVariantNumeric: 'tabular-nums' }}>
                 {typeof value === 'number' && !Number.isInteger(value) ? value.toFixed(1) : value}
               </span>
-              <span className="text-[9px] uppercase tracking-wider" style={{ color: 'var(--color-muted-foreground)' }}>
+              <span className="text-[10px] uppercase tracking-wider" style={{ color: 'var(--color-muted-foreground)' }}>
                 {label}
               </span>
             </div>
