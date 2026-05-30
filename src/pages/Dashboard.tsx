@@ -264,7 +264,10 @@ export default function Dashboard() {
           <div className="rounded-xl border flex-shrink-0"
             style={{ background: 'linear-gradient(135deg, #0D1258 0%, #050722 100%)', borderColor: 'rgba(255,255,255,0.08)' }}>
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between px-6 py-5 gap-4">
-              <h1 className="font-light text-2xl lg:text-[36px]" style={{ color: '#ffffff' }}>Welcome back, David</h1>
+              <div className="flex items-center gap-3">
+                <img src="/images/IMG_3993-min.jpg" alt="David Suarez" className="w-10 h-10 rounded-full object-cover flex-shrink-0" />
+                <h1 className="font-light text-2xl lg:text-[36px]" style={{ color: '#ffffff' }}>Welcome back, David</h1>
+              </div>
               <div className="flex items-center gap-3">
                 <Button variant="ghost" size="icon" className="relative hover:text-white hidden lg:inline-flex">
                   <BellIcon className="w-[18px] h-[18px]" strokeWidth={S} />
