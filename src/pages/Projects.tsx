@@ -82,13 +82,6 @@ const genreColor: Record<string, string> = {
   Soul:       '#fb923c',
 }
 
-function getGreeting() {
-  const h = new Date().getHours()
-  if (h < 12) return 'Good morning'
-  if (h < 18) return 'Good afternoon'
-  return 'Good evening'
-}
-
 // ── Page ─────────────────────────────────────────────────────────────────────
 
 export default function Projects() {
@@ -233,40 +226,20 @@ export default function Projects() {
         <main className="flex-1 overflow-y-auto px-6 py-8">
 
           {/* Header */}
-          <div className="flex items-end justify-between gap-4 mb-7 flex-wrap">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-widest mb-1" style={{ color: 'var(--color-primary)', letterSpacing: '0.12em' }}>
-                {getGreeting()}, Dave
-              </p>
-              <h1 style={{ fontSize: '36px', fontWeight: 700, lineHeight: 1.15 }}>Your Projects</h1>
-              <p className="text-sm mt-1" style={{ color: 'var(--color-muted-foreground)' }}>Your sessions, your sound.</p>
-            </div>
+          <div className="flex items-center justify-between gap-4 mb-7 flex-wrap">
+            <h1 className="font-light" style={{ fontSize: '36px', lineHeight: 1.15, color: '#ffffff' }}>Your Projects</h1>
 
             <div className="flex items-center gap-2 flex-wrap">
-              {/* Search */}
-              <div className="relative">
-                <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
-                <input
-                  type="text"
-                  placeholder="Search projects..."
-                  value={search}
-                  onChange={e => setSearch(e.target.value)}
-                  className="pl-9 pr-4 py-2 rounded-lg text-sm outline-none transition-colors w-48"
-                  style={{ background: 'var(--color-input)', border: '1px solid rgba(255,255,255,0.08)', color: 'var(--color-foreground)' }}
-                />
-              </div>
-              {/* Demo Mix */}
               <button
-                className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium border transition-opacity hover:opacity-80"
-                style={{ borderColor: 'rgba(255,255,255,0.3)', color: '#A8A8A8', borderWidth: '1px' }}
+                className="flex items-center gap-2 px-5 py-2 rounded-full text-sm font-medium border transition-opacity hover:opacity-80"
+                style={{ borderColor: 'rgba(255,255,255,0.5)', color: '#ffffff', borderWidth: '1px' }}
               >
                 <SpeakerWaveIcon className="w-4 h-4" strokeWidth={S} />
                 Demo Mix
               </button>
-              {/* New Project */}
               <button
-                className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-opacity hover:opacity-80"
-                style={{ background: '#A8A8A8', color: '#000' }}
+                className="flex items-center gap-2 px-5 py-2 rounded-full text-sm font-medium transition-opacity hover:opacity-80"
+                style={{ background: '#ffffff', color: '#000' }}
               >
                 <PlusIcon className="w-4 h-4" strokeWidth={2} />
                 New Project
@@ -274,25 +247,39 @@ export default function Projects() {
             </div>
           </div>
 
-          {/* Tabs */}
-          <div className="flex gap-1 p-1 rounded-lg mb-6 w-fit" style={{ background: 'var(--color-accent)' }}>
-            {([
-              { id: 'projects', label: 'Projects', icon: FolderOpenIcon },
-              { id: 'exports',  label: 'Exports',  icon: ArrowDownTrayIcon },
-            ] as const).map(({ id, label, icon: Icon }) => (
-              <button
-                key={id}
-                onClick={() => setActiveTab(id)}
-                className="flex items-center gap-1.5 px-4 py-1.5 rounded-md text-sm transition-all"
-                style={activeTab === id
-                  ? { background: '#000', color: 'var(--color-primary)', fontWeight: 400 }
-                  : { color: 'var(--color-muted-foreground)' }
-                }
-              >
-                <Icon className="w-3.5 h-3.5" strokeWidth={S} />
-                {label}
-              </button>
-            ))}
+          {/* Tabs + Search */}
+          <div className="flex items-center justify-between gap-4 mb-6">
+            <div className="flex gap-1 p-1 rounded-lg w-fit" style={{ background: 'var(--color-accent)' }}>
+              {([
+                { id: 'projects', label: 'Projects', icon: FolderOpenIcon },
+                { id: 'exports',  label: 'Exports',  icon: ArrowDownTrayIcon },
+              ] as const).map(({ id, label, icon: Icon }) => (
+                <button
+                  key={id}
+                  onClick={() => setActiveTab(id)}
+                  className="flex items-center gap-1.5 px-4 py-1.5 rounded-md text-sm transition-all"
+                  style={activeTab === id
+                    ? { background: '#000', color: '#ffffff', fontWeight: 400 }
+                    : { color: 'var(--color-muted-foreground)' }
+                  }
+                >
+                  <Icon className="w-3.5 h-3.5" strokeWidth={S} />
+                  {label}
+                </button>
+              ))}
+            </div>
+
+            <div className="relative">
+              <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
+              <input
+                type="text"
+                placeholder="Search projects..."
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                className="pl-9 pr-4 py-2 rounded-lg text-sm outline-none transition-colors w-48"
+                style={{ background: 'var(--color-input)', border: '1px solid rgba(255,255,255,0.08)', color: 'var(--color-foreground)' }}
+              />
+            </div>
           </div>
 
           {/* Projects grid */}
