@@ -962,10 +962,10 @@ export default function ProjectDetail() {
               </div>
               <div className="grid grid-cols-3 gap-3">
                 {[
-                  { icon: MapPinIcon,   color: '#f97316', name: 'STREET HEAT MIX', desc: 'Urban — gritty 808s, vocals upfront, street-ready' },
-                  { icon: TrophyIcon,   color: '#a78bfa', name: 'SPARKS MIX',       desc: 'Billboard Pop — bright, wide, radio sheen' },
-                  { icon: GlobeAltIcon, color: '#34d399', name: 'SMILES MIX',       desc: 'SoCal Reggae — sun-soaked, warm bass, easy groove' },
-                ].map(({ icon: Icon, color, name, desc }) => (
+                  { icon: MapPinIcon,   name: 'STREET HEAT MIX', desc: 'Urban — gritty 808s, vocals upfront, street-ready' },
+                  { icon: TrophyIcon,   name: 'SPARKS MIX',       desc: 'Billboard Pop — bright, wide, radio sheen' },
+                  { icon: GlobeAltIcon, name: 'SMILES MIX',       desc: 'SoCal Reggae — sun-soaked, warm bass, easy groove' },
+                ].map(({ icon: Icon, name, desc }) => (
                   <div key={name}
                     className="flex items-start justify-between gap-2 p-3.5 rounded-xl border transition-colors cursor-pointer group"
                     style={{ background: 'rgba(255,255,255,0.03)', borderColor: 'rgba(255,255,255,0.06)' }}
@@ -973,8 +973,8 @@ export default function ProjectDetail() {
                     onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)'; e.currentTarget.style.background = 'rgba(255,255,255,0.03)' }}
                   >
                     <div className="flex items-start gap-2.5 min-w-0">
-                      <div className="w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: `${color}22` }}>
-                        <Icon className="w-3.5 h-3.5" strokeWidth={S} style={{ color }} />
+                      <div className="w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: '#0011FF' }}>
+                        <Icon className="w-3.5 h-3.5" strokeWidth={S} style={{ color: '#ffffff' }} />
                       </div>
                       <div className="min-w-0">
                         <p className="text-xs font-semibold tracking-wide leading-none mb-1" style={{ color: 'var(--color-foreground)' }}>{name}</p>
@@ -1102,9 +1102,9 @@ export default function ProjectDetail() {
             <button
               onClick={() => { setAiMixActive(true); setMixConsoleOpen(false) }}
               className="flex items-center gap-2 px-6 py-2 rounded-full text-sm font-semibold transition-all"
-              style={{ background: 'linear-gradient(135deg, #7c3aed, #a855f7)', color: '#fff', boxShadow: '0 0 20px rgba(139,92,246,0.4)' }}
-              onMouseEnter={e => (e.currentTarget.style.boxShadow = '0 0 28px rgba(139,92,246,0.6)')}
-              onMouseLeave={e => (e.currentTarget.style.boxShadow = '0 0 20px rgba(139,92,246,0.4)')}
+              style={{ background: '#0011FF', color: '#fff', boxShadow: '0 0 20px rgba(0,17,255,0.4)' }}
+              onMouseEnter={e => (e.currentTarget.style.boxShadow = '0 0 28px rgba(0,17,255,0.6)')}
+              onMouseLeave={e => (e.currentTarget.style.boxShadow = '0 0 20px rgba(0,17,255,0.4)')}
             >
               <BoltIcon className="w-4 h-4" strokeWidth={S} />
               RUN MIX
