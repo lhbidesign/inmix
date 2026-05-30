@@ -283,9 +283,9 @@ export default function Dashboard() {
 
           {/* Header card */}
           <div className="rounded-xl border flex-shrink-0"
-            style={{ background: 'var(--gradient-sidebar)', borderColor: 'rgba(255,255,255,0.08)' }}>
+            style={{ background: 'linear-gradient(135deg, #0D1258 0%, #050722 100%)', borderColor: 'rgba(255,255,255,0.08)' }}>
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between px-6 py-5 gap-4">
-              <h1 className="font-light text-2xl lg:text-[36px]" style={{ color: 'var(--color-primary)' }}>Welcome back, David</h1>
+              <h1 className="font-light text-2xl lg:text-[36px]" style={{ color: '#ffffff' }}>Welcome back, David</h1>
               <div className="flex items-center gap-3">
                 <div className="relative hidden lg:block">
                   <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
