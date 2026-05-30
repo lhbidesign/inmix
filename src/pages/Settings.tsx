@@ -212,7 +212,7 @@ export default function Settings() {
             </div>
 
             {/* Tab switcher */}
-            <div className="flex gap-1 p-1 rounded-xl mb-8" style={{ background: 'var(--color-input)', border: '1px solid rgba(255,255,255,0.06)' }}>
+            <div className="flex gap-1 p-1 rounded-lg mb-8" style={{ background: 'var(--color-accent)' }}>
               {([
                 { id: 'profile', label: 'Profile',           icon: UserCircleIcon },
                 { id: 'audio',   label: 'Audio Preferences', icon: AdjustmentsHorizontalIcon },
@@ -220,10 +220,10 @@ export default function Settings() {
                 <button
                   key={id}
                   onClick={() => setActiveTab(id)}
-                  className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium transition-all"
+                  className="flex-1 flex items-center justify-center gap-2 py-2 rounded-md text-sm transition-all hover:text-white"
                   style={activeTab === id
-                    ? { background: 'var(--color-accent)', color: 'var(--color-primary)', border: '1px solid rgba(255,255,255,0.08)' }
-                    : { color: 'var(--color-muted-foreground)', border: '1px solid transparent' }
+                    ? { background: '#000', color: '#ffffff', fontWeight: 400 }
+                    : { color: 'var(--color-muted-foreground)' }
                   }
                 >
                   <Icon className="w-4 h-4 flex-shrink-0" strokeWidth={S} />
