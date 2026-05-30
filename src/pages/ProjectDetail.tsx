@@ -706,7 +706,7 @@ export default function ProjectDetail() {
           </section>
 
           {/* Bus Sends */}
-          <section className="px-5 py-4 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+          <section className="px-5 py-4 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)', background: 'linear-gradient(180deg, #1a1a1f 0%, #111114 100%)' }}>
             <div className="flex items-center gap-2 mb-4">
               <SpeakerWaveIcon className="w-4 h-4" strokeWidth={S} style={{ color: 'var(--color-primary)' }} />
               <h2 className="text-sm font-medium uppercase tracking-widest" style={{ color: 'var(--color-primary)', letterSpacing: '0.08em' }}>
