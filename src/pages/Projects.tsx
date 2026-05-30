@@ -74,13 +74,6 @@ const statusConfig: Record<string, { label: string; variant: 'default' | 'second
   complete:  { label: 'Complete',  variant: 'success'   },
 }
 
-const genreColor: Record<string, string> = {
-  Pop:        '#a78bfa',
-  Electronic: '#60a5fa',
-  Synthpop:   '#22d3ee',
-  'Alt-Rock': '#f87171',
-  Soul:       '#fb923c',
-}
 
 // ── Page ─────────────────────────────────────────────────────────────────────
 
@@ -366,7 +359,6 @@ function ProjectCard({ project, wave, onOpen }: {
 }) {
   const [hovered, setHovered] = useState(false)
   const { label, variant } = statusConfig[project.status]
-  const gc = genreColor[project.genre] ?? 'var(--color-primary)'
 
   return (
     <div
@@ -419,7 +411,7 @@ function ProjectCard({ project, wave, onOpen }: {
       <div className="flex items-center gap-2 px-4 pb-3">
         <span
           className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full"
-          style={{ color: gc, background: `${gc}18` }}
+          style={{ color: 'var(--color-muted-foreground)', background: 'rgba(255,255,255,0.06)' }}
         >
           {project.genre}
         </span>
