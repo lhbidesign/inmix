@@ -203,7 +203,7 @@ export default function Settings() {
 
             {/* Page title */}
             <div className="mb-8">
-              <h1 style={{ fontSize: '36px', fontWeight: 300, color: 'var(--color-primary)', lineHeight: 1.2 }}>
+              <h1 style={{ fontSize: '36px', fontWeight: 300, color: '#ffffff', lineHeight: 1.2 }}>
                 Settings
               </h1>
               <p className="text-sm mt-1" style={{ color: 'var(--color-muted-foreground)' }}>
