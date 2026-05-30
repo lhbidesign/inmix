@@ -91,6 +91,7 @@ const exports = [
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<'projects' | 'exports'>('projects')
+  const [search, setSearch] = useState('')
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const location = useLocation()
@@ -155,21 +156,6 @@ export default function Dashboard() {
         )}
 
         <Separator />
-
-        {/* Search — mobile only */}
-        {!sidebarCollapsed && (
-          <div className="lg:hidden px-4 py-3 border-b" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
-            <div className="relative">
-              <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
-              <input
-                type="text"
-                placeholder="Search projects..."
-                className="w-full pl-9 pr-4 py-2 text-sm rounded-lg border outline-none transition-colors"
-                style={{ background: 'var(--color-input)', borderColor: 'var(--color-border)', color: 'var(--color-foreground)' }}
-              />
-            </div>
-          </div>
-        )}
 
         {/* Nav */}
         <nav className={cn('flex-1 py-4 space-y-0.5', sidebarCollapsed ? 'px-2' : 'px-3')}>
@@ -286,27 +272,7 @@ export default function Dashboard() {
             style={{ background: 'linear-gradient(135deg, #0D1258 0%, #050722 100%)', borderColor: 'rgba(255,255,255,0.08)' }}>
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between px-6 py-5 gap-4">
               <h1 className="font-light text-2xl lg:text-[36px]" style={{ color: '#ffffff' }}>Welcome back, David</h1>
-              {/* Search — full width on mobile */}
-              <div className="relative lg:hidden">
-                <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
-                <input
-                  type="text"
-                  placeholder="Search projects..."
-                  className="w-full pl-9 pr-4 h-9 text-sm rounded-lg border outline-none transition-colors"
-                  style={{ background: 'rgba(0,0,0,0.7)', borderColor: 'rgba(255,255,255,0.12)', color: 'var(--color-foreground)' }}
-                />
-              </div>
-
               <div className="flex items-center gap-3">
-                <div className="relative hidden lg:block">
-                  <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
-                  <input
-                    type="text"
-                    placeholder="Search projects..."
-                    className="pl-9 pr-4 h-9 text-sm rounded-lg border outline-none w-52 transition-colors"
-                    style={{ background: 'rgba(0,0,0,0.7)', borderColor: 'rgba(255,255,255,0.12)', color: 'var(--color-foreground)' }}
-                  />
-                </div>
                 <Button variant="ghost" size="icon" className="relative hover:text-[var(--color-primary)] hidden lg:inline-flex">
                   <BellIcon className="w-[18px] h-[18px]" strokeWidth={S} />
                   <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full" style={{ background: 'var(--color-primary)' }} />
@@ -374,9 +340,22 @@ export default function Dashboard() {
                       </button>
                     ))}
                   </div>
-                  <Button variant="ghost" size="sm" className="text-xs gap-1" style={{ color: 'var(--color-primary)' }} onClick={() => navigate('/projects')}>
-                    View all <ChevronRightIcon className="w-3.5 h-3.5" strokeWidth={S} />
-                  </Button>
+                  <div className="flex items-center gap-2">
+                    <div className="relative">
+                      <MagnifyingGlassIcon className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 pointer-events-none" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
+                      <input
+                        type="text"
+                        placeholder="Search..."
+                        value={search}
+                        onChange={e => setSearch(e.target.value)}
+                        className="pl-8 pr-3 h-7 text-xs rounded-lg border outline-none w-36 transition-colors"
+                        style={{ background: 'var(--color-input)', borderColor: 'rgba(255,255,255,0.08)', color: 'var(--color-foreground)' }}
+                      />
+                    </div>
+                    <Button variant="ghost" size="sm" className="text-xs gap-1" style={{ color: 'var(--color-primary)' }} onClick={() => navigate('/projects')}>
+                      View all <ChevronRightIcon className="w-3.5 h-3.5" strokeWidth={S} />
+                    </Button>
+                  </div>
                 </div>
               </CardHeader>
               <CardContent className="p-0">
@@ -392,7 +371,7 @@ export default function Dashboard() {
                       </tr>
                     </thead>
                     <tbody>
-                      {projects.map((p) => {
+                      {projects.filter(p => p.name.toLowerCase().includes(search.toLowerCase()) || p.artist.toLowerCase().includes(search.toLowerCase())).map((p) => {
                         const { label, variant } = statusConfig[p.status]
                         return (
                           <tr
