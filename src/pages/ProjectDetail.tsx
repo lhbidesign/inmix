@@ -389,7 +389,7 @@ export default function ProjectDetail() {
               <div className="flex gap-1 p-1 rounded-lg" style={{ background: 'var(--color-accent)' }}>
                 {(['mix', 'arrange'] as const).map(m => (
                   <button key={m} onClick={() => setMode(m)}
-                    className="px-4 py-1.5 rounded-md text-sm transition-all capitalize"
+                    className="px-3 py-1 rounded-md text-xs transition-all capitalize"
                     style={mode === m
                       ? { background: '#000', color: '#ffffff', fontWeight: 400 }
                       : { color: 'var(--color-muted-foreground)' }
