@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import {
   Squares2X2Icon, FolderOpenIcon, MusicalNoteIcon, Cog6ToothIcon,
   MagnifyingGlassIcon, XMarkIcon, Bars3Icon, ChevronLeftIcon, ChevronRightIcon,
-  EllipsisHorizontalIcon, EllipsisVerticalIcon, PlayIcon, PauseIcon, BackwardIcon, ForwardIcon,
+  EllipsisHorizontalIcon, EllipsisVerticalIcon, PlayIcon,
   ArrowPathIcon, ArrowUturnLeftIcon, ArrowUturnRightIcon, ArrowUpTrayIcon, ArrowRightOnRectangleIcon,
   SpeakerWaveIcon, AdjustmentsHorizontalIcon, TrashIcon,
   DocumentDuplicateIcon, PlayCircleIcon, UsersIcon, BoltIcon, ClockIcon,
