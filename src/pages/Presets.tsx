@@ -188,10 +188,7 @@ export default function Presets() {
                 <ArrowRightOnRectangleIcon className="w-[18px] h-[18px]" strokeWidth={S} />
               </button>
               <div className="flex justify-center py-1">
-                <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold"
-                  style={{ background: 'var(--color-primary)', color: 'var(--color-primary-foreground)' }}>
-                  DS
-                </div>
+                <img src="/images/IMG_3993-min.jpg" alt="David Suarez" className="w-7 h-7 rounded-full object-cover flex-shrink-0" />
               </div>
             </>
           ) : (
@@ -215,10 +212,7 @@ export default function Presets() {
                 Log out
               </button>
               <div className="flex items-center gap-3 px-3 py-2.5">
-                <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0"
-                  style={{ background: 'var(--color-primary)', color: 'var(--color-primary-foreground)' }}>
-                  DS
-                </div>
+                <img src="/images/IMG_3993-min.jpg" alt="David Suarez" className="w-7 h-7 rounded-full object-cover flex-shrink-0" />
                 <div className="flex-1 min-w-0">
                   <p className="text-xs font-medium truncate" style={{ color: 'var(--color-primary)' }}>David Suarez</p>
                   <p className="text-xs truncate" style={{ color: 'var(--color-muted-foreground)' }}>Pro Plan</p>
