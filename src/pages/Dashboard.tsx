@@ -147,7 +147,7 @@ export default function Dashboard() {
               >
                 <ChevronLeftIcon className="w-4 h-4" strokeWidth={S} />
               </button>
-              <button className="lg:hidden p-1 rounded-md transition-colors" style={{ color: 'var(--color-muted-foreground)' }} onClick={() => setSidebarOpen(false)}>
+              <button className="lg:hidden p-1 rounded-md transition-colors" style={{ color: '#ffffff' }} onClick={() => setSidebarOpen(false)}>
                 <XMarkIcon className="w-5 h-5" strokeWidth={S} />
               </button>
             </div>
@@ -286,6 +286,17 @@ export default function Dashboard() {
             style={{ background: 'linear-gradient(135deg, #0D1258 0%, #050722 100%)', borderColor: 'rgba(255,255,255,0.08)' }}>
             <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between px-6 py-5 gap-4">
               <h1 className="font-light text-2xl lg:text-[36px]" style={{ color: '#ffffff' }}>Welcome back, David</h1>
+              {/* Search — full width on mobile */}
+              <div className="relative lg:hidden">
+                <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
+                <input
+                  type="text"
+                  placeholder="Search projects..."
+                  className="w-full pl-9 pr-4 h-9 text-sm rounded-lg border outline-none transition-colors"
+                  style={{ background: 'rgba(0,0,0,0.7)', borderColor: 'rgba(255,255,255,0.12)', color: 'var(--color-foreground)' }}
+                />
+              </div>
+
               <div className="flex items-center gap-3">
                 <div className="relative hidden lg:block">
                   <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
