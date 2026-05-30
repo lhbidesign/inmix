@@ -316,7 +316,8 @@ export default function Dashboard() {
             {/* Projects / Exports Table */}
             <Card className="xl:col-span-2">
               <CardHeader className="pb-0">
-                <div className="flex items-center justify-between mb-2">
+                {/* Tabs row + desktop: search + view all */}
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-3">
                   <div className="flex gap-1 p-1 rounded-lg w-full sm:w-fit" style={{ background: 'var(--color-accent)' }}>
                     {(['projects', 'exports'] as const).map(tab => (
                       <button
@@ -332,20 +333,35 @@ export default function Dashboard() {
                       </button>
                     ))}
                   </div>
-                  <Button variant="ghost" size="sm" className="hidden sm:flex text-xs gap-1 flex-shrink-0" style={{ color: 'var(--color-primary)' }} onClick={() => navigate('/projects')}>
-                    View all <ChevronRightIcon className="w-3.5 h-3.5" strokeWidth={S} />
-                  </Button>
-                </div>
-                <div className="relative mb-3">
-                  <MagnifyingGlassIcon className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 pointer-events-none" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
-                  <input
-                    type="text"
-                    placeholder="Search..."
-                    value={search}
-                    onChange={e => setSearch(e.target.value)}
-                    className="pl-8 pr-3 h-9 sm:h-7 text-xs rounded-lg border outline-none w-full transition-colors"
-                    style={{ background: 'var(--color-input)', borderColor: 'rgba(255,255,255,0.08)', color: 'var(--color-foreground)' }}
-                  />
+                  {/* Desktop: search + view all on same row */}
+                  <div className="hidden sm:flex items-center gap-2 ml-auto">
+                    <div className="relative">
+                      <MagnifyingGlassIcon className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 pointer-events-none" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
+                      <input
+                        type="text"
+                        placeholder="Search..."
+                        value={search}
+                        onChange={e => setSearch(e.target.value)}
+                        className="pl-8 pr-3 h-7 text-xs rounded-lg border outline-none w-44 transition-colors"
+                        style={{ background: 'var(--color-input)', borderColor: 'rgba(255,255,255,0.08)', color: 'var(--color-foreground)' }}
+                      />
+                    </div>
+                    <Button variant="ghost" size="sm" className="text-xs gap-1 flex-shrink-0" style={{ color: 'var(--color-primary)' }} onClick={() => navigate('/projects')}>
+                      View all <ChevronRightIcon className="w-3.5 h-3.5" strokeWidth={S} />
+                    </Button>
+                  </div>
+                  {/* Mobile: search below tabs */}
+                  <div className="relative sm:hidden">
+                    <MagnifyingGlassIcon className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 pointer-events-none" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
+                    <input
+                      type="text"
+                      placeholder="Search..."
+                      value={search}
+                      onChange={e => setSearch(e.target.value)}
+                      className="pl-8 pr-3 h-9 text-xs rounded-lg border outline-none w-full transition-colors"
+                      style={{ background: 'var(--color-input)', borderColor: 'rgba(255,255,255,0.08)', color: 'var(--color-foreground)' }}
+                    />
+                  </div>
                 </div>
               </CardHeader>
               <CardContent className="p-0">
