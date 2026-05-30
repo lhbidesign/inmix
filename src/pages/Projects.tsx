@@ -308,10 +308,10 @@ export default function Projects() {
                           <Badge variant={ex.status === 'ready' ? 'success' : 'warning'}>
                             {ex.status === 'ready' ? 'Ready' : 'Processing'}
                           </Badge>
-                          <button className="p-1.5 rounded-md transition-colors hover:text-white" style={{ color: 'var(--color-muted-foreground)' }}>
+                          <button className="p-1.5 rounded-md transition-colors hover:text-white text-[--color-muted-foreground]">
                             <ArrowDownTrayIcon className="w-3.5 h-3.5" strokeWidth={S} />
                           </button>
-                          <button className="p-1.5 rounded-md transition-colors hover:text-white" style={{ color: 'var(--color-muted-foreground)' }}>
+                          <button className="p-1.5 rounded-md transition-colors hover:text-white text-[--color-muted-foreground]">
                             <EllipsisHorizontalIcon className="w-3.5 h-3.5" strokeWidth={S} />
                           </button>
                         </div>
@@ -367,10 +367,10 @@ function ProjectCard({ project, onOpen }: {
           style={{ opacity: hovered ? 1 : 0 }}
           onClick={e => e.stopPropagation()}
         >
-          <button className="p-1 rounded-md transition-colors hover:text-white" style={{ color: 'var(--color-muted-foreground)' }} title="Duplicate">
+          <button className="p-1 rounded-md transition-colors hover:text-white text-[--color-muted-foreground]" title="Duplicate">
             <CopyIcon className="w-3.5 h-3.5" strokeWidth={S} />
           </button>
-          <button className="p-1 rounded-md transition-colors hover:text-white" style={{ color: 'var(--color-muted-foreground)' }} title="Rename">
+          <button className="p-1 rounded-md transition-colors hover:text-white text-[--color-muted-foreground]" title="Rename">
             <PencilIcon className="w-3.5 h-3.5" strokeWidth={S} />
           </button>
           <button className="p-1 rounded-md transition-colors" style={{ color: 'rgba(239,68,68,0.6)' }}

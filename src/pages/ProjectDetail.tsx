@@ -432,7 +432,7 @@ export default function ProjectDetail() {
               <div className="w-px h-4 hidden lg:block" style={{ background: 'rgba(255,255,255,0.1)' }} />
 
               {/* Preview */}
-              <Button variant="ghost" size="sm" className="hidden md:flex gap-1.5 text-xs hover:text-white" style={{ color: 'var(--color-muted-foreground)' }}>
+              <Button variant="ghost" size="sm" className="hidden md:flex gap-1.5 text-xs hover:text-white text-[--color-muted-foreground]">
                 <PlayIcon className="w-3.5 h-3.5" strokeWidth={S} />
                 Preview
               </Button>
@@ -476,19 +476,19 @@ export default function ProjectDetail() {
               <div className="w-px h-4 hidden md:block" style={{ background: 'rgba(255,255,255,0.1)' }} />
 
               {/* Refresh */}
-              <Button variant="ghost" size="sm" className="hidden md:flex gap-1.5 text-xs hover:text-white" style={{ color: 'var(--color-muted-foreground)' }}>
+              <Button variant="ghost" size="sm" className="hidden md:flex gap-1.5 text-xs hover:text-white text-[--color-muted-foreground]">
                 <ArrowPathIcon className="w-3.5 h-3.5" strokeWidth={S} />
                 Refresh
               </Button>
 
               {/* Versions */}
-              <Button variant="ghost" size="sm" className="hidden md:flex gap-1.5 text-xs hover:text-white" style={{ color: 'var(--color-muted-foreground)' }}>
+              <Button variant="ghost" size="sm" className="hidden md:flex gap-1.5 text-xs hover:text-white text-[--color-muted-foreground]">
                 <ClockIcon className="w-3.5 h-3.5" strokeWidth={S} />
                 Versions
               </Button>
 
               {/* Share */}
-              <Button variant="ghost" size="sm" className="hidden md:flex gap-1.5 text-xs hover:text-white" style={{ color: 'var(--color-muted-foreground)' }}>
+              <Button variant="ghost" size="sm" className="hidden md:flex gap-1.5 text-xs hover:text-white text-[--color-muted-foreground]">
                 <ShareIcon className="w-3.5 h-3.5" strokeWidth={S} />
                 Share
               </Button>
@@ -947,7 +947,7 @@ export default function ProjectDetail() {
               <SparklesIcon className="w-4 h-4" strokeWidth={S} style={{ color: 'var(--color-primary)' }} />
               <span className="text-sm font-semibold tracking-widest uppercase" style={{ color: 'var(--color-primary)' }}>Mix Console</span>
             </div>
-            <button onClick={() => setMixConsoleOpen(false)} className="p-1.5 rounded-md transition-colors hover:text-white" style={{ color: 'var(--color-muted-foreground)' }}>
+            <button onClick={() => setMixConsoleOpen(false)} className="p-1.5 rounded-md transition-colors hover:text-white text-[--color-muted-foreground]">
               <XMarkIcon className="w-4 h-4" strokeWidth={S} />
             </button>
           </div>
