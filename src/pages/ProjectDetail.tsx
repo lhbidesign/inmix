@@ -414,11 +414,11 @@ export default function ProjectDetail() {
               {/* AI MIX */}
               <button
                 onClick={() => setMixConsoleOpen(true)}
-                className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex-shrink-0"
+                className="hidden lg:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all flex-shrink-0"
                 style={{
-                  background: aiMixActive ? 'rgba(139,92,246,0.22)' : 'rgba(139,92,246,0.1)',
-                  border: `1px solid ${aiMixActive ? 'rgba(139,92,246,0.6)' : 'rgba(139,92,246,0.3)'}`,
-                  color: '#a78bfa',
+                  background: aiMixActive ? 'rgba(0,17,255,0.22)' : 'rgba(0,17,255,0.1)',
+                  border: `1px solid ${aiMixActive ? 'rgba(0,17,255,0.7)' : 'rgba(0,17,255,0.4)'}`,
+                  color: '#6680ff',
                 }}
               >
                 <BoltIcon className="w-3.5 h-3.5" strokeWidth={S} />
@@ -435,16 +435,16 @@ export default function ProjectDetail() {
 
               {/* Export + format dropdown */}
               <div className="relative hidden sm:block">
-                <div className="flex items-center rounded-full" style={{ border: '1px solid rgba(255,255,255,0.18)' }}>
-                  <button className="flex items-center gap-1.5 pl-3 pr-2 py-1.5 text-xs font-medium transition-colors hover:text-[var(--color-primary)]"
-                    style={{ color: 'var(--color-muted-foreground)' }}>
+                <div className="flex items-center rounded-full" style={{ border: '1px solid rgba(255,255,255,0.5)' }}>
+                  <button className="flex items-center gap-1.5 pl-3 pr-2 py-1.5 text-xs font-medium transition-opacity hover:opacity-80"
+                    style={{ color: '#ffffff' }}>
                     <ArrowDownTrayIcon className="w-3.5 h-3.5" strokeWidth={S} />
                     Export {exportFormat}
                   </button>
-                  <div className="w-px h-4" style={{ background: 'rgba(255,255,255,0.15)' }} />
+                  <div className="w-px h-4" style={{ background: 'rgba(255,255,255,0.3)' }} />
                   <button onClick={() => setShowExportMenu(v => !v)}
-                    className="px-2 py-1.5 rounded-r-full transition-colors hover:text-[var(--color-primary)]"
-                    style={{ color: 'var(--color-muted-foreground)' }}>
+                    className="px-2 py-1.5 rounded-r-full transition-opacity hover:opacity-80"
+                    style={{ color: '#ffffff' }}>
                     <ChevronDownIcon className="w-3 h-3" strokeWidth={S} />
                   </button>
                 </div>
@@ -465,7 +465,7 @@ export default function ProjectDetail() {
               </div>
 
               {/* Save */}
-              <button className="rounded-full px-4 py-1.5 text-xs font-medium flex-shrink-0" style={{ background: '#A8A8A8', color: '#000' }}>
+              <button className="rounded-full px-4 py-1.5 text-xs font-medium flex-shrink-0 transition-opacity hover:opacity-80" style={{ background: '#ffffff', color: '#000' }}>
                 Save
               </button>
 
