@@ -262,65 +262,62 @@ export default function Dashboard() {
       {/* Main */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
 
-        {/* Header */}
-        <header className="flex flex-col lg:flex-row lg:items-center lg:justify-between px-6 py-4 border-b flex-shrink-0 gap-3"
-          style={{ borderColor: 'rgba(255,255,255,0.08)', background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(12px)' }}>
-
-          {/* Row 1: hamburger + greeting + bell (mobile) / greeting (desktop) */}
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <button
-                className="lg:hidden p-1.5 rounded-lg transition-colors hover:text-[var(--color-primary)]"
-                style={{ color: 'var(--color-muted-foreground)' }}
-                onClick={() => setSidebarOpen(true)}
-              >
-                <Bars3Icon className="w-5 h-5" strokeWidth={S} />
-              </button>
-              <h1 className="font-light text-2xl lg:text-[36px]" style={{ color: 'var(--color-primary)' }}>Welcome back, David</h1>
-            </div>
-            {/* Bell — solo visible en mobile en este row */}
-            <Button variant="ghost" size="icon" className="relative hover:text-[var(--color-primary)] lg:hidden">
-              <BellIcon className="w-[18px] h-[18px]" strokeWidth={S} />
-              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full" style={{ background: 'var(--color-primary)' }} />
-            </Button>
-          </div>
-
-          {/* Row 2 mobile: CTAs / Desktop: search + bell + CTAs */}
-          <div className="flex items-center gap-3">
-            <div className="relative hidden lg:block">
-              <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
-              <input
-                type="text"
-                placeholder="Search projects..."
-                className="pl-9 pr-4 py-1.5 text-sm rounded-lg border outline-none w-52 transition-colors"
-                style={{ background: 'var(--color-input)', borderColor: 'var(--color-border)', color: 'var(--color-foreground)' }}
-              />
-            </div>
-            {/* Bell — solo visible en desktop */}
-            <Button variant="ghost" size="icon" className="relative hover:text-[var(--color-primary)] hidden lg:inline-flex">
-              <BellIcon className="w-[18px] h-[18px]" strokeWidth={S} />
-              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full" style={{ background: 'var(--color-primary)' }} />
-            </Button>
-            <Button
-              variant="outline"
-              className="gap-2 flex-1 lg:flex-none rounded-full px-5 font-medium"
-              style={{ borderColor: 'rgba(255,255,255,0.3)', color: '#A8A8A8', borderWidth: '1px' }}
-            >
-              <SpeakerWaveIcon className="w-4 h-4" strokeWidth={S} />
-              Demo Mix
-            </Button>
-            <Button
-              className="gap-2 flex-1 lg:flex-none rounded-full px-5 font-medium"
-              style={{ background: '#A8A8A8', color: '#000' }}
-            >
-              <PlusIcon className="w-4 h-4" strokeWidth={S} />
-              New Project
-            </Button>
-          </div>
-        </header>
+        {/* Mobile top bar */}
+        <div className="flex items-center justify-between px-4 py-3 border-b flex-shrink-0 lg:hidden"
+          style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
+          <button
+            className="p-1.5 rounded-lg transition-colors"
+            style={{ color: 'var(--color-muted-foreground)' }}
+            onClick={() => setSidebarOpen(true)}
+          >
+            <Bars3Icon className="w-5 h-5" strokeWidth={S} />
+          </button>
+          <Button variant="ghost" size="icon" className="relative hover:text-[var(--color-primary)]">
+            <BellIcon className="w-[18px] h-[18px]" strokeWidth={S} />
+            <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full" style={{ background: 'var(--color-primary)' }} />
+          </Button>
+        </div>
 
         {/* Content */}
         <main className="flex-1 overflow-y-auto p-6 space-y-6">
+
+          {/* Header card */}
+          <div className="rounded-xl border flex-shrink-0"
+            style={{ background: 'var(--gradient-sidebar)', borderColor: 'rgba(255,255,255,0.08)' }}>
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between px-6 py-5 gap-4">
+              <h1 className="font-light text-2xl lg:text-[36px]" style={{ color: 'var(--color-primary)' }}>Welcome back, David</h1>
+              <div className="flex items-center gap-3">
+                <div className="relative hidden lg:block">
+                  <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
+                  <input
+                    type="text"
+                    placeholder="Search projects..."
+                    className="pl-9 pr-4 py-1.5 text-sm rounded-lg border outline-none w-52 transition-colors"
+                    style={{ background: 'rgba(0,0,0,0.3)', borderColor: 'rgba(255,255,255,0.12)', color: 'var(--color-foreground)' }}
+                  />
+                </div>
+                <Button variant="ghost" size="icon" className="relative hover:text-[var(--color-primary)] hidden lg:inline-flex">
+                  <BellIcon className="w-[18px] h-[18px]" strokeWidth={S} />
+                  <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full" style={{ background: 'var(--color-primary)' }} />
+                </Button>
+                <Button
+                  variant="outline"
+                  className="gap-2 flex-1 lg:flex-none rounded-full px-5 font-medium"
+                  style={{ borderColor: 'rgba(255,255,255,0.3)', color: '#A8A8A8', borderWidth: '1px' }}
+                >
+                  <SpeakerWaveIcon className="w-4 h-4" strokeWidth={S} />
+                  Demo Mix
+                </Button>
+                <Button
+                  className="gap-2 flex-1 lg:flex-none rounded-full px-5 font-medium"
+                  style={{ background: '#A8A8A8', color: '#000' }}
+                >
+                  <PlusIcon className="w-4 h-4" strokeWidth={S} />
+                  New Project
+                </Button>
+              </div>
+            </div>
+          </div>
 
           {/* Stats */}
           <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
