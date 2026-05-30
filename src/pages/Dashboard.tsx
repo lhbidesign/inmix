@@ -292,7 +292,7 @@ export default function Dashboard() {
                   <input
                     type="text"
                     placeholder="Search projects..."
-                    className="pl-9 pr-4 py-1.5 text-sm rounded-lg border outline-none w-52 transition-colors"
+                    className="pl-9 pr-4 h-9 text-sm rounded-lg border outline-none w-52 transition-colors"
                     style={{ background: 'rgba(0,0,0,0.3)', borderColor: 'rgba(255,255,255,0.12)', color: 'var(--color-foreground)' }}
                   />
                 </div>
