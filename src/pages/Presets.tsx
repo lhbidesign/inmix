@@ -114,8 +114,8 @@ export default function Presets() {
         {sidebarCollapsed ? (
           <div className="flex items-center justify-center px-2 py-[18px] flex-shrink-0">
             <button
-              className="hidden lg:flex p-1 rounded-md transition-colors hover:text-[var(--color-primary)]"
-              style={{ color: 'var(--color-muted-foreground)' }}
+              className="hidden lg:flex p-1 rounded-md transition-colors hover:opacity-70"
+              style={{ color: '#ffffff' }}
               onClick={() => setSidebarCollapsed(false)}
               title="Expand sidebar"
             >
