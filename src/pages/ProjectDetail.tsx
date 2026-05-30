@@ -1028,12 +1028,12 @@ export default function ProjectDetail() {
               {/* Intensity */}
               <div>
                 <p className="text-[10px] font-semibold tracking-widest uppercase mb-3" style={{ color: 'var(--color-muted-foreground)' }}>Intensity</p>
-                <div className="flex items-center gap-1 p-1 rounded-lg" style={{ background: 'rgba(255,255,255,0.04)' }}>
+                <div className="flex items-center gap-1 p-1 rounded-lg" style={{ background: 'var(--color-accent)' }}>
                   {(['subtle', 'balanced', 'aggressive'] as const).map(v => (
                     <button key={v} onClick={() => setMixIntensity(v)}
-                      className="flex-1 py-1.5 rounded-md text-[11px] font-medium capitalize transition-all"
+                      className="flex-1 py-1.5 rounded-md text-[11px] capitalize transition-all"
                       style={mixIntensity === v
-                        ? { background: 'var(--color-primary)', color: '#000' }
+                        ? { background: '#000', color: '#ffffff', fontWeight: 400 }
                         : { color: 'var(--color-muted-foreground)', background: 'transparent' }
                       }
                     >
