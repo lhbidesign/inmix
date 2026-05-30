@@ -275,7 +275,7 @@ export default function ProjectDetail() {
               {/* AI MIX */}
               <button
                 onClick={() => setMixConsoleOpen(true)}
-                className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all flex-shrink-0"
+                className="hidden md:flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium transition-all flex-shrink-0"
                 style={{
                   background: aiMixActive ? 'rgba(0,17,255,0.22)' : 'rgba(0,17,255,0.1)',
                   border: `1px solid ${aiMixActive ? 'rgba(0,17,255,0.7)' : 'rgba(0,17,255,0.4)'}`,
@@ -999,7 +999,7 @@ export default function ProjectDetail() {
             </button>
             <button
               onClick={() => { setAiMixActive(true); setMixConsoleOpen(false) }}
-              className="flex items-center gap-2 px-6 py-2 rounded-full text-sm font-semibold transition-all"
+              className="flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-semibold transition-all"
               style={{ background: '#0011FF', color: '#fff', boxShadow: '0 0 20px rgba(0,17,255,0.4)' }}
               onMouseEnter={e => (e.currentTarget.style.boxShadow = '0 0 28px rgba(0,17,255,0.6)')}
               onMouseLeave={e => (e.currentTarget.style.boxShadow = '0 0 20px rgba(0,17,255,0.4)')}

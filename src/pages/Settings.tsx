@@ -142,7 +142,7 @@ export default function Settings() {
                   </div>
 
                   <button
-                    className="mt-6 rounded-full px-6 py-2 text-sm font-medium transition-opacity hover:opacity-80"
+                    className="mt-6 rounded-full px-5 py-2 text-sm font-medium transition-opacity hover:opacity-80"
                     style={{ background: '#ffffff', color: '#000' }}
                   >
                     Save Profile
@@ -235,7 +235,7 @@ export default function Settings() {
                   </div>
 
                   <button
-                    className="mt-7 rounded-full px-6 py-2 text-sm font-medium transition-opacity hover:opacity-80"
+                    className="mt-7 rounded-full px-5 py-2 text-sm font-medium transition-opacity hover:opacity-80"
                     style={{ background: '#ffffff', color: '#000' }}
                   >
                     Save Audio Settings

@@ -99,7 +99,7 @@ export default function Presets() {
               </p>
             </div>
             <button
-              className="flex-shrink-0 flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition-opacity hover:opacity-80"
+              className="flex-shrink-0 flex items-center gap-2 px-5 py-2 rounded-full text-sm font-medium transition-opacity hover:opacity-80"
               style={{ background: '#A8A8A8', color: '#000' }}
             >
               <ArrowUpTrayIcon className="w-4 h-4" strokeWidth={S} />
