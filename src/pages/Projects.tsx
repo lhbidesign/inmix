@@ -373,37 +373,38 @@ function ProjectCard({ project, wave, onOpen }: {
       onMouseLeave={() => setHovered(false)}
     >
       {/* Card header */}
-      <div className="flex items-start justify-between px-4 pt-4 pb-2">
-        <div className="flex items-center gap-2 min-w-0">
+      <div className="px-4 pt-4 pb-2">
+        <div className="flex items-center justify-between mb-2">
           <SpeakerWaveIcon className="w-4 h-4 flex-shrink-0" strokeWidth={S} style={{ color: 'var(--color-primary)' }} />
+          {/* Action icons — visible on hover */}
+          <div
+            className="flex items-center gap-1 flex-shrink-0 transition-opacity"
+            style={{ opacity: hovered ? 1 : 0 }}
+            onClick={e => e.stopPropagation()}
+          >
+            <button className="p-1 rounded-md transition-colors hover:text-[var(--color-primary)]" style={{ color: 'var(--color-muted-foreground)' }} title="Duplicate">
+              <CopyIcon className="w-3.5 h-3.5" strokeWidth={S} />
+            </button>
+            <button className="p-1 rounded-md transition-colors hover:text-[var(--color-primary)]" style={{ color: 'var(--color-muted-foreground)' }} title="Rename">
+              <PencilIcon className="w-3.5 h-3.5" strokeWidth={S} />
+            </button>
+            <button className="p-1 rounded-md transition-colors" style={{ color: 'rgba(239,68,68,0.6)' }}
+              onMouseEnter={e => (e.currentTarget.style.color = '#ef4444')}
+              onMouseLeave={e => (e.currentTarget.style.color = 'rgba(239,68,68,0.6)')}
+              title="Delete"
+            >
+              <TrashIcon className="w-3.5 h-3.5" strokeWidth={S} />
+            </button>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 min-w-0">
           <h3
-            className="text-sm font-medium truncate transition-colors"
+            className="text-[28px] font-light leading-tight truncate transition-colors"
             style={{ color: hovered ? 'var(--color-primary)' : 'var(--color-foreground)' }}
           >
             {project.name}
           </h3>
-          {project.starred && <StarSolidIcon className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />}
-        </div>
-
-        {/* Action icons — visible on hover */}
-        <div
-          className="flex items-center gap-1 flex-shrink-0 transition-opacity"
-          style={{ opacity: hovered ? 1 : 0 }}
-          onClick={e => e.stopPropagation()}
-        >
-          <button className="p-1 rounded-md transition-colors hover:text-[var(--color-primary)]" style={{ color: 'var(--color-muted-foreground)' }} title="Duplicate">
-            <CopyIcon className="w-3.5 h-3.5" strokeWidth={S} />
-          </button>
-          <button className="p-1 rounded-md transition-colors hover:text-[var(--color-primary)]" style={{ color: 'var(--color-muted-foreground)' }} title="Rename">
-            <PencilIcon className="w-3.5 h-3.5" strokeWidth={S} />
-          </button>
-          <button className="p-1 rounded-md transition-colors" style={{ color: 'rgba(239,68,68,0.6)' }}
-            onMouseEnter={e => (e.currentTarget.style.color = '#ef4444')}
-            onMouseLeave={e => (e.currentTarget.style.color = 'rgba(239,68,68,0.6)')}
-            title="Delete"
-          >
-            <TrashIcon className="w-3.5 h-3.5" strokeWidth={S} />
-          </button>
+          {project.starred && <StarSolidIcon className="w-4 h-4 text-amber-400 flex-shrink-0" />}
         </div>
       </div>
 
