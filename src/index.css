@@ -40,6 +40,12 @@
   --gradient-sidebar: linear-gradient(180deg, #0D1258 0%, #050722 100%);
   --gradient-card: linear-gradient(145deg, #0a0a0a 0%, #1a191f 100%);
 
+  /* Tracking */
+  --tracking-tight: 0;
+  --tracking-wide: 0;
+  --tracking-wider: 0;
+  --tracking-widest: 0;
+
   /* Border radius */
   --radius: 0.5rem;
   --radius-sm: calc(var(--radius) - 4px);
