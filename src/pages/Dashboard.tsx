@@ -303,14 +303,14 @@ export default function Dashboard() {
                 <Button
                   variant="outline"
                   className="gap-2 flex-1 lg:flex-none rounded-full px-5 font-medium"
-                  style={{ borderColor: 'rgba(255,255,255,0.3)', color: '#A8A8A8', borderWidth: '1px' }}
+                  style={{ borderColor: '#ffffff', color: '#ffffff', borderWidth: '1px' }}
                 >
                   <SpeakerWaveIcon className="w-4 h-4" strokeWidth={S} />
                   Demo Mix
                 </Button>
                 <Button
                   className="gap-2 flex-1 lg:flex-none rounded-full px-5 font-medium"
-                  style={{ background: '#A8A8A8', color: '#000' }}
+                  style={{ background: '#ffffff', color: '#000' }}
                 >
                   <PlusIcon className="w-4 h-4" strokeWidth={S} />
                   New Project
