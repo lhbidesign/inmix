@@ -24,31 +24,6 @@ const navItems = [
   { icon: UsersIcon,             label: 'Collaborators', href: '/dashboard' },
 ]
 
-// ── Waveform (same technique as ProjectDetail transport bar) ──────────────────
-
-function buildSmoothPath(pts: [number, number][]): string {
-  let d = `M${pts[0][0]},${pts[0][1].toFixed(1)}`
-  for (let i = 0; i < pts.length - 1; i++) {
-    const mx = ((pts[i][0] + pts[i + 1][0]) / 2).toFixed(1)
-    const my = ((pts[i][1] + pts[i + 1][1]) / 2).toFixed(1)
-    d += ` Q${pts[i][0]},${pts[i][1].toFixed(1)} ${mx},${my}`
-  }
-  const last = pts[pts.length - 1]
-  return d + ` L${last[0]},${last[1].toFixed(1)}`
-}
-
-const seeds = [0.3, 1.2, 2.1, 0.8, 1.7]
-const cardWaves = seeds.map(seed => ({
-  main: buildSmoothPath(Array.from({ length: 52 }, (_, i): [number, number] => [
-    i * 20,
-    28 + Math.sin(i * 0.48 + seed) * 11 + Math.sin(i * 1.15 + seed * 1.4) * 5 + Math.sin(i * 2.6 + seed) * 2.5,
-  ])),
-  faint: buildSmoothPath(Array.from({ length: 52 }, (_, i): [number, number] => [
-    i * 20,
-    28 + Math.sin(i * 0.6 + seed * 0.7) * 7 + Math.sin(i * 1.4 + seed) * 3.5 + Math.sin(i * 3.1 + seed * 1.2) * 1.5,
-  ])),
-}))
-
 // ── Data ─────────────────────────────────────────────────────────────────────
 
 const projects = [
@@ -280,11 +255,10 @@ export default function Projects() {
           {/* Projects grid */}
           {activeTab === 'projects' && (
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-              {filtered.map((p, i) => (
+              {filtered.map((p) => (
                 <ProjectCard
                   key={p.id}
                   project={p}
-                  wave={cardWaves[i % cardWaves.length]}
                   onOpen={() => navigate(`/projects/${p.id}`)}
                 />
               ))}
@@ -352,9 +326,8 @@ export default function Projects() {
 
 // ── ProjectCard ───────────────────────────────────────────────────────────────
 
-function ProjectCard({ project, wave, onOpen }: {
+function ProjectCard({ project, onOpen }: {
   project: typeof projects[0]
-  wave: { main: string; faint: string }
   onOpen: () => void
 }) {
   const [hovered, setHovered] = useState(false)
@@ -423,13 +396,6 @@ function ProjectCard({ project, wave, onOpen }: {
         </div>
       </div>
 
-      {/* Waveform */}
-      <div className="mx-3 mb-3 rounded-lg overflow-hidden" style={{ height: '72px', background: '#1d1c2296', border: '1px solid rgba(255,255,255,0.06)' }}>
-        <svg className="w-full h-full" preserveAspectRatio="none" viewBox="0 0 1040 56">
-          <path d={wave.main}  fill="none" stroke="rgba(115,171,191,0.35)" strokeWidth="1.5" />
-          <path d={wave.faint} fill="none" stroke="rgba(115,171,191,0.14)" strokeWidth="1" />
-        </svg>
-      </div>
     </div>
   )
 }
