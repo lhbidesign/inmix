@@ -27,11 +27,16 @@ const navItems = [
 // ── Data ─────────────────────────────────────────────────────────────────────
 
 const projects = [
-  { id: 1, name: 'Fools Gold',    artist: 'The Stone Roses', genre: 'Pop',        status: 'mixing',    stems: 8,  updated: '2h ago',  starred: true  },
-  { id: 2, name: 'Electric Feel', artist: 'MGMT',            genre: 'Electronic', status: 'mastering', stems: 6,  updated: '5h ago',  starred: false },
-  { id: 3, name: 'Midnight City', artist: 'M83',             genre: 'Synthpop',   status: 'review',    stems: 12, updated: '1d ago',  starred: true  },
-  { id: 4, name: 'Dissolve Me',   artist: 'Alt-J',           genre: 'Alt-Rock',   status: 'mixing',    stems: 9,  updated: '2d ago',  starred: false },
-  { id: 5, name: 'Northern Soul', artist: 'Various',         genre: 'Soul',       status: 'complete',  stems: 5,  updated: '3d ago',  starred: false },
+  { id: 1,  name: 'Fools Gold',      artist: 'The Stone Roses', genre: 'Pop',        status: 'mixing',    stems: 8,  updated: '2h ago',  starred: true  },
+  { id: 2,  name: 'Electric Feel',   artist: 'MGMT',            genre: 'Electronic', status: 'mastering', stems: 6,  updated: '5h ago',  starred: false },
+  { id: 3,  name: 'Midnight City',   artist: 'M83',             genre: 'Synthpop',   status: 'review',    stems: 12, updated: '1d ago',  starred: true  },
+  { id: 4,  name: 'Dissolve Me',     artist: 'Alt-J',           genre: 'Alt-Rock',   status: 'mixing',    stems: 9,  updated: '2d ago',  starred: false },
+  { id: 5,  name: 'Northern Soul',   artist: 'Various',         genre: 'Soul',       status: 'complete',  stems: 5,  updated: '3d ago',  starred: false },
+  { id: 6,  name: 'Tame Impala',     artist: 'Kevin Parker',    genre: 'Psychedelic',status: 'mixing',    stems: 14, updated: '4d ago',  starred: true  },
+  { id: 7,  name: 'Pink + White',    artist: 'Frank Ocean',     genre: 'R&B',        status: 'complete',  stems: 7,  updated: '5d ago',  starred: false },
+  { id: 8,  name: 'Elephant',        artist: 'Tame Impala',     genre: 'Psych-Rock', status: 'mastering', stems: 10, updated: '6d ago',  starred: false },
+  { id: 9,  name: 'Motion Picture',  artist: 'Arcade Fire',     genre: 'Indie',      status: 'review',    stems: 11, updated: '1w ago',  starred: true  },
+  { id: 10, name: 'Breathe Deeper',  artist: 'Tame Impala',     genre: 'Electronic', status: 'mixing',    stems: 8,  updated: '1w ago',  starred: false },
 ]
 
 const exports = [
@@ -347,8 +352,7 @@ function ProjectCard({ project, onOpen }: {
     >
       {/* Card header */}
       <div className="px-4 pt-4 pb-2">
-        <div className="flex items-center justify-between mb-2">
-          <SpeakerWaveIcon className="w-4 h-4 flex-shrink-0" strokeWidth={S} style={{ color: 'var(--color-primary)' }} />
+        <div className="flex items-center justify-end mb-2">
           {/* Action icons — visible on hover */}
           <div
             className="flex items-center gap-1 flex-shrink-0 transition-opacity"
