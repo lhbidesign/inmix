@@ -126,7 +126,7 @@ export default function Projects() {
           sidebarOpen ? 'flex fixed inset-y-0 left-0 z-50' : 'hidden lg:flex',
           sidebarCollapsed ? 'lg:w-14' : 'lg:w-60'
         )}
-        style={{ borderColor: 'rgba(255,255,255,0.08)', background: sidebarCollapsed ? '#49556f57' : 'var(--gradient-sidebar)' }}
+        style={{ borderColor: 'rgba(255,255,255,0.08)', background: 'var(--gradient-sidebar)' }}
       >
         {sidebarCollapsed ? (
           <div className="flex items-center justify-center px-2 py-[18px] flex-shrink-0">
@@ -144,8 +144,8 @@ export default function Projects() {
             <Link to="/dashboard"><img src="/logo.svg" alt="INMIX" style={{ height: '22px', width: 'auto' }} /></Link>
             <div className="flex items-center gap-1">
               <button
-                className="hidden lg:flex p-1 rounded-md transition-colors hover:text-[var(--color-primary)]"
-                style={{ color: 'var(--color-muted-foreground)' }}
+                className="hidden lg:flex p-1 rounded-md transition-colors hover:opacity-70"
+                style={{ color: '#ffffff' }}
                 onClick={() => setSidebarCollapsed(true)}
                 title="Collapse sidebar"
               >
