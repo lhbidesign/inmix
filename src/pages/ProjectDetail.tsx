@@ -543,67 +543,68 @@ export default function ProjectDetail() {
         <div className="px-5 pt-4 pb-0 flex-shrink-0">
         <div
           className="rounded-xl border overflow-hidden"
-          style={{ borderColor: 'rgba(255,255,255,0.08)', background: 'var(--gradient-card)' }}
+          style={{ borderColor: 'rgba(255,255,255,0.12)', background: '#080808' }}
         >
           {/* Top row */}
           <div className="flex items-center px-5 py-3 gap-4">
-          {/* Time */}
-          <span className="font-mono text-sm tabular-nums flex-shrink-0" style={{ color: 'var(--color-muted-foreground)', minWidth: '72px' }}>
-            0:00 <span style={{ color: 'rgba(255,255,255,0.2)' }}>/</span> 3:25
-          </span>
 
-          {/* Controls */}
+          {/* Controls — centered group */}
           <div className="flex items-center gap-1">
-            <Button variant="ghost" size="icon" className="h-8 w-8 hover:text-[var(--color-primary)]" style={{ color: 'var(--color-muted-foreground)' }}>
+            <Button variant="ghost" size="icon" className="h-8 w-8 hover:text-white transition-colors" style={{ color: 'rgba(255,255,255,0.35)' }}>
               <BackwardIcon className="w-4 h-4" strokeWidth={S} />
             </Button>
             <button
               onClick={() => setIsPlaying(!isPlaying)}
-              className="w-9 h-9 rounded-full flex items-center justify-center transition-colors"
-              style={{ background: '#A8A8A8', color: '#000' }}
+              className="w-10 h-10 rounded-full flex items-center justify-center transition-opacity hover:opacity-85 flex-shrink-0"
+              style={{ background: '#ffffff', color: '#000' }}
             >
               {isPlaying
-                ? <PauseIcon className="w-4 h-4" strokeWidth={2} />
-                : <PlayIcon  className="w-4 h-4" strokeWidth={2} />
+                ? <PauseIcon className="w-4 h-4" strokeWidth={2.5} />
+                : <PlayIcon  className="w-4 h-4 ml-0.5" strokeWidth={2.5} />
               }
             </button>
             {/* Stop */}
             <Button
               variant="ghost" size="icon"
-              className="h-8 w-8 hover:text-[var(--color-primary)]"
-              style={{ color: 'var(--color-muted-foreground)' }}
+              className="h-8 w-8 hover:text-white transition-colors"
+              style={{ color: 'rgba(255,255,255,0.35)' }}
               onClick={() => setIsPlaying(false)}
             >
               <span className="w-3.5 h-3.5 rounded-sm border block" style={{ borderColor: 'currentColor' }} />
             </Button>
-            <Button variant="ghost" size="icon" className="h-8 w-8 hover:text-[var(--color-primary)]" style={{ color: 'var(--color-muted-foreground)' }}>
+            <Button variant="ghost" size="icon" className="h-8 w-8 hover:text-white transition-colors" style={{ color: 'rgba(255,255,255,0.35)' }}>
               <ForwardIcon className="w-4 h-4" strokeWidth={S} />
             </Button>
             <button
               onClick={() => setLoop(!loop)}
               className="h-8 w-8 flex items-center justify-center rounded-md transition-colors"
-              style={{ color: loop ? 'var(--color-primary)' : 'var(--color-muted-foreground)', background: loop ? 'var(--color-accent)' : 'transparent' }}
+              style={{ color: loop ? 'var(--color-primary)' : 'rgba(255,255,255,0.35)' }}
             >
               <ArrowPathIcon className="w-4 h-4" strokeWidth={S} />
             </button>
           </div>
 
+          {/* Time */}
+          <span className="font-mono text-sm tabular-nums flex-shrink-0" style={{ color: 'rgba(255,255,255,0.35)', minWidth: '72px' }}>
+            0:00 <span style={{ color: 'rgba(255,255,255,0.15)' }}>/</span> 3:25
+          </span>
+
           {/* Right — volume + Reset + Add — pushed to far right */}
           <div className="flex items-center gap-3 ml-auto">
             <div className="hidden sm:flex items-center gap-1.5">
-              <SpeakerWaveIcon className="w-4 h-4" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
+              <SpeakerWaveIcon className="w-4 h-4" strokeWidth={S} style={{ color: 'rgba(255,255,255,0.35)' }} />
               <input
                 type="range" min={0} max={100} defaultValue={80}
                 className="w-20 h-1 rounded-full cursor-pointer"
                 style={{ accentColor: 'var(--color-primary)' }}
               />
             </div>
-            <div className="w-px h-4 hidden sm:block" style={{ background: 'rgba(255,255,255,0.1)' }} />
-            <Button variant="ghost" size="sm" className="hidden sm:flex gap-1.5 text-xs hover:text-[var(--color-primary)]" style={{ color: 'var(--color-muted-foreground)' }}>
+            <div className="w-px h-4 hidden sm:block" style={{ background: 'rgba(255,255,255,0.08)' }} />
+            <Button variant="ghost" size="sm" className="hidden sm:flex gap-1.5 text-xs hover:text-white transition-colors" style={{ color: 'rgba(255,255,255,0.35)' }}>
               <ArrowUturnLeftIcon className="w-3.5 h-3.5" strokeWidth={S} />
               Reset
             </Button>
-            <Button variant="ghost" size="sm" className="hidden sm:flex gap-1.5 text-xs hover:text-[var(--color-primary)]" style={{ color: 'var(--color-muted-foreground)' }}>
+            <Button variant="ghost" size="sm" className="hidden sm:flex gap-1.5 text-xs hover:text-white transition-colors" style={{ color: 'rgba(255,255,255,0.35)' }}>
               <ArrowUpTrayIcon className="w-3.5 h-3.5" strokeWidth={S} />
               Add
             </Button>
@@ -611,7 +612,7 @@ export default function ProjectDetail() {
           </div>{/* end top row */}
 
           {/* Waveform row: SVG on left, meters panel on right */}
-          <div className="flex items-stretch mx-1 mb-1 rounded-lg overflow-hidden h-14" style={{ background: 'rgba(0,0,0,0.3)' }}>
+          <div className="flex items-stretch mx-1 mb-1 rounded-lg overflow-hidden h-14" style={{ background: 'rgba(0,0,0,0.5)' }}>
 
             {/* Waveform + scrubber */}
             <div className="relative flex-1 min-w-0">
