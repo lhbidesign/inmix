@@ -543,7 +543,7 @@ export default function ProjectDetail() {
         <div className="px-5 pt-4 pb-0 flex-shrink-0">
         <div
           className="rounded-xl border overflow-hidden"
-          style={{ borderColor: 'rgba(255,255,255,0.12)', background: '#080808' }}
+          style={{ borderColor: 'rgba(255,255,255,0.12)', background: 'linear-gradient(180deg, #0D1258 0%, #050722 100%)' }}
         >
           {/* Top row */}
           <div className="flex items-center px-5 py-3 gap-4">
