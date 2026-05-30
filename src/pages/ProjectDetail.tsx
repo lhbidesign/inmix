@@ -599,7 +599,7 @@ export default function ProjectDetail() {
               <input
                 type="range" min={0} max={100} defaultValue={80}
                 className="w-20 h-1 rounded-full cursor-pointer"
-                style={{ accentColor: 'var(--color-primary)' }}
+                style={{ accentColor: '#0011FF' }}
               />
             </div>
             <div className="w-px h-4 hidden sm:block" style={{ background: 'rgba(255,255,255,0.08)' }} />
@@ -730,7 +730,7 @@ export default function ProjectDetail() {
                     value={bus.value}
                     onChange={e => updateBus(idx, Number(e.target.value))}
                     className="w-full h-1 rounded-full cursor-pointer"
-                    style={{ accentColor: 'var(--color-primary)' }}
+                    style={{ accentColor: '#0011FF' }}
                   />
                   <button
                     className="flex items-center gap-1 text-xs transition-colors hover:text-[var(--color-primary)] self-start"
@@ -798,7 +798,7 @@ export default function ProjectDetail() {
                         value={stem.volume}
                         onChange={e => updateStem(stem.id, { volume: Number(e.target.value) })}
                         className="w-24 h-1 rounded-full cursor-pointer"
-                        style={{ accentColor: 'var(--color-primary)', opacity: stem.muted ? 0.3 : 1 }}
+                        style={{ accentColor: '#0011FF', opacity: stem.muted ? 0.3 : 1 }}
                       />
                       <span className="font-mono text-xs tabular-nums w-5 text-right flex-shrink-0" style={{ color: 'var(--color-muted-foreground)', fontSize: '11px', opacity: stem.muted ? 0.4 : 1 }}>
                         {stem.volume}
@@ -813,7 +813,7 @@ export default function ProjectDetail() {
                         value={stem.pan}
                         onChange={e => updateStem(stem.id, { pan: Number(e.target.value) })}
                         className="w-16 h-1 rounded-full cursor-pointer"
-                        style={{ accentColor: 'var(--color-primary)' }}
+                        style={{ accentColor: '#0011FF' }}
                       />
                       <span className="font-mono text-xs tabular-nums w-5 text-right flex-shrink-0" style={{ color: 'var(--color-muted-foreground)', fontSize: '10px' }}>
                         {panLabel}

@@ -425,7 +425,7 @@ function SliderField({
         type="range" min={min} max={max} value={value}
         onChange={e => onChange(Number(e.target.value))}
         className="w-full h-1.5 rounded-full cursor-pointer"
-        style={{ accentColor: 'var(--color-primary)' }}
+        style={{ accentColor: '#0011FF' }}
       />
     </div>
   )
