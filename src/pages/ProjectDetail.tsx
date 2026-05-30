@@ -11,6 +11,10 @@ import {
   FilmIcon, CloudIcon, StarIcon, ArrowDownTrayIcon, ShareIcon,
   MapPinIcon, TrophyIcon, GlobeAltIcon,
 } from '@heroicons/react/24/outline'
+import {
+  BackwardIcon as BackwardSolid, ForwardIcon as ForwardSolid,
+  PlayIcon as PlaySolid, PauseIcon as PauseSolid, StopIcon as StopSolid,
+} from '@heroicons/react/24/solid'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
@@ -551,7 +555,7 @@ export default function ProjectDetail() {
           {/* Controls — centered group */}
           <div className="flex items-center gap-1">
             <Button variant="ghost" size="icon" className="h-8 w-8 hover:text-white transition-colors" style={{ color: 'rgba(255,255,255,0.35)' }}>
-              <BackwardIcon className="w-4 h-4" strokeWidth={S} />
+              <BackwardSolid className="w-4 h-4" />
             </Button>
             <button
               onClick={() => setIsPlaying(!isPlaying)}
@@ -559,21 +563,20 @@ export default function ProjectDetail() {
               style={{ background: '#ffffff', color: '#000' }}
             >
               {isPlaying
-                ? <PauseIcon className="w-4 h-4" strokeWidth={2.5} />
-                : <PlayIcon  className="w-4 h-4 ml-0.5" strokeWidth={2.5} />
+                ? <PauseSolid className="w-4 h-4" />
+                : <PlaySolid  className="w-4 h-4 ml-0.5" />
               }
             </button>
-            {/* Stop */}
+            <Button variant="ghost" size="icon" className="h-8 w-8 hover:text-white transition-colors" style={{ color: 'rgba(255,255,255,0.35)' }}>
+              <ForwardSolid className="w-4 h-4" />
+            </Button>
             <Button
               variant="ghost" size="icon"
               className="h-8 w-8 hover:text-white transition-colors"
               style={{ color: 'rgba(255,255,255,0.35)' }}
               onClick={() => setIsPlaying(false)}
             >
-              <span className="w-3.5 h-3.5 rounded-sm border block" style={{ borderColor: 'currentColor' }} />
-            </Button>
-            <Button variant="ghost" size="icon" className="h-8 w-8 hover:text-white transition-colors" style={{ color: 'rgba(255,255,255,0.35)' }}>
-              <ForwardIcon className="w-4 h-4" strokeWidth={S} />
+              <StopSolid className="w-3.5 h-3.5" />
             </Button>
             <button
               onClick={() => setLoop(!loop)}
