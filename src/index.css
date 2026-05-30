@@ -41,7 +41,7 @@
   --gradient-card: linear-gradient(145deg, #0a0a0a 0%, #1a191f 100%);
 
   /* Tracking */
-  --tracking-tight: 0;
+  --tracking-tight: 0.04em;
   --tracking-wide: 0;
   --tracking-wider: 0;
   --tracking-widest: 0;
