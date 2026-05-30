@@ -186,7 +186,7 @@ export default function Projects() {
         <div className={cn('py-4 space-y-0.5', sidebarCollapsed ? 'px-2' : 'px-3')}>
           {sidebarCollapsed ? (
             <>
-              <Link to="/settings" className="w-full flex justify-center p-2.5 rounded-lg transition-colors hover:text-[var(--color-primary)]" style={{ color: 'var(--color-muted-foreground)' }} title="Settings">
+              <Link to="/settings" className="w-full flex justify-center p-2.5 rounded-lg transition-colors hover:opacity-80" style={{ color: 'var(--color-primary)' }} title="Settings">
                 <Cog6ToothIcon className="w-[18px] h-[18px]" strokeWidth={S} />
               </Link>
               <button onClick={() => navigate('/login')} className="w-full flex justify-center p-2.5 rounded-lg transition-colors" style={{ color: 'rgba(239,68,68,0.7)' }} title="Log out"
@@ -199,7 +199,7 @@ export default function Projects() {
             </>
           ) : (
             <>
-              <Link to="/settings" className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors text-left hover:text-[var(--color-primary)]" style={{ color: 'var(--color-muted-foreground)' }}>
+              <Link to="/settings" className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors text-left hover:opacity-80" style={{ color: 'var(--color-primary)' }}>
                 <Cog6ToothIcon className="w-[18px] h-[18px]" strokeWidth={S} />
                 Settings
               </Link>
@@ -211,7 +211,7 @@ export default function Projects() {
               <div className="flex items-center gap-3 px-3 py-2.5">
                 <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0" style={{ background: 'var(--color-primary)', color: 'var(--color-primary-foreground)' }}>DS</div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs font-medium truncate">David Suarez</p>
+                  <p className="text-xs font-medium truncate" style={{ color: 'var(--color-primary)' }}>David Suarez</p>
                   <p className="text-xs truncate" style={{ color: 'var(--color-muted-foreground)' }}>Pro Plan</p>
                 </div>
               </div>

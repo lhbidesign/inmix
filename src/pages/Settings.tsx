@@ -185,7 +185,7 @@ export default function Settings() {
                   DS
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs font-medium truncate">David Suarez</p>
+                  <p className="text-xs font-medium truncate" style={{ color: 'var(--color-primary)' }}>David Suarez</p>
                   <p className="text-xs truncate" style={{ color: 'var(--color-muted-foreground)' }}>Pro Plan</p>
                 </div>
               </div>
