@@ -35,8 +35,13 @@ export default function Auth() {
 
       {/* Left panel — brand */}
       <div
-        className="hidden lg:flex flex-col justify-between w-[480px] flex-shrink-0 p-12 relative overflow-hidden"
-        style={{ background: 'var(--gradient-sidebar)', borderRight: '1px solid rgba(255,255,255,0.08)' }}
+        className="hidden lg:flex flex-col justify-between w-1/2 flex-shrink-0 p-12 relative overflow-hidden"
+        style={{
+          backgroundImage: 'url(/images/login.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          borderRight: '1px solid rgba(255,255,255,0.08)',
+        }}
       >
         <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full blur-3xl opacity-20 pointer-events-none" style={{ background: 'var(--color-primary)' }} />
         <div className="absolute bottom-0 right-0 w-64 h-64 rounded-full blur-3xl opacity-10 pointer-events-none" style={{ background: 'var(--color-primary)' }} />
@@ -47,9 +52,9 @@ export default function Auth() {
         </div>
 
         {/* Headline */}
-        <div className="relative z-10 space-y-6">
+        <div className="relative z-10 space-y-6" style={{ maxWidth: '430px' }}>
           <div className="space-y-3">
-            <h1 className="text-[3.825rem] font-normal tracking-tight" style={{ lineHeight: '0.9' }}>
+            <h1 className="font-normal tracking-tight" style={{ fontSize: '5em', lineHeight: '0.9' }}>
               Your studio,<br />
               <span style={{ color: 'var(--color-primary)' }}>reimagined.</span>
             </h1>
@@ -60,8 +65,8 @@ export default function Auth() {
           <div className="space-y-4">
             {features.map(({ icon: Icon, text }) => (
               <div key={text} className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'var(--color-accent)' }}>
-                  <Icon className="w-[18px] h-[18px]" strokeWidth={S} style={{ color: 'var(--color-primary)' }} />
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: '#0011FF' }}>
+                  <Icon className="w-[18px] h-[18px]" strokeWidth={S} style={{ color: '#ffffff' }} />
                 </div>
                 <span className="text-sm" style={{ color: 'var(--color-muted-foreground)' }}>{text}</span>
               </div>
@@ -87,7 +92,7 @@ export default function Auth() {
       </div>
 
       {/* Right panel — form */}
-      <div className="flex-1 flex items-center justify-center p-6 lg:p-16">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 lg:p-16">
         <div className="w-full max-w-[400px] space-y-8">
 
           {/* Mobile logo */}
