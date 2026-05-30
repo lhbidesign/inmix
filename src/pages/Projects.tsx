@@ -250,8 +250,8 @@ export default function Projects() {
           <div className="mb-6" style={{ borderTop: '1px solid rgba(255,255,255,0.12)' }} />
 
           {/* Tabs + Search */}
-          <div className="flex items-center justify-between gap-4 mb-6">
-            <div className="flex gap-1 p-1 rounded-lg w-fit" style={{ background: 'var(--color-accent)' }}>
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 mb-6">
+            <div className="flex gap-1 p-1 rounded-lg w-full lg:w-fit" style={{ background: 'var(--color-accent)' }}>
               {([
                 { id: 'projects', label: 'Projects', icon: FolderOpenIcon },
                 { id: 'exports',  label: 'Exports',  icon: ArrowDownTrayIcon },
@@ -259,7 +259,7 @@ export default function Projects() {
                 <button
                   key={id}
                   onClick={() => setActiveTab(id)}
-                  className="flex items-center gap-1.5 px-4 py-1.5 rounded-md text-sm transition-all"
+                  className="flex-1 lg:flex-none flex items-center justify-center gap-1.5 px-4 py-1.5 rounded-md text-sm transition-all"
                   style={activeTab === id
                     ? { background: '#000', color: '#ffffff', fontWeight: 400 }
                     : { color: 'var(--color-muted-foreground)' }
@@ -271,14 +271,14 @@ export default function Projects() {
               ))}
             </div>
 
-            <div className="relative">
+            <div className="relative w-full lg:w-48">
               <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
               <input
                 type="text"
                 placeholder="Search projects..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="pl-9 pr-4 py-2 rounded-lg text-sm outline-none transition-colors w-48"
+                className="pl-9 pr-4 py-2 rounded-lg text-sm outline-none transition-colors w-full"
                 style={{ background: 'var(--color-input)', border: '1px solid rgba(255,255,255,0.08)', color: 'var(--color-foreground)' }}
               />
             </div>
