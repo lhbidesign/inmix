@@ -247,6 +247,8 @@ export default function Projects() {
             </div>
           </div>
 
+          <div className="mb-6" style={{ borderTop: '1px solid rgba(255,255,255,0.12)' }} />
+
           {/* Tabs + Search */}
           <div className="flex items-center justify-between gap-4 mb-6">
             <div className="flex gap-1 p-1 rounded-lg w-fit" style={{ background: 'var(--color-accent)' }}>
