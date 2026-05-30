@@ -391,7 +391,7 @@ export default function ProjectDetail() {
                   <button key={m} onClick={() => setMode(m)}
                     className="px-4 py-1.5 rounded-md text-sm transition-all capitalize"
                     style={mode === m
-                      ? { background: 'var(--color-primary)', color: '#000', fontWeight: 500 }
+                      ? { background: '#000', color: '#ffffff', fontWeight: 400 }
                       : { color: 'var(--color-muted-foreground)' }
                     }>
                     {m === 'mix' ? 'Mix' : 'Arrange'}
