@@ -840,7 +840,7 @@ export default function ProjectDetail() {
           onClick={e => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-6 py-4 border-b" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
+          <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
             <div className="flex items-center gap-2">
               <SparklesIcon className="w-4 h-4" strokeWidth={S} style={{ color: 'var(--color-primary)' }} />
               <span className="text-sm font-semibold tracking-widest uppercase" style={{ color: 'var(--color-primary)' }}>Mix Console</span>
@@ -850,7 +850,7 @@ export default function ProjectDetail() {
             </button>
           </div>
 
-          <div className="overflow-y-auto flex-1 px-6 py-5 space-y-6">
+          <div className="overflow-y-auto flex-1 px-4 sm:px-6 py-5 space-y-6">
 
             {/* Signature Tailored Mixes */}
             <section>
@@ -858,20 +858,20 @@ export default function ProjectDetail() {
                 <SparklesIcon className="w-3.5 h-3.5" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
                 <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: 'var(--color-muted-foreground)' }}>Signature Tailored Mixes</span>
               </div>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {[
                   { icon: MapPinIcon,   name: 'STREET HEAT MIX', desc: 'Urban — gritty 808s, vocals upfront, street-ready' },
                   { icon: TrophyIcon,   name: 'SPARKS MIX',       desc: 'Billboard Pop — bright, wide, radio sheen' },
                   { icon: GlobeAltIcon, name: 'SMILES MIX',       desc: 'SoCal Reggae — sun-soaked, warm bass, easy groove' },
                 ].map(({ icon: Icon, name, desc }) => (
                   <div key={name}
-                    className="flex items-start justify-between gap-2 p-3.5 rounded-xl border transition-colors cursor-pointer group"
+                    className="flex items-center justify-between gap-2 p-3.5 rounded-xl border transition-colors cursor-pointer group"
                     style={{ background: 'rgba(255,255,255,0.03)', borderColor: 'rgba(255,255,255,0.06)' }}
                     onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.14)'; e.currentTarget.style.background = 'rgba(255,255,255,0.05)' }}
                     onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)'; e.currentTarget.style.background = 'rgba(255,255,255,0.03)' }}
                   >
-                    <div className="flex items-start gap-2.5 min-w-0">
-                      <div className="w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0 mt-0.5" style={{ background: '#0011FF' }}>
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      <div className="w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0" style={{ background: '#0011FF' }}>
                         <Icon className="w-3.5 h-3.5" strokeWidth={S} style={{ color: '#ffffff' }} />
                       </div>
                       <div className="min-w-0">
@@ -879,7 +879,7 @@ export default function ProjectDetail() {
                         <p className="text-xs leading-snug" style={{ color: 'var(--color-muted-foreground)' }}>{desc}</p>
                       </div>
                     </div>
-                    <button className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors"
+                    <button className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 transition-colors"
                       style={{ background: 'rgba(255,255,255,0.06)' }}
                       onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.14)')}
                       onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.06)')}
@@ -897,14 +897,14 @@ export default function ProjectDetail() {
                 <MusicalNoteIcon className="w-3.5 h-3.5" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
                 <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: 'var(--color-muted-foreground)' }}>Genre Presets</span>
               </div>
-              <div className="grid grid-cols-3 gap-x-6 gap-y-3">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-3">
                 {[
-                  { icon: SpeakerWaveIcon,         name: 'R&B SMOOTH',    desc: 'Warm lows, silky vocals, laid-back groove' },
-                  { icon: BoltIcon,                name: 'ROCK POWER',    desc: 'Aggressive mids, punchy drums, raw energy'  },
-                  { icon: SparklesIcon,            name: 'EDM FESTIVAL',  desc: 'Massive drops, tight lows, festival energy' },
-                  { icon: SunIcon,                 name: 'LO-FI CHILL',   desc: 'Vintage warmth, rolled-off highs, tape vibe' },
-                  { icon: AdjustmentsHorizontalIcon, name: 'TRAP HARD',   desc: 'Deep 808s, sharp hi-hats, dark energy'      },
-                  { icon: FilmIcon,                name: 'CINEMATIC',     desc: 'Lush reverbs, wide stereo, epic dynamics'   },
+                  { icon: SpeakerWaveIcon,           name: 'R&B SMOOTH',   desc: 'Warm lows, silky vocals, laid-back groove' },
+                  { icon: BoltIcon,                  name: 'ROCK POWER',   desc: 'Aggressive mids, punchy drums, raw energy'  },
+                  { icon: SparklesIcon,              name: 'EDM FESTIVAL', desc: 'Massive drops, tight lows, festival energy' },
+                  { icon: SunIcon,                   name: 'LO-FI CHILL',  desc: 'Vintage warmth, rolled-off highs, tape vibe' },
+                  { icon: AdjustmentsHorizontalIcon, name: 'TRAP HARD',    desc: 'Deep 808s, sharp hi-hats, dark energy'      },
+                  { icon: FilmIcon,                  name: 'CINEMATIC',    desc: 'Lush reverbs, wide stereo, epic dynamics'   },
                 ].map(({ icon: Icon, name, desc }) => (
                   <div key={name} className="flex items-start gap-2.5 cursor-pointer group py-1"
                     onMouseEnter={e => (e.currentTarget.style.opacity = '0.8')}
@@ -921,7 +921,7 @@ export default function ProjectDetail() {
             </section>
 
             {/* Controls row */}
-            <div className="grid grid-cols-3 gap-6 pt-2 border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 pt-2 border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
 
               {/* Intensity */}
               <div>
@@ -988,7 +988,7 @@ export default function ProjectDetail() {
           </div>
 
           {/* Footer */}
-          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
+          <div className="flex items-center justify-end gap-3 px-4 sm:px-6 py-4 border-t" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
             <button onClick={() => setMixConsoleOpen(false)}
               className="px-5 py-2 rounded-full text-sm transition-colors"
               style={{ color: 'var(--color-muted-foreground)' }}
