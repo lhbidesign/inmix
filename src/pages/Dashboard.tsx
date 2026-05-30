@@ -303,7 +303,7 @@ export default function Dashboard() {
                 <Button
                   variant="outline"
                   className="gap-2 flex-1 lg:flex-none rounded-full px-5 font-medium"
-                  style={{ borderColor: '#ffffff', color: '#ffffff', borderWidth: '1px' }}
+                  style={{ borderColor: 'rgba(255,255,255,0.5)', color: '#ffffff', borderWidth: '1px' }}
                 >
                   <SpeakerWaveIcon className="w-4 h-4" strokeWidth={S} />
                   Demo Mix
