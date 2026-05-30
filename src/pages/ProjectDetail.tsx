@@ -660,7 +660,7 @@ export default function ProjectDetail() {
         <main className="flex-1 overflow-y-auto pb-16">
 
           {/* Master Mixing Bus */}
-          <section className="px-5 pt-5 pb-4 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+          <section className="px-5 pt-8 pb-7 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
             <div className="flex items-center gap-2 mb-4">
               <AdjustmentsHorizontalIcon className="w-4 h-4" strokeWidth={S} style={{ color: 'var(--color-primary)' }} />
               <h2 className="text-sm font-medium uppercase tracking-widest" style={{ color: 'var(--color-primary)', letterSpacing: '0.08em' }}>
