@@ -4,7 +4,6 @@ import { StarIcon as StarSolidIcon } from '@heroicons/react/24/solid'
 import {
   Squares2X2Icon,
   FolderOpenIcon,
-  MusicalNoteIcon,
   Cog6ToothIcon,
   MagnifyingGlassIcon,
   BellIcon,
@@ -317,8 +316,7 @@ export default function Dashboard() {
             {/* Projects / Exports Table */}
             <Card className="xl:col-span-2">
               <CardHeader className="pb-0">
-                <div className="flex items-center justify-between mb-3">
-                  {/* Tabs */}
+                <div className="flex items-center justify-between mb-2">
                   <div className="flex gap-1 p-1 rounded-lg" style={{ background: 'var(--color-accent)' }}>
                     {(['projects', 'exports'] as const).map(tab => (
                       <button
@@ -334,22 +332,20 @@ export default function Dashboard() {
                       </button>
                     ))}
                   </div>
-                  <div className="flex items-center gap-2">
-                    <div className="relative">
-                      <MagnifyingGlassIcon className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 pointer-events-none" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
-                      <input
-                        type="text"
-                        placeholder="Search..."
-                        value={search}
-                        onChange={e => setSearch(e.target.value)}
-                        className="pl-8 pr-3 h-7 text-xs rounded-lg border outline-none w-36 transition-colors"
-                        style={{ background: 'var(--color-input)', borderColor: 'rgba(255,255,255,0.08)', color: 'var(--color-foreground)' }}
-                      />
-                    </div>
-                    <Button variant="ghost" size="sm" className="text-xs gap-1" style={{ color: 'var(--color-primary)' }} onClick={() => navigate('/projects')}>
-                      View all <ChevronRightIcon className="w-3.5 h-3.5" strokeWidth={S} />
-                    </Button>
-                  </div>
+                  <Button variant="ghost" size="sm" className="text-xs gap-1" style={{ color: 'var(--color-primary)' }} onClick={() => navigate('/projects')}>
+                    View all <ChevronRightIcon className="w-3.5 h-3.5" strokeWidth={S} />
+                  </Button>
+                </div>
+                <div className="relative mb-3">
+                  <MagnifyingGlassIcon className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 pointer-events-none" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
+                  <input
+                    type="text"
+                    placeholder="Search..."
+                    value={search}
+                    onChange={e => setSearch(e.target.value)}
+                    className="pl-8 pr-3 h-7 text-xs rounded-lg border outline-none w-full transition-colors"
+                    style={{ background: 'var(--color-input)', borderColor: 'rgba(255,255,255,0.08)', color: 'var(--color-foreground)' }}
+                  />
                 </div>
               </CardHeader>
               <CardContent className="p-0">
@@ -377,19 +373,11 @@ export default function Dashboard() {
                             onClick={() => navigate(`/projects/${p.id}`)}
                           >
                             <td className="px-6 py-3.5">
-                              <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                                  style={{ background: 'var(--color-secondary)' }}>
-                                  <MusicalNoteIcon className="w-4 h-4" strokeWidth={S} style={{ color: 'var(--color-primary)' }} />
-                                </div>
-                                <div>
-                                  <div className="flex items-center gap-1.5">
-                                    <p className="text-sm font-medium">{p.name}</p>
-                                    {p.starred && <StarSolidIcon className="w-3.5 h-3.5 text-amber-400" />}
-                                  </div>
-                                  <p className="text-xs" style={{ color: 'var(--color-muted-foreground)' }}>{p.artist}</p>
-                                </div>
+                              <div className="flex items-center gap-1.5">
+                                <p className="text-sm font-medium">{p.name}</p>
+                                {p.starred && <StarSolidIcon className="w-3.5 h-3.5 text-amber-400 flex-shrink-0" />}
                               </div>
+                              <p className="text-xs" style={{ color: 'var(--color-muted-foreground)' }}>{p.artist}</p>
                             </td>
                             <td className="px-4 py-3.5 hidden sm:table-cell">
                               <Badge variant={variant}>{label}</Badge>
