@@ -317,12 +317,12 @@ export default function Dashboard() {
             <Card className="xl:col-span-2">
               <CardHeader className="pb-0">
                 <div className="flex items-center justify-between mb-2">
-                  <div className="flex gap-1 p-1 rounded-lg" style={{ background: 'var(--color-accent)' }}>
+                  <div className="flex gap-1 p-1 rounded-lg w-full sm:w-fit" style={{ background: 'var(--color-accent)' }}>
                     {(['projects', 'exports'] as const).map(tab => (
                       <button
                         key={tab}
                         onClick={() => setActiveTab(tab)}
-                        className="px-4 py-1.5 rounded-md text-sm transition-all capitalize"
+                        className="flex-1 sm:flex-none px-4 py-1.5 rounded-md text-sm transition-all capitalize"
                         style={activeTab === tab
                           ? { background: '#000', color: '#ffffff', fontWeight: 400 }
                           : { color: 'var(--color-muted-foreground)' }
@@ -332,7 +332,7 @@ export default function Dashboard() {
                       </button>
                     ))}
                   </div>
-                  <Button variant="ghost" size="sm" className="text-xs gap-1" style={{ color: 'var(--color-primary)' }} onClick={() => navigate('/projects')}>
+                  <Button variant="ghost" size="sm" className="hidden sm:flex text-xs gap-1 flex-shrink-0" style={{ color: 'var(--color-primary)' }} onClick={() => navigate('/projects')}>
                     View all <ChevronRightIcon className="w-3.5 h-3.5" strokeWidth={S} />
                   </Button>
                 </div>
@@ -343,7 +343,7 @@ export default function Dashboard() {
                     placeholder="Search..."
                     value={search}
                     onChange={e => setSearch(e.target.value)}
-                    className="pl-8 pr-3 h-7 text-xs rounded-lg border outline-none w-full transition-colors"
+                    className="pl-8 pr-3 h-9 sm:h-7 text-xs rounded-lg border outline-none w-full transition-colors"
                     style={{ background: 'var(--color-input)', borderColor: 'rgba(255,255,255,0.08)', color: 'var(--color-foreground)' }}
                   />
                 </div>
@@ -466,6 +466,11 @@ export default function Dashboard() {
                   </table>
                 )}
               </CardContent>
+              <div className="flex sm:hidden px-4 py-3 border-t" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
+                <Button variant="ghost" size="sm" className="w-full text-xs gap-1 justify-center" style={{ color: 'var(--color-primary)' }} onClick={() => navigate('/projects')}>
+                  View all <ChevronRightIcon className="w-3.5 h-3.5" strokeWidth={S} />
+                </Button>
+              </div>
             </Card>
 
             {/* Activity Feed */}
