@@ -37,7 +37,7 @@
 
   /* Gradientes */
   --gradient-bg: linear-gradient(160deg, #000000 0%, #1D1C22 100%);
-  --gradient-sidebar: linear-gradient(180deg, #000000 0%, #1D1C22 100%);
+  --gradient-sidebar: linear-gradient(180deg, #151C7D 0%, #06092E 100%);
   --gradient-card: linear-gradient(145deg, #0a0a0a 0%, #1a191f 100%);
 
   /* Border radius */

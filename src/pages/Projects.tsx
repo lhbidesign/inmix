@@ -166,12 +166,12 @@ export default function Projects() {
               key={label}
               to={href}
               className={cn(
-                'w-full flex items-center rounded-lg text-sm font-medium transition-colors hover:text-[var(--color-primary)]',
+                'w-full flex items-center rounded-lg text-sm font-medium transition-colors',
                 sidebarCollapsed ? 'justify-center p-2.5' : 'gap-3 px-3 py-2.5'
               )}
               style={isNavActive(label)
-                ? { background: 'var(--color-accent)', color: 'var(--color-primary)' }
-                : { color: 'var(--color-muted-foreground)' }
+                ? { background: 'rgba(255,255,255,0.18)', color: '#ffffff' }
+                : { color: 'var(--color-primary)' }
               }
               title={sidebarCollapsed ? label : undefined}
             >

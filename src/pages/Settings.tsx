@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import {
   Squares2X2Icon, FolderOpenIcon, Cog6ToothIcon,
   XMarkIcon, Bars3Icon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, ArrowRightOnRectangleIcon,
@@ -24,6 +24,14 @@ export default function Settings() {
   const [sidebarOpen, setSidebarOpen]       = useState(false)
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const navigate = useNavigate()
+  const location = useLocation()
+
+  function isNavActive(label: string) {
+    if (label === 'Dashboard') return location.pathname === '/dashboard'
+    if (label === 'Projects')  return location.pathname.startsWith('/projects')
+    if (label === 'Presets')   return location.pathname === '/presets'
+    return false
+  }
   const [activeTab, setActiveTab]       = useState<'profile' | 'audio'>('profile')
 
   // Profile
@@ -112,10 +120,13 @@ export default function Settings() {
               key={label}
               to={href}
               className={cn(
-                'w-full flex items-center rounded-lg text-sm font-medium transition-colors hover:text-[var(--color-primary)]',
+                'w-full flex items-center rounded-lg text-sm font-medium transition-colors',
                 sidebarCollapsed ? 'justify-center p-2.5' : 'gap-3 px-3 py-2.5 text-left'
               )}
-              style={{ color: 'var(--color-muted-foreground)' }}
+              style={isNavActive(label)
+                ? { background: 'rgba(255,255,255,0.18)', color: '#ffffff' }
+                : { color: 'var(--color-primary)' }
+              }
               title={sidebarCollapsed ? label : undefined}
             >
               <Icon className="w-[18px] h-[18px] flex-shrink-0" strokeWidth={S} />

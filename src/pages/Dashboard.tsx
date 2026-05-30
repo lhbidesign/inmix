@@ -182,8 +182,8 @@ export default function Dashboard() {
                 sidebarCollapsed ? 'justify-center p-2.5' : 'gap-3 px-3 py-2.5'
               )}
               style={isNavActive(label)
-                ? { background: 'var(--color-accent)', color: 'var(--color-primary)' }
-                : { color: 'var(--color-muted-foreground)' }
+                ? { background: 'rgba(255,255,255,0.18)', color: '#ffffff' }
+                : { color: 'var(--color-primary)' }
               }
               title={sidebarCollapsed ? label : undefined}
             >
@@ -329,7 +329,9 @@ export default function Dashboard() {
                 <CardContent className="p-5">
                   <div className="flex items-start justify-between mb-3">
                     <p className="text-xs font-medium" style={{ color: 'var(--color-muted-foreground)' }}>{label}</p>
-                    <Icon className={cn('w-[18px] h-[18px]', color)} strokeWidth={S} />
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: '#0011FF' }}>
+                      <Icon className="w-[16px] h-[16px]" strokeWidth={S} style={{ color: '#ffffff' }} />
+                    </div>
                   </div>
                   <p className="text-3xl font-normal tracking-tight">{value}</p>
                   <p className="flex items-center gap-1 text-xs mt-1" style={{ color: 'var(--color-muted-foreground)' }}>
@@ -356,7 +358,7 @@ export default function Dashboard() {
                         onClick={() => setActiveTab(tab)}
                         className="px-4 py-1.5 rounded-md text-sm transition-all capitalize"
                         style={activeTab === tab
-                          ? { background: '#000', color: 'var(--color-primary)', fontWeight: 400 }
+                          ? { background: '#000', color: '#ffffff', fontWeight: 400 }
                           : { color: 'var(--color-muted-foreground)' }
                         }
                       >
@@ -500,7 +502,7 @@ export default function Dashboard() {
             {/* Activity Feed */}
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle className="font-normal" style={{ fontSize: '18px', color: 'var(--color-primary)' }}>Activity</CardTitle>
+                <CardTitle className="font-normal" style={{ fontSize: '18px', color: '#ffffff' }}>Activity</CardTitle>
                 <CardDescription className="text-xs">Recent actions across all projects</CardDescription>
               </CardHeader>
               <CardContent className="p-0 pb-4">

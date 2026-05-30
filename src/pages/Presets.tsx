@@ -153,8 +153,8 @@ export default function Presets() {
                 sidebarCollapsed ? 'justify-center p-2.5' : 'gap-3 px-3 py-2.5'
               )}
               style={isNavActive(label)
-                ? { background: 'var(--color-accent)', color: 'var(--color-primary)' }
-                : { color: 'var(--color-muted-foreground)' }
+                ? { background: 'rgba(255,255,255,0.18)', color: '#ffffff' }
+                : { color: 'var(--color-primary)' }
               }
               title={sidebarCollapsed ? label : undefined}
             >
