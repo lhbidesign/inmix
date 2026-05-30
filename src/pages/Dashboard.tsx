@@ -321,7 +321,7 @@ export default function Dashboard() {
 
           {/* Stats */}
           <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
-            {stats.map(({ label, value, delta, icon: Icon, color }) => (
+            {stats.map(({ label, value, delta, icon: Icon }) => (
               <Card key={label}>
                 <CardContent className="p-5">
                   <div className="flex items-start justify-between mb-3">
