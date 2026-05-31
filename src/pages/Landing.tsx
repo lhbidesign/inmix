@@ -75,8 +75,18 @@ export default function Landing() {
       </nav>
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
-      <section className="pt-36 pb-24 px-6 text-center">
-        <div className="max-w-4xl mx-auto">
+      <section
+        className="relative pt-36 pb-24 px-6 text-center overflow-hidden"
+        style={{
+          backgroundImage: 'url(/images/Hero1.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center top',
+        }}
+      >
+        {/* Dark overlay so text stays readable */}
+        <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(180deg, rgba(8,8,13,0.55) 0%, rgba(8,8,13,0.35) 50%, rgba(8,8,13,0.85) 100%)' }} />
+
+        <div className="relative z-10 max-w-4xl mx-auto">
 
           {/* Pill label */}
           <div className="inline-flex items-center px-3 py-1 rounded-full text-[11px] font-semibold tracking-widest uppercase mb-8"
