@@ -155,13 +155,13 @@ export default function Landing() {
             </h2>
           </div>
 
-          {/* Waveform demo — image placeholder */}
-          <div className="w-full rounded-2xl mb-3 flex items-center justify-center"
-               style={{ height: '200px', background: 'linear-gradient(135deg, #4a1a1a 0%, #2d1020 50%, #1a0d28 100%)', border: '1px solid rgba(255,255,255,0.06)' }}>
-            <p className="text-[11px] font-semibold tracking-widest uppercase" style={{ color: 'rgba(255,255,255,0.18)' }}>
-              Waveform Demo
-            </p>
-          </div>
+          {/* Waveform demo */}
+          <img
+            src="/images/hereaction.png"
+            alt="Waveform demo"
+            className="w-full rounded-2xl mb-3 object-cover"
+            style={{ border: '1px solid rgba(255,255,255,0.06)' }}
+          />
 
           {/* Vibe tabs */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-4">
