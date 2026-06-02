@@ -11,11 +11,9 @@ import { useState } from 'react'
 const S = 1
 
 const navItems = [
-  { icon: Squares2X2Icon,        label: 'Dashboard',     href: '/dashboard' },
-  { icon: FolderOpenIcon,        label: 'Projects',       href: '/projects'  },
-  { icon: DocumentDuplicateIcon, label: 'Presets',        href: '/presets'   },
-  { icon: PlayCircleIcon,        label: 'Listen',         href: '/dashboard' },
-  { icon: UsersIcon,             label: 'Collaborators',  href: '/dashboard' },
+  { icon: Squares2X2Icon,        label: 'Dashboard', href: '/dashboard' },
+  { icon: FolderOpenIcon,        label: 'Projects',  href: '/projects'  },
+  { icon: DocumentDuplicateIcon, label: 'Presets',   href: '/presets'   },
 ]
 
 interface AppSidebarProps {
