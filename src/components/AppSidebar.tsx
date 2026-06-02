@@ -104,7 +104,7 @@ export function AppSidebar({ open, onOpenChange }: AppSidebarProps) {
               )}
               style={isActive(label)
                 ? { background: 'rgba(255,255,255,0.18)', color: '#ffffff' }
-                : { color: 'var(--color-primary)' }
+                : { color: 'rgba(255,255,255,0.6)' }
               }
               title={collapsed ? label : undefined}
             >
@@ -123,7 +123,7 @@ export function AppSidebar({ open, onOpenChange }: AppSidebarProps) {
               <Link
                 to="/settings"
                 className="w-full flex justify-center p-2.5 rounded-lg transition-colors hover:opacity-80"
-                style={{ color: 'var(--color-primary)' }}
+                style={{ color: 'rgba(255,255,255,0.6)' }}
                 title="Settings"
               >
                 <Cog6ToothIcon className="w-[18px] h-[18px]" strokeWidth={S} />
@@ -147,7 +147,7 @@ export function AppSidebar({ open, onOpenChange }: AppSidebarProps) {
               <Link
                 to="/settings"
                 className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors hover:opacity-80"
-                style={{ color: 'var(--color-primary)' }}
+                style={{ color: 'rgba(255,255,255,0.6)' }}
               >
                 <Cog6ToothIcon className="w-[18px] h-[18px]" strokeWidth={S} />
                 Settings
@@ -165,7 +165,7 @@ export function AppSidebar({ open, onOpenChange }: AppSidebarProps) {
               <div className="flex items-center gap-3 px-3 py-2.5 mt-1">
                 <img src="/images/IMG_3993-min.jpg" alt="David Suarez" className="w-7 h-7 rounded-full object-cover flex-shrink-0" />
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs font-medium truncate" style={{ color: 'var(--color-primary)' }}>David Suarez</p>
+                  <p className="text-xs font-medium truncate" style={{ color: 'rgba(255,255,255,0.6)' }}>David Suarez</p>
                   <p className="text-xs truncate" style={{ color: 'var(--color-muted-foreground)' }}>Pro Plan</p>
                 </div>
               </div>

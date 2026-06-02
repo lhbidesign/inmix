@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import {
   MusicalNoteIcon,
@@ -10,6 +10,8 @@ import {
   SparklesIcon, SunIcon, ChevronDownIcon, ArrowsPointingOutIcon,
   FilmIcon, CloudIcon, StarIcon, ArrowDownTrayIcon, ShareIcon,
   MapPinIcon, TrophyIcon, GlobeAltIcon,
+  PlusIcon, CursorArrowRaysIcon, MagnifyingGlassMinusIcon, MagnifyingGlassPlusIcon,
+  Squares2X2Icon, LinkIcon,
 } from '@heroicons/react/24/outline'
 import {
   BackwardIcon as BackwardSolid, ForwardIcon as ForwardSolid,
@@ -97,6 +99,23 @@ const stemAccentColors: Record<string, string> = {
   KEYS:  '#b9509b',
 }
 
+// Per-track colors for the Arrange view (index-matched to initialStems order)
+const arrangeTrackColors = [
+  { color: '#8B5CF6', bg: 'rgba(139,92,246,0.10)' }, // Lead Vocals   — purple
+  { color: '#22C55E', bg: 'rgba(34,197,94,0.08)'  }, // Backing Vocals — green
+  { color: '#EC4899', bg: 'rgba(236,72,153,0.10)' }, // Drums          — pink
+  { color: '#22D3EE', bg: 'rgba(34,211,238,0.08)' }, // Bass           — cyan
+  { color: '#FBBF24', bg: 'rgba(251,191,36,0.08)' }, // Guitar         — amber
+  { color: '#A78BFA', bg: 'rgba(167,139,250,0.08)' }, // Keyboard      — violet
+  { color: '#F472B6', bg: 'rgba(244,114,182,0.10)' }, // Percussion    — pink
+  { color: '#34D399', bg: 'rgba(52,211,153,0.08)'  }, // Synth         — emerald
+]
+
+// Arrange layout constants
+const ARR_TRACK_H  = 72   // px per track row
+const ARR_RULER_H  = 28   // px for ruler
+const ARR_MEASURES = 12   // number of measures visible
+
 interface StemWave { top: string; bottom: string }
 
 function buildStemWave(seed: number, freq: number, amp: number): StemWave {
@@ -114,20 +133,20 @@ function buildStemWave(seed: number, freq: number, amp: number): StemWave {
 }
 
 const stemWaves: StemWave[] = [
-  buildStemWave(0.3,  0.55, 1.1),   // 1 Drums      — fast, high amp
-  buildStemWave(1.2,  0.40, 0.65),  // 2 Bkg Vocals — medium
-  buildStemWave(2.1,  0.44, 0.80),  // 3 Vocal      — medium-high
-  buildStemWave(0.8,  0.28, 1.15),  // 4 Bass       — slow, high amp
+  buildStemWave(2.1,  0.44, 0.80),  // 1 Lead Vocals  — medium-high
+  buildStemWave(1.2,  0.40, 0.42),  // 2 Bkg Vocals   — medium, lower amp (sparse content)
+  buildStemWave(0.3,  0.55, 1.10),  // 3 Drums        — fast, high amp
+  buildStemWave(0.8,  0.28, 1.15),  // 4 Bass         — slow, high amp
   buildStemWave(1.7,  0.38, 0.75),  // 5 Guitar
-  buildStemWave(3.0,  0.52, 0.55),  // 6 Keyboard   — faster, lighter
-  buildStemWave(0.5,  0.60, 1.0),   // 7 Percussion — fast, high amp
-  buildStemWave(2.5,  0.58, 0.50),  // 8 Synth      — fast, light
+  buildStemWave(3.0,  0.52, 0.55),  // 6 Keyboard     — faster, lighter
+  buildStemWave(0.5,  0.60, 1.00),  // 7 Percussion   — fast, high amp
+  buildStemWave(2.5,  0.58, 0.50),  // 8 Synth        — fast, light
 ]
 
 const initialStems = [
-  { id: 1, name: 'Drums',          type: 'DRUMS', volume: 80, pan: 0, muted: false, soloed: false },
+  { id: 1, name: 'Lead Vocals',    type: 'VOCAL', volume: 80, pan: 0, muted: false, soloed: false },
   { id: 2, name: 'Backing Vocals', type: 'VOCAL', volume: 80, pan: 0, muted: false, soloed: false },
-  { id: 3, name: 'Vocal',          type: 'VOCAL', volume: 80, pan: 0, muted: false, soloed: false },
+  { id: 3, name: 'Drums',          type: 'DRUMS', volume: 80, pan: 0, muted: false, soloed: false },
   { id: 4, name: 'Bass',           type: 'BASS',  volume: 80, pan: 0, muted: false, soloed: false },
   { id: 5, name: 'Guitar',         type: 'INSTR', volume: 80, pan: 0, muted: false, soloed: false },
   { id: 6, name: 'Keyboard',       type: 'KEYS',  volume: 80, pan: 0, muted: false, soloed: false },
@@ -159,6 +178,12 @@ export default function ProjectDetail() {
   const [canRedo]                             = useState(false)
   const [showMobileMenu, setShowMobileMenu]        = useState(false)
   const [mixConsoleOpen, setMixConsoleOpen]       = useState(false)
+  const [arrangeTool, setArrangeTool]             = useState<'move' | 'cut' | 'select'>('move')
+  const [snapEnabled, setSnapEnabled]             = useState(true)
+  const [zoomPxPerS, setZoomPxPerS]               = useState(60)
+  const [showShortcuts, setShowShortcuts]         = useState(false)
+  const leftPanelRef  = useRef<HTMLDivElement>(null)
+  const rightPanelRef = useRef<HTMLDivElement>(null)
   const [mixIntensity, setMixIntensity]           = useState<'subtle' | 'balanced' | 'aggressive'>('balanced')
   const [mixFocus, setMixFocus]                   = useState<Set<string>>(new Set(['Balanced']))
 
@@ -554,8 +579,8 @@ export default function ProjectDetail() {
         </div>
         </div>
 
-        {/* ── Scrollable content ──────────────────────────────────────────── */}
-        <main className="flex-1 overflow-y-auto pb-16">
+        {/* ── Mode content ────────────────────────────────────────────────── */}
+        {mode === 'mix' ? (<><main className="flex-1 overflow-y-auto pb-16">
 
           {/* Master Mixing Bus */}
           <section className="px-5 pt-8 pb-7 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
@@ -822,9 +847,409 @@ export default function ProjectDetail() {
             {masteringEnabled ? 'Enabled' : 'Enable'}
           </button>
         </div>
+        </>) : (
+
+        /* ── ARRANGE MODE ─────────────────────────────────────────────────── */
+        <div className="flex flex-col flex-1 overflow-hidden">
+
+          {/* Arrange toolbar */}
+          <div
+            className="flex items-center gap-0.5 px-3 border-b flex-shrink-0"
+            style={{ height: '42px', borderColor: 'rgba(255,255,255,0.08)', background: 'rgba(0,0,0,0.15)' }}
+          >
+            {/* ─ Tool group ─ */}
+            <button
+              onClick={() => setArrangeTool('move')}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all"
+              style={arrangeTool === 'move'
+                ? { background: '#0011FF', color: '#fff' }
+                : { color: 'var(--color-muted-foreground)' }
+              }
+            >
+              <PlusIcon className="w-3.5 h-3.5" strokeWidth={S} />
+              Move
+            </button>
+
+            <button
+              onClick={() => setArrangeTool('cut')}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs transition-all hover:text-white"
+              style={arrangeTool === 'cut'
+                ? { background: 'rgba(255,255,255,0.1)', color: '#fff' }
+                : { color: 'var(--color-muted-foreground)' }
+              }
+            >
+              {/* scissors inline SVG — not in heroicons */}
+              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/>
+                <path d="M20 4 8.12 15.88M14.47 14.48 20 20M8.12 8.12 12 12"/>
+              </svg>
+              Cut
+            </button>
+
+            <button
+              onClick={() => setArrangeTool('select')}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs transition-all hover:text-white"
+              style={arrangeTool === 'select'
+                ? { background: 'rgba(255,255,255,0.1)', color: '#fff' }
+                : { color: 'var(--color-muted-foreground)' }
+              }
+            >
+              <CursorArrowRaysIcon className="w-3.5 h-3.5" strokeWidth={S} />
+              Select
+            </button>
+
+            <div className="w-px h-4 mx-1.5" style={{ background: 'rgba(255,255,255,0.1)' }} />
+
+            {/* ─ Undo / History ─ */}
+            <button
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs transition-all hover:text-white"
+              style={{ color: 'var(--color-muted-foreground)' }}
+            >
+              <ArrowUturnLeftIcon className="w-3.5 h-3.5" strokeWidth={S} />
+              Undo
+            </button>
+            <button
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs transition-all hover:text-white"
+              style={{ color: 'var(--color-muted-foreground)' }}
+            >
+              <ClockIcon className="w-3.5 h-3.5" strokeWidth={S} />
+              History
+            </button>
+
+            <div className="w-px h-4 mx-1.5" style={{ background: 'rgba(255,255,255,0.1)' }} />
+
+            {/* ─ Snap ─ */}
+            <button
+              onClick={() => setSnapEnabled(v => !v)}
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium transition-all"
+              style={{
+                color: snapEnabled ? '#5577ff' : 'var(--color-muted-foreground)',
+                background: snapEnabled ? 'rgba(0,17,255,0.12)' : 'transparent',
+              }}
+            >
+              <LinkIcon className="w-3.5 h-3.5" strokeWidth={S} />
+              Snap
+            </button>
+
+            <div className="w-px h-4 mx-1.5" style={{ background: 'rgba(255,255,255,0.1)' }} />
+
+            {/* ─ Zoom ─ */}
+            <button
+              onClick={() => setZoomPxPerS(v => Math.max(20, v - 20))}
+              className="w-7 h-7 flex items-center justify-center rounded-md transition-colors hover:text-white"
+              style={{ color: 'var(--color-muted-foreground)' }}
+            >
+              <MagnifyingGlassMinusIcon className="w-3.5 h-3.5" strokeWidth={S} />
+            </button>
+            <span className="text-xs font-mono tabular-nums" style={{ color: 'var(--color-muted-foreground)', minWidth: '46px', textAlign: 'center' }}>
+              {zoomPxPerS}px/s
+            </span>
+            <button
+              onClick={() => setZoomPxPerS(v => Math.min(200, v + 20))}
+              className="w-7 h-7 flex items-center justify-center rounded-md transition-colors hover:text-white"
+              style={{ color: 'var(--color-muted-foreground)' }}
+            >
+              <MagnifyingGlassPlusIcon className="w-3.5 h-3.5" strokeWidth={S} />
+            </button>
+            <button
+              className="w-7 h-7 flex items-center justify-center rounded-md transition-colors hover:text-white"
+              style={{ color: 'var(--color-muted-foreground)' }}
+            >
+              <ArrowsPointingOutIcon className="w-3.5 h-3.5" strokeWidth={S} />
+            </button>
+
+            <div className="flex-1" />
+
+            {/* BPM + regions */}
+            <span className="text-xs font-mono" style={{ color: 'var(--color-muted-foreground)' }}>
+              {bpm} BPM • {stems.length} regions
+            </span>
+
+            {/* Grid icon — opens shortcuts modal */}
+            <button
+              onClick={() => setShowShortcuts(true)}
+              className="w-7 h-7 flex items-center justify-center rounded-md ml-1 transition-colors hover:text-white"
+              style={{ color: 'var(--color-muted-foreground)' }}
+            >
+              <Squares2X2Icon className="w-3.5 h-3.5" strokeWidth={S} />
+            </button>
+          </div>
+
+          {/* ─ Split layout: left track list + right timeline ─ */}
+          <div className="flex flex-1 overflow-hidden">
+
+            {/* Left panel — track names */}
+            <div
+              ref={leftPanelRef}
+              onScroll={e => { if (rightPanelRef.current) rightPanelRef.current.scrollTop = e.currentTarget.scrollTop }}
+              className="flex-shrink-0 overflow-y-auto"
+              style={{ width: '148px', borderRight: '1px solid rgba(255,255,255,0.08)' }}
+            >
+              {/* Header row — matches ruler height */}
+              <div
+                className="flex flex-col justify-center px-3 flex-shrink-0"
+                style={{ height: `${ARR_RULER_H}px`, borderBottom: '1px solid rgba(255,255,255,0.08)' }}
+              >
+                <p className="text-[9px] font-medium uppercase tracking-widest leading-none mb-0.5" style={{ color: 'var(--color-primary)' }}>Mix Presets</p>
+                <p className="text-[9px] font-medium uppercase tracking-widest leading-none"       style={{ color: 'var(--color-muted-foreground)' }}>Tracks</p>
+              </div>
+              {/* Track rows */}
+              {stems.map((stem, idx) => (
+                <div
+                  key={stem.id}
+                  className="flex items-center gap-2 px-3 flex-shrink-0"
+                  style={{ height: `${ARR_TRACK_H}px`, borderBottom: '1px solid rgba(255,255,255,0.04)' }}
+                >
+                  <span className="font-mono text-[11px] tabular-nums flex-shrink-0 w-3.5 text-right" style={{ color: 'rgba(255,255,255,0.2)' }}>
+                    {idx + 1}
+                  </span>
+                  <span className="text-xs font-medium truncate" style={{ color: 'var(--color-foreground)' }}>
+                    {stem.name}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            {/* Right panel — scrollable timeline */}
+            <div
+              ref={rightPanelRef}
+              onScroll={e => { if (leftPanelRef.current) leftPanelRef.current.scrollTop = e.currentTarget.scrollTop }}
+              className="flex-1 overflow-auto"
+            >
+              {/* Inner fixed-width container */}
+              {(() => {
+                const measureW = Math.round((4 * 60 / bpm) * zoomPxPerS)
+                const totalW   = ARR_MEASURES * measureW
+                return (
+                  <div style={{ minWidth: `${totalW}px`, position: 'relative' }}>
+
+                    {/* Ruler */}
+                    <div
+                      className="flex sticky top-0 z-10"
+                      style={{ height: `${ARR_RULER_H}px`, borderBottom: '1px solid rgba(255,255,255,0.08)', background: '#07070e' }}
+                    >
+                      {Array.from({ length: ARR_MEASURES }, (_, i) => (
+                        <div
+                          key={i}
+                          style={{ width: `${measureW}px`, flexShrink: 0, borderRight: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', paddingLeft: '6px' }}
+                        >
+                          <span className="text-[10px] font-mono tabular-nums" style={{ color: 'rgba(255,255,255,0.28)' }}>{i + 1}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Tracks area */}
+                    <div className="relative">
+
+                      {/* Subtle vertical grid lines */}
+                      <div className="absolute inset-0 flex pointer-events-none" style={{ zIndex: 0 }}>
+                        {Array.from({ length: ARR_MEASURES }, (_, i) => (
+                          <div key={i} style={{ width: `${measureW}px`, flexShrink: 0, borderRight: '1px solid rgba(255,255,255,0.04)', height: '100%' }} />
+                        ))}
+                      </div>
+
+                      {/* Playhead */}
+                      <div
+                        className="absolute top-0 bottom-0 pointer-events-none"
+                        style={{ left: '1px', width: '1px', background: '#0011FF', zIndex: 20 }}
+                      >
+                        {/* Circle dot */}
+                        <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#0011FF', position: 'absolute', top: '8px', left: '-4.5px' }} />
+                      </div>
+
+                      {/* Track region rows */}
+                      {stems.map((stem, idx) => {
+                        const c    = arrangeTrackColors[idx] ?? arrangeTrackColors[0]
+                        const wave = stemWaves[idx]
+                        const waveAreaH = ARR_TRACK_H - 4 - 4 - 18  // top pad + bottom pad + label bar
+
+                        return (
+                          <div
+                            key={stem.id}
+                            className="relative"
+                            style={{ height: `${ARR_TRACK_H}px`, borderBottom: '1px solid rgba(255,255,255,0.04)', zIndex: 2 }}
+                          >
+                            {/* Region block */}
+                            <div
+                              className="absolute rounded-md overflow-hidden"
+                              style={{
+                                top: '4px', bottom: '4px', left: '2px', right: '2px',
+                                background: c.bg,
+                                border: `1px solid ${c.color}28`,
+                              }}
+                            >
+                              {/* Label bar */}
+                              <div
+                                className="flex items-center px-2"
+                                style={{ height: '18px', borderBottom: `1px solid ${c.color}20` }}
+                              >
+                                <span className="text-[10px] font-medium leading-none truncate" style={{ color: c.color }}>
+                                  {stem.name}
+                                </span>
+                              </div>
+
+                              {/* Waveform */}
+                              <div style={{ position: 'absolute', top: '18px', left: 0, right: 0, bottom: 0 }}>
+                                <svg
+                                  style={{ display: 'block', width: '100%', height: '100%' }}
+                                  preserveAspectRatio="none"
+                                  viewBox={`0 0 1040 ${waveAreaH}`}
+                                >
+                                  <path d={wave.top}    fill="none" stroke={c.color} strokeWidth="1.5" opacity="0.55" />
+                                  <path d={wave.bottom} fill="none" stroke={c.color} strokeWidth="1"   opacity="0.35" />
+                                </svg>
+                              </div>
+                            </div>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )
+              })()}
+            </div>
+
+          </div>
+        </div>
+        )}
 
       </div>
     </div>
+
+    {/* ── KEYBOARD SHORTCUTS MODAL ─────────────────────────────────────── */}
+    {showShortcuts && (
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center p-4"
+        style={{ background: 'rgba(0,0,0,0.72)', backdropFilter: 'blur(8px)' }}
+        onClick={() => setShowShortcuts(false)}
+      >
+        <div
+          className="w-full max-w-2xl rounded-2xl border overflow-hidden"
+          style={{ background: '#0e0d14', borderColor: 'rgba(255,255,255,0.1)' }}
+          onClick={e => e.stopPropagation()}
+        >
+          {/* Header */}
+          <div className="flex items-start justify-between px-7 pt-6 pb-5">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(0,17,255,0.25)', border: '1px solid rgba(0,17,255,0.4)' }}>
+                {/* Keyboard icon inline SVG */}
+                <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="#5577ff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="6" width="20" height="13" rx="2"/>
+                  <path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M6 14h.01M18 14h.01M10 14h4"/>
+                </svg>
+              </div>
+              <div>
+                <h2 className="text-xl font-semibold" style={{ color: '#ffffff' }}>Keyboard Shortcuts</h2>
+                <p className="text-sm mt-0.5" style={{ color: 'rgba(255,255,255,0.45)' }}>Arrangement view controls</p>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowShortcuts(false)}
+              className="p-1.5 rounded-lg transition-colors hover:text-white mt-0.5"
+              style={{ color: 'rgba(255,255,255,0.4)' }}
+            >
+              <XMarkIcon className="w-5 h-5" strokeWidth={S} />
+            </button>
+          </div>
+
+          {/* Body — 2 columns */}
+          <div className="grid grid-cols-2 gap-x-10 px-7 pb-6">
+
+            {/* ── LEFT COLUMN ── */}
+            <div className="space-y-6">
+              {/* TOOLS */}
+              <section>
+                <p className="text-xs font-semibold tracking-widest uppercase mb-4" style={{ color: '#5577ff' }}>Tools</p>
+                <div className="space-y-4">
+                  {[
+                    { label: 'Move — drag regions', key: 'V' },
+                    { label: 'Cut — click to split',  key: 'C' },
+                    { label: 'Select — click regions', key: 'S' },
+                  ].map(({ label, key }) => (
+                    <div key={key} className="flex items-center justify-between">
+                      <span className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>{label}</span>
+                      <kbd className="flex items-center justify-center w-9 h-9 rounded-xl text-sm font-semibold flex-shrink-0" style={{ background: 'rgba(255,255,255,0.08)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.1)' }}>{key}</kbd>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              {/* VIEW */}
+              <section>
+                <p className="text-xs font-semibold tracking-widest uppercase mb-4" style={{ color: '#22c55e' }}>View</p>
+                <div className="space-y-4">
+                  {[
+                    { label: 'Zoom in',     key: '⌘+' },
+                    { label: 'Zoom out',    key: '⌘-' },
+                    { label: 'This panel',  key: '?'  },
+                  ].map(({ label, key }) => (
+                    <div key={label} className="flex items-center justify-between">
+                      <span className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>{label}</span>
+                      <kbd className="flex items-center justify-center min-w-[36px] h-9 px-2 rounded-xl text-sm font-semibold flex-shrink-0" style={{ background: 'rgba(255,255,255,0.08)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.1)' }}>{key}</kbd>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            </div>
+
+            {/* ── RIGHT COLUMN ── */}
+            <div className="space-y-6">
+              {/* EDIT */}
+              <section>
+                <p className="text-xs font-semibold tracking-widest uppercase mb-4" style={{ color: '#22c55e' }}>Edit</p>
+                <div className="space-y-4">
+                  {[
+                    { label: 'Undo last action',    key: '⌘Z'  },
+                    { label: 'Duplicate selected',  key: '⌘D'  },
+                    { label: 'Delete selected',     key: 'Del' },
+                    { label: 'Deselect all',        key: 'Esc' },
+                  ].map(({ label, key }) => (
+                    <div key={label} className="flex items-center justify-between">
+                      <span className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>{label}</span>
+                      <kbd className="flex items-center justify-center min-w-[36px] h-9 px-2.5 rounded-xl text-sm font-semibold flex-shrink-0" style={{ background: 'rgba(255,255,255,0.08)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.1)' }}>{key}</kbd>
+                    </div>
+                  ))}
+                </div>
+              </section>
+
+              {/* PLAYBACK */}
+              <section>
+                <p className="text-xs font-semibold tracking-widest uppercase mb-4" style={{ color: '#fbbf24' }}>Playback</p>
+                <div className="space-y-4">
+                  {[
+                    { label: 'Play / Pause', key: 'Space' },
+                    { label: 'Seek ±5 s',   key: '← →'  },
+                    { label: 'Seek on ruler', key: 'Click' },
+                  ].map(({ label, key }) => (
+                    <div key={label} className="flex items-center justify-between">
+                      <span className="text-sm" style={{ color: 'rgba(255,255,255,0.8)' }}>{label}</span>
+                      <kbd className="flex items-center justify-center min-w-[36px] h-9 px-3 rounded-xl text-sm font-semibold flex-shrink-0" style={{ background: 'rgba(255,255,255,0.08)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.1)' }}>{key}</kbd>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div
+            className="flex items-center justify-between px-7 py-4 border-t"
+            style={{ borderColor: 'rgba(255,255,255,0.07)' }}
+          >
+            <p className="text-xs" style={{ color: 'rgba(255,255,255,0.35)' }}>
+              Click outside or press{' '}
+              <kbd className="inline-flex items-center px-1.5 py-0.5 rounded text-xs mx-1" style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.6)', border: '1px solid rgba(255,255,255,0.15)' }}>Esc</kbd>
+              to close
+            </p>
+            <p className="text-xs" style={{ color: 'rgba(255,255,255,0.35)' }}>
+              Press{' '}
+              <kbd className="inline-flex items-center px-1.5 py-0.5 rounded text-xs mx-1" style={{ background: 'rgba(255,255,255,0.1)', color: 'rgba(255,255,255,0.6)', border: '1px solid rgba(255,255,255,0.15)' }}>?</kbd>
+              anytime to reopen
+            </p>
+          </div>
+        </div>
+      </div>
+    )}
 
     {/* ── MIX CONSOLE MODAL ────────────────────────────────────────────── */}
 
