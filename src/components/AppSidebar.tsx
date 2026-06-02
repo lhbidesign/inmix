@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import {
-  Squares2X2Icon, FolderOpenIcon, DocumentDuplicateIcon, PlayCircleIcon,
-  UsersIcon, Cog6ToothIcon, ChevronLeftIcon, ChevronRightIcon,
+  Squares2X2Icon, FolderOpenIcon, DocumentDuplicateIcon,
+  Cog6ToothIcon, ChevronLeftIcon, ChevronRightIcon,
   XMarkIcon, ArrowRightOnRectangleIcon,
 } from '@heroicons/react/24/outline'
 import { Separator } from '@/components/ui/separator'
