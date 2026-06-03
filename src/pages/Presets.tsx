@@ -91,7 +91,7 @@ export default function Presets() {
           {/* Page header */}
           <div className="flex items-start justify-between mb-7 gap-4">
             <div>
-              <h1 style={{ fontSize: '36px', fontWeight: 300, color: 'var(--color-primary)', lineHeight: 1.2 }}>
+              <h1 style={{ fontSize: '36px', fontWeight: 300, color: '#ffffff', lineHeight: 1.2 }}>
                 Mix Presets
               </h1>
               <p className="text-sm mt-1" style={{ color: 'var(--color-muted-foreground)' }}>
