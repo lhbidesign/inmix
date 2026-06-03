@@ -143,13 +143,13 @@ export default function Dashboard() {
             {stats.map(({ label, value, icon: Icon }) => (
               <Card key={label}>
                 <CardContent className="p-5">
-                  <div className="flex items-start justify-between mb-3">
+                  <div className="flex items-start justify-between mb-1">
                     <p className="text-xs font-medium" style={{ color: 'var(--color-muted-foreground)' }}>{label}</p>
                     <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: '#0011FF' }}>
                       <Icon className="w-[16px] h-[16px]" strokeWidth={S} style={{ color: '#ffffff' }} />
                     </div>
                   </div>
-                  <p className="text-[44px] font-normal tracking-tight leading-none mt-2">{value}</p>
+                  <p className="text-[44px] font-normal tracking-tight leading-none">{value}</p>
                 </CardContent>
               </Card>
             ))}
