@@ -1,35 +1,35 @@
-# INMIX Redesign — Guía de Instalación
+# INMIX Redesign — Installation Guide
 
-Guía para integrar el diseño INMIX en el proyecto del cliente.
+Guide for integrating the INMIX design into the client's project.
 
 ---
 
-## Stack técnico
+## Tech stack
 
-| Capa | Tecnología | Versión |
-|------|-----------|---------|
+| Layer | Technology | Version |
+|-------|-----------|---------|
 | Build tool | Vite | 8.x |
 | UI framework | React | 19.x |
-| Tipado | TypeScript | 6.x |
-| Estilos | Tailwind CSS | 4.x |
-| Componentes UI | Radix UI + CVA (patrón shadcn/ui) | — |
+| Types | TypeScript | 6.x |
+| Styles | Tailwind CSS | 4.x |
+| UI components | Radix UI + CVA (shadcn/ui pattern) | — |
 | Router | React Router | 7.x |
-| Íconos | Heroicons | 2.x |
+| Icons | Heroicons | 2.x |
 | Deploy | Vercel | — |
 
-> ⚠️ **Nota importante:** No usamos DaisyUI. El sistema de componentes sigue el patrón de **shadcn/ui**: primitivos de Radix UI + `class-variance-authority` (CVA) para variantes + Tailwind para estilos.
+> **Important:** This project does **not** use DaisyUI. The component system follows the **shadcn/ui pattern**: Radix UI primitives + `class-variance-authority` (CVA) for variants + Tailwind for styles.
 
 ---
 
-## 1. Prerequisitos
+## 1. Prerequisites
 
 - Node.js ≥ 20
-- npm ≥ 10 (o pnpm / yarn equivalentes)
-- Cuenta en [fonts.adobe.com](https://fonts.adobe.com) con acceso al kit `dcc5mne` (Neue Haas Grotesk Display Pro)
+- npm ≥ 10 (or pnpm / yarn equivalent)
+- An [fonts.adobe.com](https://fonts.adobe.com) account with access to kit `dcc5mne` (Neue Haas Grotesk Display Pro)
 
 ---
 
-## 2. Clonar e instalar
+## 2. Clone and install
 
 ```bash
 git clone https://github.com/lhbidesign/inmix.git
@@ -40,45 +40,44 @@ npm run dev        # → http://localhost:5174
 
 ---
 
-## 3. Variables de entorno
+## 3. Environment variables
 
-El proyecto no requiere variables de entorno para funcionar. Si en el futuro se conecta un backend, crear un archivo `.env.local`:
+The project requires no environment variables to run locally. If a backend is connected later, create `.env.local`:
 
 ```env
-VITE_API_URL=https://api.tudominio.com
-VITE_ADOBE_FONTS_KIT=dcc5mne
+VITE_API_URL=https://api.yourdomain.com
 ```
 
 ---
 
-## 4. Tipografía (Adobe Fonts)
+## 4. Typography — Adobe Fonts
 
-La fuente **Neue Haas Grotesk Display Pro** se carga desde Adobe Fonts.
+The typeface **Neue Haas Grotesk Display Pro** loads from Adobe Fonts.
 
-1. Ir a [fonts.adobe.com](https://fonts.adobe.com) → Web Projects
-2. Crear o acceder al kit **`dcc5mne`**
-3. Activar los pesos: **45 Light**, **55 Roman**, **65 Medium**
-4. Pegar el `<link>` generado en `index.html` **antes** del cierre de `</head>`:
+1. Go to [fonts.adobe.com](https://fonts.adobe.com) → Web Projects
+2. Open or create kit **`dcc5mne`**
+3. Activate weights: **45 Light**, **55 Roman**, **65 Medium**
+4. Paste the generated `<link>` in `index.html` before `</head>`:
 
 ```html
 <link rel="stylesheet" href="https://use.typekit.net/dcc5mne.css">
 ```
 
-Sin este paso la fuente cae al fallback `Helvetica Neue / Arial`.
+Without this step the font falls back to `Helvetica Neue / Arial`.
 
 ---
 
-## 5. Tokens de diseño
+## 5. Design tokens
 
-Todos los tokens están en **`src/index.css`** bajo la directiva `@theme` de Tailwind v4:
+All tokens live in **`src/index.css`** under Tailwind v4's `@theme` directive:
 
 ```css
 @theme {
   --font-sans: "neue-haas-grotesk-display", ...;
 
-  --color-primary: #73ABBF;          /* teal/cyan — secondary UI */
-  --color-input:   #1D1C22;          /* fondo de inputs y waveforms */
-  --color-accent:  oklch(25% 0.02 275); /* fondo de tab groups */
+  --color-primary: #73ABBF;           /* teal — secondary UI */
+  --color-input:   #1D1C22;           /* input backgrounds and waveforms */
+  --color-accent:  oklch(25% 0.02 275); /* tab group backgrounds */
 
   --gradient-bg:      linear-gradient(160deg, #000000 0%, #1D1C22 100%);
   --gradient-sidebar: linear-gradient(180deg, #0D1258 0%, #050722 100%);
@@ -86,46 +85,46 @@ Todos los tokens están en **`src/index.css`** bajo la directiva `@theme` de Tai
 }
 ```
 
-**Color brand principal (Electric Blue):** `#0011FF`
-→ Se aplica directamente como `style={{ accentColor: '#0011FF' }}` o `style={{ background: '#0011FF' }}` ya que Tailwind v4 no lo tiene como variable semántica.
+**Brand color (Electric Blue):** `#0011FF`  
+Applied directly as `style={{ accentColor: '#0011FF' }}` or `style={{ background: '#0011FF' }}` — not a CSS variable.
 
 ---
 
-## 6. Estructura de archivos
+## 6. File structure
 
 ```
 inmix-redesign/
 ├── public/
-│   ├── logo.svg                  # Logo INMIX SVG
-│   └── images/                   # Assets de imágenes
+│   ├── logo.svg                  # INMIX SVG logo
+│   └── images/                   # Image assets
 ├── src/
 │   ├── components/
-│   │   ├── AppSidebar.tsx        # Sidebar global (collapse/expand)
+│   │   ├── AppSidebar.tsx        # Global sidebar (collapse/expand)
 │   │   └── ui/
-│   │       ├── button.tsx        # Button con CVA (variantes + tamaños)
+│   │       ├── button.tsx        # Button with CVA (variants + sizes)
 │   │       ├── card.tsx          # Card + CardContent
-│   │       ├── input.tsx         # Input base
-│   │       ├── badge.tsx         # Badge/chip
-│   │       ├── tab-group.tsx     # TabGroup<T> genérico
+│   │       ├── input.tsx         # Base input
+│   │       ├── badge.tsx         # Badge / chip
+│   │       ├── tab-group.tsx     # Generic TabGroup<T>
 │   │       ├── separator.tsx     # Radix Separator
 │   │       └── label.tsx         # Radix Label
 │   ├── pages/
-│   │   ├── Dashboard.tsx         # Dashboard con stats y tabla de proyectos
-│   │   ├── Projects.tsx          # Lista de proyectos
-│   │   ├── ProjectDetail.tsx     # Editor Mix/Arrange (página principal)
-│   │   ├── Presets.tsx           # Biblioteca de presets
-│   │   ├── Settings.tsx          # Configuración de cuenta
+│   │   ├── Dashboard.tsx         # Stats dashboard and project table
+│   │   ├── Projects.tsx          # Project list
+│   │   ├── ProjectDetail.tsx     # Mix / Arrange editor (main page)
+│   │   ├── Presets.tsx           # Preset library
+│   │   ├── Settings.tsx          # Account settings
 │   │   ├── Auth.tsx              # Login / Register
-│   │   ├── Landing.tsx           # Landing page (marketing)
-│   │   └── DesignSystem.tsx      # 📐 Design System docs
+│   │   ├── Landing.tsx           # Marketing landing page
+│   │   └── DesignSystem.tsx      # Design System documentation
 │   ├── lib/
 │   │   └── utils.ts              # cn() helper (clsx + tailwind-merge)
-│   ├── App.tsx                   # Router principal
+│   ├── App.tsx                   # Main router
 │   ├── main.tsx                  # Entry point
-│   └── index.css                 # Tokens @theme + base styles
+│   └── index.css                 # @theme tokens + base styles
 ├── .claude/
-│   └── launch.json               # Config de dev server para Claude Code
-├── vercel.json                   # Config de deploy (SPA redirect)
+│   └── launch.json               # Dev server config for Claude Code
+├── vercel.json                   # SPA redirect config
 ├── vite.config.ts
 ├── tsconfig.json
 └── package.json
@@ -133,91 +132,95 @@ inmix-redesign/
 
 ---
 
-## 7. Convenciones de componentes
+## 7. Component conventions
 
-### Botones
+### Icon usage
 
 ```tsx
-// ✅ Filled white — CTA principal (Save, Publish)
+import { SparklesIcon, BoltIcon } from '@heroicons/react/24/outline'
+
+// Always define S = 1 at the top of each file
+const S = 1
+
+// Always pass strokeWidth={S} — never omit it
+<SparklesIcon className="w-4 h-4" strokeWidth={S} />
+<BoltIcon     className="w-3.5 h-3.5" strokeWidth={S} />
+```
+
+Only `PlayIcon`, `PauseIcon`, `StopIcon` use the solid set (`@heroicons/react/24/solid`) — transport bar only.
+
+### Buttons
+
+```tsx
+// Filled white — primary CTA (Save, Publish)
 <button className="rounded-full px-4 py-1.5 text-xs font-medium hover:opacity-80"
   style={{ background: '#ffffff', color: '#000' }}>
   Save
 </button>
 
-// ✅ Electric Blue — AI actions
+// Electric Blue — AI actions
 <button className="flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium"
   style={{ background: 'rgba(0,17,255,0.1)', border: '1px solid rgba(0,17,255,0.4)', color: '#6680ff' }}>
-  ⚡ AI MIX
+  AI MIX
 </button>
 
-// ✅ Outline — acciones secundarias (Export)
+// Outline — secondary actions (Export)
 <button className="rounded-full px-3 py-1.5 text-xs font-medium"
   style={{ border: '1px solid rgba(255,255,255,0.5)', color: '#fff' }}>
   Export WAV
 </button>
 
-// ✅ Ghost — nav actions (Preview, Refresh, Share)
+// Ghost — nav actions (Preview, Refresh, Share)
 <button className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs hover:text-white"
   style={{ color: 'var(--color-muted-foreground)' }}>
   Preview
 </button>
 ```
 
-### Íconos
+### Hover states with inline styles
 
 ```tsx
-import { SparklesIcon } from '@heroicons/react/24/outline'
+// Tailwind hover: classes do NOT override inline styles.
+// Use onMouseEnter / onMouseLeave for state changes.
 
-// Siempre usar strokeWidth={1} para el estilo visual del proyecto
-const S = 1
-<SparklesIcon className="w-4 h-4" strokeWidth={S} />
-```
-
-### Hover states
-
-```tsx
-// ❌ No usar hover: de Tailwind si hay inline style en el mismo elemento
-// Tailwind hover no sobreescribe inline styles
-
-// ✅ Usar onMouseEnter/onMouseLeave para cambios de estado con inline styles
 onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.08)')}
 onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
 ```
 
 ---
 
-## 8. Design System en vivo
+## 8. Live Design System
 
-Una vez levantado el servidor de desarrollo, acceder a:
+After running the dev server, open:
 
 ```
 http://localhost:5174/design-system
 ```
 
-También disponible en producción:
+Also available in production:
 
 ```
 https://inmix-redesign.vercel.app/design-system
 ```
 
-Incluye: colores, tipografía, espaciado, todos los componentes con código copiable.
+Covers: colors, typography, spacing, icons catalog, all components with copyable code and interactive previews.
 
 ---
 
-## 9. Build y deploy
+## 9. Build and deploy
 
 ```bash
-# Build de producción
+# Production build
 npm run build          # → dist/
 
-# Preview del build
+# Preview the build
 npm run preview
 
-# Deploy a Vercel (requiere vercel CLI y estar logueado)
+# Deploy to Vercel (requires Vercel CLI and login)
 npx vercel --prod
 ```
 
-El archivo `vercel.json` ya está configurado para redirigir todas las rutas a `index.html` (SPA):
+`vercel.json` is already configured to redirect all routes to `index.html` (SPA):
 
 ```json
 {
@@ -227,26 +230,26 @@ El archivo `vercel.json` ya está configurado para redirigir todas las rutas a `
 
 ---
 
-## 10. Integración con el proyecto del cliente
+## 10. Integrating into the client's project
 
-Para trasladar el diseño INMIX al proyecto existente del cliente:
+To bring the INMIX design into an existing project:
 
-1. **Copiar tokens** → `src/index.css` → pegar el bloque `@theme {...}` en el CSS global del cliente.
-2. **Copiar utilidades** → `src/lib/utils.ts` (requiere `clsx` y `tailwind-merge`).
-3. **Instalar dependencias de UI:**
+1. **Copy tokens** → paste the `@theme { ... }` block from `src/index.css` into the client's global CSS.
+2. **Copy utilities** → `src/lib/utils.ts` (requires `clsx` and `tailwind-merge`).
+3. **Install UI dependencies:**
    ```bash
    npm install @radix-ui/react-slot class-variance-authority clsx tailwind-merge
    npm install @heroicons/react
    ```
-4. **Copiar componentes** → `src/components/ui/` → pegar en el proyecto del cliente.
-5. **Configurar Tailwind v4** → asegurarse de que el proyecto del cliente usa Tailwind 4.x (no 3.x), ya que la sintaxis `@theme` es exclusiva de v4.
-6. **Activar la fuente** → ver sección 4 (Adobe Fonts).
-7. **Referenciar las páginas** → cada `src/pages/*.tsx` es una referencia de implementación lista para adaptar.
+4. **Copy UI components** → `src/components/ui/` into the client's project.
+5. **Tailwind v4** → ensure the client project uses Tailwind 4.x (not 3.x) — the `@theme` directive is v4 only.
+6. **Activate the font** → see section 4 (Adobe Fonts).
+7. **Reference the pages** → each `src/pages/*.tsx` file is a ready-to-adapt implementation reference.
 
 ---
 
-## Contacto
+## Contact
 
-Proyecto desarrollado para INMIX.  
+Project developed for INMIX.  
 Design + Frontend: David Suarez  
-Repositorio: [github.com/lhbidesign/inmix](https://github.com/lhbidesign/inmix)
+Repository: [github.com/lhbidesign/inmix](https://github.com/lhbidesign/inmix)
