@@ -150,11 +150,7 @@ export default function Dashboard() {
                       <Icon className="w-[16px] h-[16px]" strokeWidth={S} style={{ color: '#ffffff' }} />
                     </div>
                   </div>
-                  <p className="text-3xl font-normal tracking-tight">{value}</p>
-                  <p className="flex items-center gap-1 text-xs mt-1" style={{ color: 'var(--color-muted-foreground)' }}>
-                    <ArrowTrendingUpIcon className="w-3.5 h-3.5 flex-shrink-0 text-emerald-400" strokeWidth={S} />
-                    {delta}
-                  </p>
+                  <p className="text-[44px] font-normal tracking-tight leading-none mt-2">{value}</p>
                 </CardContent>
               </Card>
             ))}
