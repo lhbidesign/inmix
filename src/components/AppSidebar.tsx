@@ -129,10 +129,10 @@ export function AppSidebar({ open, onOpenChange }: AppSidebarProps) {
               <button
                 onClick={() => navigate('/login')}
                 className="w-full flex justify-center p-2.5 rounded-lg transition-colors"
-                style={{ color: 'rgba(239,68,68,0.7)' }}
+                style={{ color: 'rgba(255,255,255,0.5)' }}
                 title="Log out"
-                onMouseEnter={e => (e.currentTarget.style.color = '#ef4444')}
-                onMouseLeave={e => (e.currentTarget.style.color = 'rgba(239,68,68,0.7)')}
+                onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.9)')}
+                onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.5)')}
               >
                 <ArrowRightOnRectangleIcon className="w-[18px] h-[18px]" strokeWidth={S} />
               </button>
