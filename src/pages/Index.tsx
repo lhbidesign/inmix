@@ -8,7 +8,7 @@ const pages = [
   {
     label: 'Landing Page',
     route: '/',
-    desc: 'Página principal pública del producto',
+    desc: 'Public product landing page',
     icon: GlobeAltIcon,
     color: '#73ABBF',
     bg: 'rgba(115,171,191,0.1)',
@@ -16,7 +16,7 @@ const pages = [
   {
     label: 'Dashboard',
     route: '/dashboard',
-    desc: 'Panel principal con proyectos, stats y actividad reciente',
+    desc: 'Main panel with projects, stats and recent activity',
     icon: Squares2X2Icon,
     color: '#818cf8',
     bg: 'rgba(129,140,248,0.1)',
@@ -24,7 +24,7 @@ const pages = [
   {
     label: 'Projects',
     route: '/projects',
-    desc: 'Listado de todos los proyectos con cards y waveforms',
+    desc: 'All projects list with cards and waveforms',
     icon: FolderOpenIcon,
     color: '#34d399',
     bg: 'rgba(52,211,153,0.1)',
@@ -32,7 +32,7 @@ const pages = [
   {
     label: 'Project Detail',
     route: '/projects/1',
-    desc: 'Vista de mezcla: stems, transport bar, EQ, AI Mix Console',
+    desc: 'Mix view: stems, transport bar, EQ, AI Mix Console',
     icon: MagnifyingGlassCircleIcon,
     color: '#f97316',
     bg: 'rgba(249,115,22,0.1)',
@@ -40,7 +40,7 @@ const pages = [
   {
     label: 'Presets',
     route: '/presets',
-    desc: 'Marketplace de presets con filtros de género y tabs',
+    desc: 'Presets marketplace with genre filters and tabs',
     icon: DocumentDuplicateIcon,
     color: '#a78bfa',
     bg: 'rgba(167,139,250,0.1)',
@@ -48,7 +48,7 @@ const pages = [
   {
     label: 'Settings',
     route: '/settings',
-    desc: 'Configuración de cuenta, notificaciones y audio',
+    desc: 'Account, notifications and audio settings',
     icon: Cog6ToothIcon,
     color: '#fbbf24',
     bg: 'rgba(251,191,36,0.1)',
@@ -56,7 +56,7 @@ const pages = [
   {
     label: 'Login / Register',
     route: '/login',
-    desc: 'Pantallas de autenticación',
+    desc: 'Authentication screens',
     icon: UserIcon,
     color: '#f472b6',
     bg: 'rgba(244,114,182,0.1)',
@@ -71,9 +71,9 @@ export default function Index() {
         {/* Header */}
         <div className="mb-10">
           <img src="/logo.svg" alt="inmix" style={{ height: '24px', marginBottom: '24px' }} />
-          <h1 className="text-3xl font-semibold mb-2">Vistas del proyecto</h1>
+          <h1 className="text-3xl font-semibold mb-2">Project Views</h1>
           <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '15px' }}>
-            Selecciona una pantalla para previsualizarla.
+            Select a screen to preview it.
           </p>
         </div>
 
