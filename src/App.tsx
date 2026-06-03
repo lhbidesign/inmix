@@ -8,6 +8,7 @@ import Presets from '@/pages/Presets'
 import Projects from '@/pages/Projects'
 import Landing from '@/pages/Landing'
 import Index from '@/pages/Index'
+import DesignSystem from '@/pages/DesignSystem'
 import './index.css'
 
 class ErrorBoundary extends Component<{ children: ReactNode }, { error: string | null }> {
@@ -39,6 +40,7 @@ function App() {
           <Route path="/presets" element={<Presets />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/index" element={<Index />} />
+          <Route path="/design-system" element={<DesignSystem />} />
         </Routes>
       </BrowserRouter>
     </ErrorBoundary>
