@@ -178,6 +178,7 @@ export default function ProjectDetail() {
   const [canRedo]                             = useState(false)
   const [showMobileMenu, setShowMobileMenu]        = useState(false)
   const [mixConsoleOpen, setMixConsoleOpen]       = useState(false)
+  const [selectedMix, setSelectedMix]             = useState<string | null>(null)
   const [arrangeTool, setArrangeTool]             = useState<'move' | 'cut' | 'select'>('move')
   const [snapEnabled, setSnapEnabled]             = useState(true)
   const [zoomPxPerS, setZoomPxPerS]               = useState(60)
@@ -1288,12 +1289,23 @@ export default function ProjectDetail() {
                   { icon: MapPinIcon,   name: 'STREET HEAT MIX', desc: 'Urban — gritty 808s, vocals upfront, street-ready' },
                   { icon: TrophyIcon,   name: 'SPARKS MIX',       desc: 'Billboard Pop — bright, wide, radio sheen' },
                   { icon: GlobeAltIcon, name: 'SMILES MIX',       desc: 'SoCal Reggae — sun-soaked, warm bass, easy groove' },
-                ].map(({ icon: Icon, name, desc }) => (
+                ].map(({ icon: Icon, name, desc }) => {
+                  const isSelected = selectedMix === name
+                  return (
                   <div key={name}
-                    className="flex items-center justify-between gap-2 p-3.5 rounded-xl border transition-colors cursor-pointer group"
-                    style={{ background: 'rgba(255,255,255,0.03)', borderColor: 'rgba(255,255,255,0.06)' }}
-                    onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.14)'; e.currentTarget.style.background = 'rgba(255,255,255,0.05)' }}
-                    onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)'; e.currentTarget.style.background = 'rgba(255,255,255,0.03)' }}
+                    className="flex items-center justify-between gap-2 p-3.5 rounded-xl border transition-all cursor-pointer group"
+                    style={{
+                      background:   isSelected ? 'rgba(0,17,255,0.18)' : 'rgba(255,255,255,0.03)',
+                      borderColor:  isSelected ? 'rgba(0,17,255,0.7)'  : 'rgba(255,255,255,0.06)',
+                      boxShadow:    isSelected ? '0 0 0 1px rgba(0,17,255,0.3) inset' : 'none',
+                    }}
+                    onClick={() => setSelectedMix(isSelected ? null : name)}
+                    onMouseEnter={e => {
+                      if (!isSelected) { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.14)'; e.currentTarget.style.background = 'rgba(255,255,255,0.05)' }
+                    }}
+                    onMouseLeave={e => {
+                      if (!isSelected) { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)'; e.currentTarget.style.background = 'rgba(255,255,255,0.03)' }
+                    }}
                   >
                     <div className="flex items-center gap-2.5 min-w-0">
                       <div className="w-7 h-7 rounded-md flex items-center justify-center flex-shrink-0" style={{ background: '#0011FF' }}>
@@ -1312,7 +1324,8 @@ export default function ProjectDetail() {
                       <PlayIcon className="w-3 h-3 ml-0.5" strokeWidth={S} style={{ color: 'var(--color-foreground)' }} />
                     </button>
                   </div>
-                ))}
+                  )
+                })}
               </div>
             </section>
 
