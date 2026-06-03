@@ -21,7 +21,8 @@ import {
   MapPinIcon, TrophyIcon, GlobeAltIcon, PauseIcon,
 } from '@heroicons/react/24/outline'
 import {
-  PlayIcon as PlaySolid,
+  PlayIcon as PlaySolid, PauseIcon as PauseSolid, StopIcon as StopSolid,
+  BackwardIcon as BackwardSolid, ForwardIcon as ForwardSolid,
 } from '@heroicons/react/24/solid'
 
 const S = 1
@@ -138,16 +139,33 @@ const navLinks = [
   { id: 'tabs',        label: 'Tabs'        },
   { id: 'modals',      label: 'Modals'      },
   { id: 'components',  label: 'Components'  },
+  { id: 'gallery',     label: 'Gallery'     },
 ]
 
 // ─────────────────────────────────────────────────────────────────────────────
 
+// ── Simple static waveform for demos ─────────────────────────────────────────
+const WAVE_TOP = "M0,28 Q52,14 104,24 Q156,34 208,20 Q260,8 312,22 Q364,36 416,18 Q468,4 520,24 Q572,38 624,20 Q676,8 728,26 Q780,38 832,18 Q884,6 936,22 Q988,36 1040,20"
+const WAVE_BOT = "M0,28 Q52,42 104,32 Q156,22 208,36 Q260,48 312,34 Q364,20 416,38 Q468,52 520,32 Q572,18 624,36 Q676,48 728,30 Q780,18 832,38 Q884,50 936,34 Q988,22 1040,36"
+
 export default function DesignSystem() {
-  const [tabActive, setTabActive] = useState(0)
-  const [showDropdown, setShowDropdown] = useState(false)
-  const [showGenre, setShowGenre]       = useState(false)
-  const [genre, setGenre]               = useState('Pop')
-  const [exportFmt, setExportFmt]       = useState('WAV')
+  const [tabActive, setTabActive]         = useState(0)
+  const [showDropdown, setShowDropdown]   = useState(false)
+  const [showGenre, setShowGenre]         = useState(false)
+  const [genre, setGenre]                 = useState('Pop')
+  const [exportFmt, setExportFmt]         = useState('WAV')
+  // Gallery state
+  const [gPlaying, setGPlaying]           = useState(false)
+  const [gLoop, setGLoop]                 = useState(false)
+  const [gPreset, setGPreset]             = useState('Clean')
+  const [gMuted, setGMuted]               = useState(false)
+  const [gSoloed, setGSoloed]             = useState(false)
+  const [gMastering, setGMastering]       = useState(false)
+  const [gPrivate, setGPrivate]           = useState(true)
+  const [gBus, setGBus]                   = useState([100, 100, 100])
+  const [gVolume, setGVolume]             = useState(80)
+  const [gIntensity, setGIntensity]       = useState<'subtle'|'balanced'|'aggressive'>('balanced')
+  const [gFocus, setGFocus]               = useState(new Set(['Balanced']))
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--gradient-bg)', color: 'var(--color-foreground)' }}>
@@ -946,6 +964,623 @@ const [genre, setGenre] = useState('Pop')
                 </div>
               ))}
             </div>
+          </Section>
+
+          {/* ── GALLERY ─────────────────────────────────────────────────── */}
+          <Section title="Gallery — All Components" id="gallery">
+            <p className="text-sm mb-8" style={{ color: 'rgba(255,255,255,0.5)' }}>
+              Live visual examples of every component in the project inventory.
+            </p>
+
+            {/* 1 · AppSidebar */}
+            <Preview title="AppSidebar — collapsed & expanded states" code={`// src/components/AppSidebar.tsx
+<AppSidebar open={sidebarOpen} onOpenChange={setSidebarOpen} />`}>
+              {/* Mini sidebar — expanded */}
+              <div className="rounded-xl overflow-hidden flex-shrink-0" style={{ width: '180px', background: 'var(--gradient-sidebar)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                <div className="px-4 py-4 border-b" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
+                  <div className="h-4 w-16 rounded" style={{ background: 'rgba(255,255,255,0.15)' }} />
+                </div>
+                <nav className="px-2 py-3 space-y-0.5">
+                  {[
+                    { Icon: Squares2X2Icon, label: 'Dashboard', active: false },
+                    { Icon: FolderOpenIcon, label: 'Projects',  active: true  },
+                    { Icon: DocumentDuplicateIcon, label: 'Presets', active: false },
+                  ].map(({ Icon, label, active }) => (
+                    <div key={label} className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg"
+                      style={{ background: active ? 'rgba(255,255,255,0.18)' : 'transparent', color: active ? '#fff' : 'rgba(255,255,255,0.55)' }}>
+                      <Icon className="w-4 h-4 flex-shrink-0" strokeWidth={S} />
+                      <span className="text-xs font-medium">{label}</span>
+                    </div>
+                  ))}
+                </nav>
+                <div className="border-t px-2 py-3 space-y-0.5" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
+                  <div className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg" style={{ color: 'rgba(255,255,255,0.55)' }}>
+                    <Cog6ToothIcon className="w-4 h-4" strokeWidth={S} />
+                    <span className="text-xs font-medium">Settings</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                    <ArrowRightOnRectangleIcon className="w-4 h-4" strokeWidth={S} />
+                    <span className="text-xs font-medium">Log out</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 px-2.5 py-2.5">
+                    <div className="w-6 h-6 rounded-full flex-shrink-0" style={{ background: 'rgba(255,255,255,0.15)' }} />
+                    <div>
+                      <p className="text-[10px] font-medium" style={{ color: 'rgba(255,255,255,0.6)' }}>David Suarez</p>
+                      <p className="text-[10px]" style={{ color: 'rgba(255,255,255,0.35)' }}>Pro Plan</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* Collapsed */}
+              <div className="rounded-xl overflow-hidden flex-shrink-0" style={{ width: '52px', background: 'var(--gradient-sidebar)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                <div className="flex justify-center py-4 border-b" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
+                  <div className="w-4 h-4 rounded" style={{ background: 'rgba(255,255,255,0.15)' }} />
+                </div>
+                <nav className="px-1.5 py-3 space-y-0.5">
+                  {[Squares2X2Icon, FolderOpenIcon, DocumentDuplicateIcon].map((Icon, i) => (
+                    <div key={i} className="flex justify-center p-2.5 rounded-lg"
+                      style={{ background: i === 1 ? 'rgba(255,255,255,0.18)' : 'transparent', color: i === 1 ? '#fff' : 'rgba(255,255,255,0.55)' }}>
+                      <Icon className="w-[18px] h-[18px]" strokeWidth={S} />
+                    </div>
+                  ))}
+                </nav>
+                <div className="border-t px-1.5 py-3 space-y-0.5" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
+                  {[Cog6ToothIcon, ArrowRightOnRectangleIcon].map((Icon, i) => (
+                    <div key={i} className="flex justify-center p-2.5 rounded-lg" style={{ color: 'rgba(255,255,255,0.55)' }}>
+                      <Icon className="w-[18px] h-[18px]" strokeWidth={S} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Preview>
+
+            {/* 2 · Separator + Label */}
+            <Preview title="Separator & Label — Radix UI primitives" code={`import { Separator } from '@/components/ui/separator'
+import { Label } from '@/components/ui/label'
+
+<Label htmlFor="vol">Volume</Label>
+<Separator />          {/* horizontal */}
+<Separator orientation="vertical" />   {/* vertical */}`}>
+              <div className="flex flex-col gap-4 w-64">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.7)' }}>Section title</span>
+                </div>
+                <div className="w-full h-px" style={{ background: 'rgba(255,255,255,0.08)' }} />
+                <div className="flex items-center gap-3">
+                  <div className="h-8 w-px" style={{ background: 'rgba(255,255,255,0.08)' }} />
+                  <span className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>Vertical separator</span>
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,0.7)' }}>Volume</span>
+                  <input type="range" min={0} max={100} defaultValue={70} className="w-full h-1 rounded-full cursor-pointer" style={{ accentColor: '#0011FF' }} />
+                </div>
+              </div>
+            </Preview>
+
+            {/* 3 · Transport Bar */}
+            <Preview title="Transport Bar — playback controls, waveform, LUFS meters" code={`// Inside ProjectDetail.tsx — always visible above Mix/Arrange content
+// Play/pause toggles isPlaying state; loop button toggles loop state`}>
+              <div className="w-full rounded-xl border overflow-hidden" style={{ borderColor: 'rgba(255,255,255,0.12)', background: 'linear-gradient(180deg,#0D1258 0%,#050722 100%)' }}>
+                {/* Controls row */}
+                <div className="flex items-center px-4 py-2.5 gap-4">
+                  <div className="flex items-center gap-1">
+                    <button className="h-8 w-8 flex items-center justify-center rounded-md" style={{ color: 'rgba(255,255,255,0.35)' }}>
+                      <BackwardSolid className="w-4 h-4" />
+                    </button>
+                    <button onClick={() => setGPlaying(v => !v)} className="w-10 h-10 rounded-full flex items-center justify-center" style={{ background: '#fff', color: '#000' }}>
+                      {gPlaying ? <PauseSolid className="w-4 h-4" /> : <PlaySolid className="w-4 h-4 ml-0.5" />}
+                    </button>
+                    <button className="h-8 w-8 flex items-center justify-center rounded-md" style={{ color: 'rgba(255,255,255,0.35)' }}>
+                      <ForwardSolid className="w-4 h-4" />
+                    </button>
+                    <button className="h-8 w-8 flex items-center justify-center rounded-md" style={{ color: 'rgba(255,255,255,0.35)' }}>
+                      <StopSolid className="w-3.5 h-3.5" />
+                    </button>
+                    <button onClick={() => setGLoop(v => !v)} className="h-8 w-8 flex items-center justify-center rounded-md"
+                      style={{ color: gLoop ? 'var(--color-primary)' : 'rgba(255,255,255,0.35)' }}>
+                      <ArrowPathIcon className="w-4 h-4" strokeWidth={S} />
+                    </button>
+                  </div>
+                  <span className="font-mono text-sm tabular-nums" style={{ color: 'rgba(255,255,255,0.35)' }}>
+                    0:00 <span style={{ color: 'rgba(255,255,255,0.15)' }}>/</span> 3:25
+                  </span>
+                  <div className="flex items-center gap-2 ml-auto">
+                    <SpeakerWaveIcon className="w-4 h-4" strokeWidth={S} style={{ color: 'rgba(255,255,255,0.35)' }} />
+                    <input type="range" min={0} max={100} defaultValue={80} className="w-20 h-1 rounded-full cursor-pointer" style={{ accentColor: '#0011FF' }} />
+                    <div className="w-px h-4" style={{ background: 'rgba(255,255,255,0.08)' }} />
+                    <button className="flex items-center gap-1 text-xs" style={{ color: 'rgba(255,255,255,0.35)' }}>
+                      <ArrowUturnLeftIcon className="w-3.5 h-3.5" strokeWidth={S} /> Reset
+                    </button>
+                    <button className="flex items-center gap-1 text-xs" style={{ color: 'rgba(255,255,255,0.35)' }}>
+                      <ArrowUpTrayIcon className="w-3.5 h-3.5" strokeWidth={S} /> Add
+                    </button>
+                  </div>
+                </div>
+                {/* Waveform */}
+                <div className="flex mx-1 mb-1 rounded-lg overflow-hidden h-12" style={{ background: 'rgba(0,0,0,0.5)' }}>
+                  <div className="relative flex-1">
+                    <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 1040 56">
+                      <path d={WAVE_TOP} fill="none" stroke="rgba(115,171,191,0.3)" strokeWidth="1.5" />
+                      <path d={WAVE_BOT} fill="none" stroke="rgba(115,171,191,0.14)" strokeWidth="1" />
+                    </svg>
+                    <div className="absolute top-0 bottom-0 left-3 w-px" style={{ background: 'rgba(255,255,255,0.18)' }} />
+                    <div className="absolute top-1/2 left-3 -translate-y-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full border-2"
+                      style={{ background: 'var(--color-primary)', borderColor: '#000' }} />
+                  </div>
+                  <div className="flex flex-col justify-center items-end gap-0.5 px-3 flex-shrink-0"
+                    style={{ borderLeft: '1px solid rgba(255,255,255,0.06)', minWidth: '72px' }}>
+                    <div className="flex items-center gap-1.5">
+                      <span className="font-mono text-[10px]" style={{ color: 'var(--color-muted-foreground)' }}>LUFS</span>
+                      <span className="font-mono text-[10px]" style={{ color: 'var(--color-primary)' }}>C 0.0</span>
+                    </div>
+                    <span className="font-mono text-[10px]" style={{ color: 'rgba(255,255,255,0.25)' }}>L 0.0</span>
+                    <div className="flex gap-2 mt-0.5">
+                      <span className="font-mono text-[10px]" style={{ color: 'rgba(255,255,255,0.25)' }}>CMP</span>
+                      <span className="font-mono text-[10px]" style={{ color: 'rgba(255,255,255,0.25)' }}>LIM</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Preview>
+
+            {/* 4 · Master Mixing Bus */}
+            <Preview title="Master Mixing Bus — 12 preset cards, one selected at a time" code={`// selectedPreset state controls the active card
+<button onClick={() => setSelectedPreset(name)}
+  style={{
+    borderColor: active ? 'var(--color-primary)' : 'rgba(255,255,255,0.08)',
+    background:  active ? 'var(--color-accent)'  : 'var(--gradient-card)',
+  }}
+>`}>
+              <div className="w-full">
+                <div className="flex items-center gap-2 mb-3">
+                  <AdjustmentsHorizontalIcon className="w-4 h-4" strokeWidth={S} style={{ color: 'var(--color-primary)' }} />
+                  <span className="text-sm font-medium uppercase tracking-widest" style={{ color: 'var(--color-primary)', letterSpacing: '0.08em' }}>Master Mixing Bus</span>
+                </div>
+                <div className="grid grid-cols-4 gap-2">
+                  {[
+                    { name: 'Clean', Icon: SparklesIcon },{ name: 'Warmth', Icon: SunIcon },
+                    { name: 'Punch', Icon: BoltIcon },{ name: 'Bright', Icon: StarIcon },
+                    { name: 'Wide', Icon: ArrowsPointingOutIcon },{ name: 'Loud', Icon: SpeakerWaveIcon },
+                    { name: 'Vintage', Icon: ClockIcon },{ name: 'Cinematic', Icon: FilmIcon },
+                  ].map(({ name, Icon }) => {
+                    const active = gPreset === name
+                    return (
+                      <button key={name} onClick={() => setGPreset(name)}
+                        className="flex flex-col gap-1.5 p-3 rounded-xl border text-left transition-all"
+                        style={{ borderColor: active ? 'var(--color-primary)' : 'rgba(255,255,255,0.08)', background: active ? 'var(--color-accent)' : 'var(--gradient-card)' }}>
+                        <Icon className="w-4 h-4" strokeWidth={S} style={{ color: active ? 'var(--color-primary)' : 'var(--color-muted-foreground)' }} />
+                        <p className="text-xs font-medium">{name}</p>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+            </Preview>
+
+            {/* 5 · Bus Sends */}
+            <Preview title="Bus Sends — labeled send sliders with percentage readout" code={`{busSends.map((bus, idx) => (
+  <div key={bus.label} className="flex flex-col gap-2 min-w-[120px] flex-1">
+    <div className="flex items-center justify-between">
+      <span className="text-xs font-medium tracking-wider">{bus.label}</span>
+      <span className="text-xs font-mono" style={{ color: 'var(--color-primary)' }}>{bus.value}%</span>
+    </div>
+    <input type="range" value={bus.value} onChange={...}
+      className="w-full h-1 rounded-full" style={{ accentColor: '#0011FF' }} />
+    <button className="text-xs flex items-center gap-1">
+      FX <ChevronDownIcon className="w-3 h-3" strokeWidth={S} />
+    </button>
+  </div>
+))}`}>
+              <div className="w-full">
+                <div className="flex items-center gap-2 mb-4">
+                  <SpeakerWaveIcon className="w-4 h-4" strokeWidth={S} style={{ color: 'var(--color-primary)' }} />
+                  <span className="text-sm font-medium uppercase tracking-widest" style={{ color: 'var(--color-primary)', letterSpacing: '0.08em' }}>Bus Sends</span>
+                </div>
+                <div className="flex gap-4">
+                  {['MASTER','DRUMS','VOCALS'].map((label, i) => (
+                    <div key={label} className="flex flex-col gap-2 flex-1">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-medium tracking-wider" style={{ color: 'var(--color-muted-foreground)' }}>{label}</span>
+                        <span className="text-xs font-mono" style={{ color: 'var(--color-primary)' }}>{gBus[i]}%</span>
+                      </div>
+                      <input type="range" min={0} max={100} value={gBus[i]}
+                        onChange={e => setGBus(prev => prev.map((v, j) => j === i ? +e.target.value : v))}
+                        className="w-full h-1 rounded-full cursor-pointer" style={{ accentColor: '#0011FF' }} />
+                      <button className="flex items-center gap-1 text-xs self-start" style={{ color: 'var(--color-muted-foreground)' }}>
+                        FX <ChevronDownIcon className="w-3 h-3" strokeWidth={S} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Preview>
+
+            {/* 6 · Stem Track Row */}
+            <Preview title="Stem Track Row — volume, pan, M/S, waveform, hover actions" code={`<div className="border-b group" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
+  {/* Controls */}
+  <div className="flex items-center gap-2 px-3 py-2">
+    {/* drag handle, number, type dot, name, volume slider, M/S, options */}
+  </div>
+  {/* Waveform SVG */}
+  <div className="relative mx-5 mb-2.5 rounded-lg overflow-hidden" style={{ height: '58px' }}>
+    <svg viewBox="0 0 1040 56" preserveAspectRatio="none">
+      <path d={wave.top} stroke={accentColor} strokeWidth="1.5" />
+    </svg>
+  </div>
+</div>`}>
+              <div className="w-full border-b group" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
+                <div className="flex items-center gap-2 px-3 py-2">
+                  <span className="cursor-grab opacity-25" style={{ color: 'var(--color-muted-foreground)' }}>
+                    <EllipsisHorizontalIcon className="w-3.5 h-3.5" strokeWidth={S} />
+                  </span>
+                  <span className="font-mono text-xs w-4 text-center" style={{ color: 'var(--color-muted-foreground)' }}>1</span>
+                  <div className="w-1.5 h-1.5 rounded-full" style={{ background: '#8B5CF6', opacity: gMuted ? 0.3 : 0.8 }} />
+                  <span className="text-sm font-medium flex items-center gap-1.5" style={{ opacity: gMuted ? 0.4 : 1 }}>
+                    Lead Vocals
+                    <span className="text-[10px] text-violet-400" style={{ opacity: 0.75 }}>VOCAL</span>
+                    <ChevronDownIcon className="w-3 h-3" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
+                  </span>
+                  <div className="flex-1" />
+                  <div className="flex items-center gap-1.5">
+                    <SpeakerWaveIcon className="w-3.5 h-3.5" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)', opacity: gMuted ? 0.3 : 1 }} />
+                    <input type="range" min={0} max={100} value={gVolume} onChange={e => setGVolume(+e.target.value)}
+                      className="w-24 h-1 rounded-full cursor-pointer" style={{ accentColor: '#0011FF', opacity: gMuted ? 0.3 : 1 }} />
+                    <span className="font-mono text-xs w-5 text-right" style={{ color: 'var(--color-muted-foreground)' }}>{gVolume}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <button onClick={() => setGMuted(v => !v)} className="w-6 h-6 rounded text-xs font-bold transition-all"
+                      style={{ background: gMuted ? 'rgba(251,191,36,0.18)' : 'var(--color-input)', color: gMuted ? '#fbbf24' : 'var(--color-muted-foreground)', border: `1px solid ${gMuted ? '#fbbf24' : 'rgba(255,255,255,0.1)'}` }}>M</button>
+                    <button onClick={() => setGSoloed(v => !v)} className="w-6 h-6 rounded text-xs font-bold transition-all"
+                      style={{ background: gSoloed ? 'rgba(139,92,246,0.2)' : 'var(--color-input)', color: gSoloed ? '#8B5CF6' : 'var(--color-muted-foreground)', border: `1px solid ${gSoloed ? '#8B5CF6' : 'rgba(255,255,255,0.1)'}` }}>S</button>
+                  </div>
+                  <button className="h-6 w-6 flex items-center justify-center opacity-0 group-hover:opacity-60 transition-opacity" style={{ color: 'var(--color-muted-foreground)' }}>
+                    <EllipsisHorizontalIcon className="w-4 h-4" strokeWidth={S} />
+                  </button>
+                  <button className="h-6 w-6 flex items-center justify-center opacity-0 group-hover:opacity-60 transition-opacity" style={{ color: 'var(--color-muted-foreground)' }}>
+                    <TrashIcon className="w-3.5 h-3.5" strokeWidth={S} />
+                  </button>
+                </div>
+                <div className="relative mx-5 mb-2.5 rounded-lg overflow-hidden" style={{ height: '52px', background: '#1d1c2296', border: '1px solid rgba(255,255,255,0.06)', opacity: gMuted ? 0.2 : 1 }}>
+                  <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 1040 56">
+                    <path d={WAVE_TOP} fill="none" stroke="rgba(139,92,246,0.55)" strokeWidth="1.5" />
+                    <path d={WAVE_BOT} fill="none" stroke="rgba(139,92,246,0.55)" strokeWidth="1" opacity={0.65} />
+                  </svg>
+                </div>
+              </div>
+            </Preview>
+
+            {/* 7 · Arrange View */}
+            <Preview title="Arrange View — toolbar, ruler, track list, colored waveform regions" code={`// mode === 'arrange' renders:
+// 1. Toolbar: Move/Cut/Select, Snap, zoom controls, BPM info
+// 2. Split layout: left track list (148px) + right scrollable timeline
+// 3. Each track region: colored label bar + waveform SVG`}>
+              <div className="w-full rounded-xl border overflow-hidden" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
+                {/* Toolbar */}
+                <div className="flex items-center gap-1 px-3 border-b" style={{ height: '40px', borderColor: 'rgba(255,255,255,0.08)', background: 'rgba(0,0,0,0.15)' }}>
+                  <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium" style={{ background: '#0011FF', color: '#fff' }}>
+                    <PlusIcon className="w-3.5 h-3.5" strokeWidth={S} /> Move
+                  </button>
+                  <button className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs" style={{ color: 'var(--color-muted-foreground)' }}>
+                    <CursorArrowRaysIcon className="w-3.5 h-3.5" strokeWidth={S} /> Select
+                  </button>
+                  <div className="w-px h-4 mx-1" style={{ background: 'rgba(255,255,255,0.1)' }} />
+                  <button className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium" style={{ color: '#5577ff', background: 'rgba(0,17,255,0.12)' }}>
+                    <LinkIcon className="w-3.5 h-3.5" strokeWidth={S} /> Snap
+                  </button>
+                  <div className="w-px h-4 mx-1" style={{ background: 'rgba(255,255,255,0.1)' }} />
+                  <MagnifyingGlassMinusIcon className="w-3.5 h-3.5" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
+                  <span className="text-xs font-mono" style={{ color: 'var(--color-muted-foreground)' }}>60px/s</span>
+                  <MagnifyingGlassPlusIcon className="w-3.5 h-3.5" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
+                  <div className="flex-1" />
+                  <span className="text-xs font-mono" style={{ color: 'var(--color-muted-foreground)' }}>120 BPM · 8 regions</span>
+                  <Squares2X2Icon className="w-3.5 h-3.5 ml-2" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
+                </div>
+                {/* Split layout */}
+                <div className="flex" style={{ height: '220px' }}>
+                  {/* Left */}
+                  <div className="flex-shrink-0" style={{ width: '130px', borderRight: '1px solid rgba(255,255,255,0.08)' }}>
+                    <div className="flex flex-col justify-center px-3" style={{ height: '24px', borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
+                      <p className="text-[9px] uppercase tracking-widest" style={{ color: 'var(--color-primary)' }}>Tracks</p>
+                    </div>
+                    {[
+                      { name: 'Lead Vocals', color: '#8B5CF6' },
+                      { name: 'Drums',       color: '#EC4899' },
+                      { name: 'Bass',        color: '#22D3EE' },
+                      { name: 'Guitar',      color: '#FBBF24' },
+                    ].map(({ name, color }) => (
+                      <div key={name} className="flex items-center gap-2 px-3" style={{ height: '49px', borderBottom: '1px solid rgba(255,255,255,0.04)', color }}>
+                        <span className="text-xs font-medium truncate">{name}</span>
+                      </div>
+                    ))}
+                  </div>
+                  {/* Timeline */}
+                  <div className="flex-1 overflow-hidden relative">
+                    {/* Ruler */}
+                    <div className="flex" style={{ height: '24px', borderBottom: '1px solid rgba(255,255,255,0.08)', background: '#07070e' }}>
+                      {[1,2,3,4,5,6].map(n => (
+                        <div key={n} className="flex-1 flex items-center px-1.5" style={{ borderRight: '1px solid rgba(255,255,255,0.06)' }}>
+                          <span className="text-[10px] font-mono" style={{ color: 'rgba(255,255,255,0.28)' }}>{n}</span>
+                        </div>
+                      ))}
+                    </div>
+                    {/* Playhead */}
+                    <div className="absolute top-0 bottom-0 w-px" style={{ left: '1px', background: '#0011FF', zIndex: 10 }}>
+                      <div className="w-2.5 h-2.5 rounded-full" style={{ background: '#0011FF', marginLeft: '-4.5px', marginTop: '8px' }} />
+                    </div>
+                    {/* Track regions */}
+                    {[
+                      { color: '#8B5CF6', name: 'Lead Vocals' },
+                      { color: '#EC4899', name: 'Drums'       },
+                      { color: '#22D3EE', name: 'Bass'        },
+                      { color: '#FBBF24', name: 'Guitar'      },
+                    ].map(({ color, name }) => (
+                      <div key={name} className="relative" style={{ height: '49px', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+                        <div className="absolute rounded-md overflow-hidden" style={{ top: '4px', bottom: '4px', left: '2px', right: '2px', background: `${color}18`, border: `1px solid ${color}28` }}>
+                          <div className="flex items-center px-2" style={{ height: '16px', borderBottom: `1px solid ${color}20` }}>
+                            <span className="text-[10px] font-medium" style={{ color }}>{name}</span>
+                          </div>
+                          <div style={{ position: 'absolute', top: '16px', left: 0, right: 0, bottom: 0 }}>
+                            <svg style={{ display: 'block', width: '100%', height: '100%' }} preserveAspectRatio="none" viewBox="0 0 1040 30">
+                              <path d={WAVE_TOP} fill="none" stroke={color} strokeWidth="1.5" opacity="0.55" />
+                              <path d={WAVE_BOT} fill="none" stroke={color} strokeWidth="1" opacity="0.35" />
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </Preview>
+
+            {/* 8 · Mastering Bar */}
+            <Preview title="Mastering Bar — fixed bottom strip with enable toggle" code={`<div className="flex items-center justify-between px-5 py-3 border-t"
+  style={{
+    borderColor: enabled ? 'rgba(115,171,191,0.3)' : 'rgba(255,255,255,0.08)',
+    background:  enabled ? 'rgba(115,171,191,0.06)' : 'rgba(0,0,0,0.6)',
+    backdropFilter: 'blur(12px)',
+  }}
+>
+  <div className="flex items-center gap-3">
+    <MusicalNoteIcon ... />
+    <div>
+      <p>Mastering</p>
+      <p>Professional mastering for Pop</p>
+    </div>
+  </div>
+  <button onClick={() => setEnabled(v => !v)}>
+    {enabled ? 'Enabled' : 'Enable'}
+  </button>
+</div>`}>
+              <div className="w-full rounded-xl border overflow-hidden">
+                <div className="flex items-center justify-between px-5 py-3"
+                  style={{ borderColor: gMastering ? 'rgba(115,171,191,0.3)' : 'rgba(255,255,255,0.08)', background: gMastering ? 'rgba(115,171,191,0.06)' : 'rgba(0,0,0,0.6)' }}>
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: gMastering ? 'var(--color-accent)' : 'var(--color-input)' }}>
+                      <MusicalNoteIcon className="w-4 h-4" strokeWidth={S} style={{ color: gMastering ? 'var(--color-primary)' : 'var(--color-muted-foreground)' }} />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium">Mastering</p>
+                      <p className="text-xs" style={{ color: 'var(--color-muted-foreground)' }}>Professional mastering for Pop</p>
+                    </div>
+                  </div>
+                  <button onClick={() => setGMastering(v => !v)} className="px-5 py-2 rounded-full text-sm font-medium transition-all"
+                    style={gMastering ? { background: 'var(--color-primary)', color: '#000' } : { border: '1px solid rgba(255,255,255,0.15)', color: 'var(--color-muted-foreground)' }}>
+                    {gMastering ? 'Enabled' : 'Enable'}
+                  </button>
+                </div>
+              </div>
+            </Preview>
+
+            {/* 9 · Mix Console Modal */}
+            <Preview title="Mix Console Modal — Signature mixes, Genre Presets, Intensity, Focus, RUN MIX" code={`// Opened via: onClick={() => setMixConsoleOpen(true)}
+// Pattern: fixed overlay + centered panel (max-w-3xl)
+// Signature Tailored Mixes: selectable cards with electric blue highlight
+// Genre Presets: each sets mixIntensity + mixFocus on click`}>
+              <div className="w-full rounded-2xl border overflow-hidden" style={{ background: '#0c0b10', borderColor: 'rgba(255,255,255,0.1)' }}>
+                <div className="flex items-center justify-between px-5 py-3.5 border-b" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
+                  <div className="flex items-center gap-2">
+                    <SparklesIcon className="w-4 h-4" strokeWidth={S} style={{ color: 'var(--color-primary)' }} />
+                    <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: 'var(--color-primary)' }}>Mix Console</span>
+                  </div>
+                </div>
+                <div className="px-5 py-4 space-y-4">
+                  {/* Signature mixes */}
+                  <div>
+                    <p className="text-[10px] uppercase tracking-widest mb-2" style={{ color: 'var(--color-muted-foreground)' }}>Signature Tailored Mixes</p>
+                    <div className="grid grid-cols-3 gap-2">
+                      {[
+                        { Icon: MapPinIcon, name: 'STREET HEAT MIX' },
+                        { Icon: TrophyIcon, name: 'SPARKS MIX' },
+                        { Icon: GlobeAltIcon, name: 'SMILES MIX' },
+                      ].map(({ Icon, name }, i) => (
+                        <div key={name} className="flex items-center gap-2 p-3 rounded-xl border cursor-pointer"
+                          style={{ background: i === 0 ? 'rgba(0,17,255,0.18)' : 'rgba(255,255,255,0.03)', borderColor: i === 0 ? 'rgba(0,17,255,0.7)' : 'rgba(255,255,255,0.06)' }}>
+                          <div className="w-6 h-6 rounded flex items-center justify-center flex-shrink-0" style={{ background: '#0011FF' }}>
+                            <Icon className="w-3 h-3" strokeWidth={S} style={{ color: '#fff' }} />
+                          </div>
+                          <p className="text-[10px] font-semibold leading-tight" style={{ color: '#fff' }}>{name}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  {/* Controls */}
+                  <div className="grid grid-cols-2 gap-4 pt-2 border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+                    <div>
+                      <p className="text-[10px] uppercase tracking-widest mb-2" style={{ color: 'var(--color-muted-foreground)' }}>Intensity</p>
+                      <div className="flex gap-1 p-1 rounded-lg" style={{ background: 'var(--color-accent)' }}>
+                        {(['subtle','balanced','aggressive'] as const).map(v => (
+                          <button key={v} onClick={() => setGIntensity(v)} className="flex-1 py-1 rounded-md text-xs capitalize transition-all"
+                            style={gIntensity === v ? { background: '#000', color: '#fff' } : { color: 'var(--color-muted-foreground)' }}>
+                            {v.charAt(0).toUpperCase() + v.slice(1)}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-[10px] uppercase tracking-widest mb-2" style={{ color: 'var(--color-muted-foreground)' }}>Focus</p>
+                      <div className="flex flex-wrap gap-1">
+                        {['Balanced','Vocals up front','Drum-driven'].map(chip => {
+                          const active = gFocus.has(chip)
+                          return (
+                            <button key={chip} onClick={() => setGFocus(prev => { const n = new Set(prev); active ? n.delete(chip) : n.add(chip); return n })}
+                              className="px-2 py-0.5 rounded-full text-[10px] border"
+                              style={active ? { background: 'rgba(115,171,191,0.15)', borderColor: 'var(--color-primary)', color: 'var(--color-primary)' } : { borderColor: 'rgba(255,255,255,0.12)', color: 'var(--color-muted-foreground)' }}>
+                              {chip}
+                            </button>
+                          )
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center justify-end gap-2 px-5 py-3 border-t" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
+                  <button className="px-4 py-2 rounded-full text-sm" style={{ color: 'var(--color-muted-foreground)' }}>Cancel</button>
+                  <button className="flex items-center gap-2 px-5 py-2 rounded-full text-sm font-semibold"
+                    style={{ background: '#0011FF', color: '#fff', boxShadow: '0 0 20px rgba(0,17,255,0.4)' }}>
+                    <BoltIcon className="w-4 h-4" strokeWidth={S} /> RUN MIX
+                  </button>
+                </div>
+              </div>
+            </Preview>
+
+            {/* 10 · Keyboard Shortcuts Modal */}
+            <Preview title="Keyboard Shortcuts Modal — triggered by grid icon in Arrange toolbar" code={`// Opened via: onClick={() => setShowShortcuts(true)}
+// Pattern: fixed overlay + centered panel (max-w-2xl)
+// 2-column grid: Tools / View on left, Edit / Playback on right
+// Keyboard badges: dark rounded pills with white text`}>
+              <div className="w-full rounded-2xl border overflow-hidden" style={{ background: '#0e0d14', borderColor: 'rgba(255,255,255,0.1)' }}>
+                <div className="flex items-start justify-between px-6 pt-5 pb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(0,17,255,0.25)', border: '1px solid rgba(0,17,255,0.4)' }}>
+                      <Squares2X2Icon className="w-5 h-5" strokeWidth={S} style={{ color: '#5577ff' }} />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold" style={{ color: '#fff' }}>Keyboard Shortcuts</h3>
+                      <p className="text-xs" style={{ color: 'rgba(255,255,255,0.45)' }}>Arrangement view controls</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-x-8 px-6 pb-5">
+                  <div className="space-y-4">
+                    <p className="text-xs font-semibold tracking-widest uppercase" style={{ color: '#5577ff' }}>Tools</p>
+                    {[['Move — drag regions','V'],['Cut — click to split','C'],['Select — click regions','S']].map(([label,key]) => (
+                      <div key={key} className="flex items-center justify-between">
+                        <span className="text-xs" style={{ color: 'rgba(255,255,255,0.8)' }}>{label}</span>
+                        <kbd className="flex items-center justify-center min-w-[32px] h-8 px-2 rounded-xl text-xs font-semibold"
+                          style={{ background: 'rgba(255,255,255,0.08)', color: '#fff', border: '1px solid rgba(255,255,255,0.1)' }}>{key}</kbd>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="space-y-4">
+                    <p className="text-xs font-semibold tracking-widest uppercase" style={{ color: '#22c55e' }}>Playback</p>
+                    {[['Play / Pause','Space'],['Seek ±5 s','← →'],['Seek on ruler','Click']].map(([label,key]) => (
+                      <div key={key} className="flex items-center justify-between">
+                        <span className="text-xs" style={{ color: 'rgba(255,255,255,0.8)' }}>{label}</span>
+                        <kbd className="flex items-center justify-center min-w-[32px] h-8 px-2 rounded-xl text-xs font-semibold"
+                          style={{ background: 'rgba(255,255,255,0.08)', color: '#fff', border: '1px solid rgba(255,255,255,0.1)' }}>{key}</kbd>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex items-center justify-between px-6 py-3 border-t" style={{ borderColor: 'rgba(255,255,255,0.07)' }}>
+                  <p className="text-xs" style={{ color: 'rgba(255,255,255,0.35)' }}>
+                    Click outside or press <kbd className="inline-flex items-center px-1.5 py-0.5 rounded text-xs mx-1"
+                      style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.15)' }}>Esc</kbd> to close
+                  </p>
+                  <p className="text-xs" style={{ color: 'rgba(255,255,255,0.35)' }}>
+                    Press <kbd className="inline-flex items-center px-1.5 py-0.5 rounded text-xs mx-1"
+                      style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.15)' }}>?</kbd> to reopen
+                  </p>
+                </div>
+              </div>
+            </Preview>
+
+            {/* 11 · Share Modal */}
+            <Preview title="Share Modal — Share Session, Invite Collaborator, Share Export" code={`// Opened via: onClick={() => setShowShareModal(true)}
+// Share Session has a Private/Public toggle (sessionPrivate state)
+// Generate Invite Link and Export & Copy Link are action buttons`}>
+              <div className="w-full max-w-md rounded-2xl border overflow-hidden" style={{ background: '#0e0d14', borderColor: 'rgba(255,255,255,0.1)' }}>
+                <div className="flex items-start justify-between px-5 pt-5 pb-4">
+                  <div className="flex items-center gap-2.5">
+                    <ShareIcon className="w-5 h-5" strokeWidth={S} style={{ color: '#6677ff' }} />
+                    <div>
+                      <h3 className="text-lg font-semibold" style={{ color: '#fff' }}>Share Project</h3>
+                      <p className="text-xs" style={{ color: 'rgba(255,255,255,0.45)' }}>Share your session for collaboration or share the exported mix.</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="px-5 pb-5 space-y-3">
+                  {/* Share Session */}
+                  <div className="flex items-center justify-between p-4 rounded-xl border" style={{ borderColor: 'rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.02)' }}>
+                    <div>
+                      <p className="text-sm font-semibold" style={{ color: '#fff' }}>Share Session</p>
+                      <p className="text-xs" style={{ color: 'rgba(255,255,255,0.45)' }}>Let others listen to your full mix</p>
+                    </div>
+                    <button onClick={() => setGPrivate(v => !v)} className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full border text-xs font-medium"
+                      style={gPrivate ? { borderColor: 'rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.7)', background: 'rgba(255,255,255,0.06)' } : { borderColor: 'rgba(0,17,255,0.6)', color: '#6677ff', background: 'rgba(0,17,255,0.12)' }}>
+                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" strokeWidth="1.5" stroke="currentColor" strokeLinecap="round">
+                        <rect x="2" y="7" width="20" height="10" rx="5"/>
+                        <circle cx={gPrivate ? '7' : '17'} cy="12" r="3" fill="currentColor" stroke="none"/>
+                      </svg>
+                      {gPrivate ? 'Private' : 'Public'}
+                    </button>
+                  </div>
+                  {/* Invite Collaborator */}
+                  <div className="p-4 rounded-xl border" style={{ borderColor: 'rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.02)' }}>
+                    <div className="flex items-center gap-2 mb-1">
+                      <UserPlusIcon className="w-4 h-4" strokeWidth={S} style={{ color: 'rgba(255,255,255,0.7)' }} />
+                      <p className="text-sm font-semibold" style={{ color: '#fff' }}>Invite Collaborator</p>
+                    </div>
+                    <p className="text-xs mb-3" style={{ color: 'rgba(255,255,255,0.45)' }}>Generate a link — anyone who opens it can edit this project live</p>
+                    <button className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border text-sm font-medium"
+                      style={{ borderColor: 'rgba(255,255,255,0.12)', color: '#fff', background: 'rgba(255,255,255,0.04)' }}>
+                      <LinkIcon className="w-4 h-4" strokeWidth={S} /> Generate Invite Link
+                    </button>
+                  </div>
+                  {/* Share Export */}
+                  <div className="p-4 rounded-xl border" style={{ borderColor: 'rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.02)' }}>
+                    <p className="text-sm font-semibold mb-1" style={{ color: '#fff' }}>Share Export</p>
+                    <p className="text-xs mb-3" style={{ color: 'rgba(255,255,255,0.45)' }}>Render and upload the mix, then copy the download link</p>
+                    <button className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border text-sm font-medium"
+                      style={{ borderColor: 'rgba(255,255,255,0.12)', color: '#fff', background: 'rgba(255,255,255,0.04)' }}>
+                      <LinkIcon className="w-4 h-4" strokeWidth={S} /> Export &amp; Copy Link
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </Preview>
+
+            {/* 12 · Preview Float Card */}
+            <Preview title="Preview Float Card — fixed bottom-right mini player" code={`// Toggled via: onClick={() => setShowPreviewCard(v => !v)}
+// Position: fixed bottom-6 right-6 z-50
+// Gradient border via boxShadow layering
+// Dismiss: trash button sets showPreviewCard(false)`}>
+              <div className="relative w-full flex justify-end" style={{ minHeight: '80px' }}>
+                <div className="flex items-center gap-3 px-4 py-3 rounded-2xl"
+                  style={{ background: 'rgba(14,13,20,0.95)', backdropFilter: 'blur(16px)', boxShadow: '0 0 0 1px rgba(139,92,246,0.5), 0 0 0 1px rgba(236,72,153,0.3), 0 8px 32px rgba(0,0,0,0.6)', minWidth: '240px' }}>
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                    style={{ background: 'linear-gradient(135deg,#1a0a4a 0%,#0a1a6e 100%)', border: '1px solid rgba(100,80,220,0.4)' }}>
+                    <SparklesIcon className="w-5 h-5" strokeWidth={S} style={{ color: '#6677ff' }} />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm font-semibold" style={{ color: '#fff' }}>Mix Preview</p>
+                    <p className="text-xs" style={{ color: 'rgba(255,255,255,0.45)' }}>Rendered through full chain</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <button className="w-8 h-8 flex items-center justify-center rounded-lg"
+                      style={{ color: 'rgba(255,255,255,0.5)', background: 'rgba(255,255,255,0.06)' }}>
+                      <PauseIcon className="w-4 h-4" strokeWidth={S} />
+                    </button>
+                    <button className="w-8 h-8 flex items-center justify-center rounded-lg"
+                      style={{ color: 'rgba(255,255,255,0.5)', background: 'rgba(255,255,255,0.06)' }}>
+                      <TrashIcon className="w-4 h-4" strokeWidth={S} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </Preview>
+
           </Section>
 
           {/* Footer */}
