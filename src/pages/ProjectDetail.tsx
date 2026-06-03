@@ -11,7 +11,7 @@ import {
   FilmIcon, CloudIcon, StarIcon, ArrowDownTrayIcon, ShareIcon,
   MapPinIcon, TrophyIcon, GlobeAltIcon,
   PlusIcon, CursorArrowRaysIcon, MagnifyingGlassMinusIcon, MagnifyingGlassPlusIcon,
-  Squares2X2Icon, LinkIcon,
+  Squares2X2Icon, LinkIcon, UserPlusIcon, PauseIcon,
 } from '@heroicons/react/24/outline'
 import {
   BackwardIcon as BackwardSolid, ForwardIcon as ForwardSolid,
@@ -184,6 +184,10 @@ export default function ProjectDetail() {
   const [snapEnabled, setSnapEnabled]             = useState(true)
   const [zoomPxPerS, setZoomPxPerS]               = useState(60)
   const [showShortcuts, setShowShortcuts]         = useState(false)
+  const [showPreviewCard, setShowPreviewCard]     = useState(false)
+  const [previewPlaying, setPreviewPlaying]       = useState(true)
+  const [showShareModal, setShowShareModal]       = useState(false)
+  const [sessionPrivate, setSessionPrivate]       = useState(true)
   const leftPanelRef  = useRef<HTMLDivElement>(null)
   const rightPanelRef = useRef<HTMLDivElement>(null)
   const [mixIntensity, setMixIntensity]           = useState<'subtle' | 'balanced' | 'aggressive'>('balanced')
@@ -316,7 +320,8 @@ export default function ProjectDetail() {
               <div className="w-px h-4 hidden md:block" style={{ background: 'rgba(255,255,255,0.1)' }} />
 
               {/* Preview */}
-              <Button variant="ghost" size="sm" className="hidden md:flex gap-1.5 text-xs hover:text-white text-[--color-muted-foreground]">
+              <Button variant="ghost" size="sm" className="hidden md:flex gap-1.5 text-xs hover:text-white text-[--color-muted-foreground]"
+                onClick={() => setShowPreviewCard(v => !v)}>
                 <PlayIcon className="w-3.5 h-3.5" strokeWidth={S} />
                 Preview
               </Button>
@@ -372,7 +377,8 @@ export default function ProjectDetail() {
               </Button>
 
               {/* Share */}
-              <Button variant="ghost" size="sm" className="hidden md:flex gap-1.5 text-xs hover:text-white text-[--color-muted-foreground]">
+              <Button variant="ghost" size="sm" className="hidden md:flex gap-1.5 text-xs hover:text-white text-[--color-muted-foreground]"
+                onClick={() => setShowShareModal(true)}>
                 <ShareIcon className="w-3.5 h-3.5" strokeWidth={S} />
                 Share
               </Button>
@@ -1117,6 +1123,168 @@ export default function ProjectDetail() {
 
       </div>
     </div>
+
+    {/* ── FLOATING PREVIEW CARD ───────────────────────────────────────── */}
+    {showPreviewCard && (
+      <div
+        className="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-2xl"
+        style={{
+          background: 'rgba(14,13,20,0.95)',
+          backdropFilter: 'blur(16px)',
+          /* gradient border */
+          border: '1px solid transparent',
+          backgroundClip: 'padding-box',
+          boxShadow: '0 0 0 1px rgba(139,92,246,0.5), 0 0 0 1px rgba(236,72,153,0.3), 0 8px 32px rgba(0,0,0,0.6)',
+          minWidth: '260px',
+        }}
+      >
+        {/* Icon */}
+        <div
+          className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+          style={{ background: 'linear-gradient(135deg, #1a0a4a 0%, #0a1a6e 100%)', border: '1px solid rgba(100,80,220,0.4)' }}
+        >
+          <SparklesIcon className="w-5 h-5" strokeWidth={1} style={{ color: '#6677ff' }} />
+        </div>
+
+        {/* Text */}
+        <div className="flex-1 min-w-0">
+          <p className="text-sm font-semibold leading-none mb-1" style={{ color: '#ffffff' }}>Mix Preview</p>
+          <p className="text-xs leading-none" style={{ color: 'rgba(255,255,255,0.45)' }}>Rendered through full chain</p>
+        </div>
+
+        {/* Controls */}
+        <div className="flex items-center gap-2 flex-shrink-0">
+          <button
+            onClick={() => setPreviewPlaying(v => !v)}
+            className="w-8 h-8 flex items-center justify-center rounded-lg transition-colors hover:text-white"
+            style={{ color: 'rgba(255,255,255,0.5)', background: 'rgba(255,255,255,0.06)' }}
+          >
+            {previewPlaying
+              ? <PauseIcon className="w-4 h-4" strokeWidth={1.5} />
+              : <PlaySolid className="w-3.5 h-3.5" />
+            }
+          </button>
+          <button
+            onClick={() => setShowPreviewCard(false)}
+            className="w-8 h-8 flex items-center justify-center rounded-lg transition-colors hover:text-red-400"
+            style={{ color: 'rgba(255,255,255,0.5)', background: 'rgba(255,255,255,0.06)' }}
+          >
+            <TrashIcon className="w-4 h-4" strokeWidth={1.5} />
+          </button>
+        </div>
+      </div>
+    )}
+
+    {/* ── SHARE MODAL ──────────────────────────────────────────────────── */}
+    {showShareModal && (
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center p-4"
+        style={{ background: 'rgba(0,0,0,0.72)', backdropFilter: 'blur(8px)' }}
+        onClick={() => setShowShareModal(false)}
+      >
+        <div
+          className="w-full max-w-lg rounded-2xl border overflow-hidden"
+          style={{ background: '#0e0d14', borderColor: 'rgba(255,255,255,0.1)' }}
+          onClick={e => e.stopPropagation()}
+        >
+          {/* Header */}
+          <div className="flex items-start justify-between px-6 pt-6 pb-5">
+            <div className="flex items-center gap-3">
+              <ShareIcon className="w-5 h-5 flex-shrink-0" strokeWidth={1.5} style={{ color: '#6677ff' }} />
+              <div>
+                <h2 className="text-xl font-semibold" style={{ color: '#ffffff' }}>Share Project</h2>
+                <p className="text-sm mt-0.5" style={{ color: 'rgba(255,255,255,0.45)' }}>
+                  Share your session for collaboration or share the exported mix.
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowShareModal(false)}
+              className="p-1.5 rounded-lg transition-colors hover:text-white flex-shrink-0"
+              style={{ color: 'rgba(255,255,255,0.4)' }}
+            >
+              <XMarkIcon className="w-5 h-5" strokeWidth={S} />
+            </button>
+          </div>
+
+          {/* Sections */}
+          <div className="px-6 pb-6 space-y-3">
+
+            {/* Share Session */}
+            <div
+              className="flex items-center justify-between p-4 rounded-xl border"
+              style={{ borderColor: 'rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.02)' }}
+            >
+              <div>
+                <p className="text-sm font-semibold" style={{ color: '#ffffff' }}>Share Session</p>
+                <p className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.45)' }}>
+                  Let others listen to your full mix with all stems
+                </p>
+              </div>
+              <button
+                onClick={() => setSessionPrivate(v => !v)}
+                className="flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-medium transition-all flex-shrink-0 ml-4"
+                style={sessionPrivate
+                  ? { borderColor: 'rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.7)', background: 'rgba(255,255,255,0.06)' }
+                  : { borderColor: 'rgba(0,17,255,0.6)', color: '#6677ff', background: 'rgba(0,17,255,0.12)' }
+                }
+              >
+                {/* Toggle pill icon */}
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" strokeWidth="1.5" stroke="currentColor" strokeLinecap="round">
+                  <rect x="2" y="7" width="20" height="10" rx="5"/>
+                  <circle cx={sessionPrivate ? '7' : '17'} cy="12" r="3" fill="currentColor" stroke="none"/>
+                </svg>
+                {sessionPrivate ? 'Private' : 'Public'}
+              </button>
+            </div>
+
+            {/* Invite Collaborator */}
+            <div
+              className="p-4 rounded-xl border"
+              style={{ borderColor: 'rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.02)' }}
+            >
+              <div className="flex items-center gap-2 mb-1">
+                <UserPlusIcon className="w-4 h-4" strokeWidth={1.5} style={{ color: 'rgba(255,255,255,0.7)' }} />
+                <p className="text-sm font-semibold" style={{ color: '#ffffff' }}>Invite Collaborator</p>
+              </div>
+              <p className="text-xs mb-3" style={{ color: 'rgba(255,255,255,0.45)' }}>
+                Generate a link — anyone who opens it can edit this project live
+              </p>
+              <button
+                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border text-sm font-medium transition-all"
+                style={{ borderColor: 'rgba(255,255,255,0.12)', color: '#ffffff', background: 'rgba(255,255,255,0.04)' }}
+                onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.08)')}
+                onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.04)')}
+              >
+                <LinkIcon className="w-4 h-4" strokeWidth={1.5} />
+                Generate Invite Link
+              </button>
+            </div>
+
+            {/* Share Export */}
+            <div
+              className="p-4 rounded-xl border"
+              style={{ borderColor: 'rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.02)' }}
+            >
+              <p className="text-sm font-semibold mb-1" style={{ color: '#ffffff' }}>Share Export</p>
+              <p className="text-xs mb-3" style={{ color: 'rgba(255,255,255,0.45)' }}>
+                Render and upload the mix, then copy the download link
+              </p>
+              <button
+                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border text-sm font-medium transition-all"
+                style={{ borderColor: 'rgba(255,255,255,0.12)', color: '#ffffff', background: 'rgba(255,255,255,0.04)' }}
+                onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.08)')}
+                onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.04)')}
+              >
+                <LinkIcon className="w-4 h-4" strokeWidth={1.5} />
+                Export &amp; Copy Link
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    )}
 
     {/* ── KEYBOARD SHORTCUTS MODAL ─────────────────────────────────────── */}
     {showShortcuts && (
