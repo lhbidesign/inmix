@@ -179,6 +179,7 @@ export default function ProjectDetail() {
   const [showMobileMenu, setShowMobileMenu]        = useState(false)
   const [mixConsoleOpen, setMixConsoleOpen]       = useState(false)
   const [selectedMix, setSelectedMix]             = useState<string | null>(null)
+  const [selectedGenre, setSelectedGenre]         = useState<string | null>(null)
   const [arrangeTool, setArrangeTool]             = useState<'move' | 'cut' | 'select'>('move')
   const [snapEnabled, setSnapEnabled]             = useState(true)
   const [zoomPxPerS, setZoomPxPerS]               = useState(60)
@@ -1335,26 +1336,51 @@ export default function ProjectDetail() {
                 <MusicalNoteIcon className="w-3.5 h-3.5" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
                 <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: 'var(--color-muted-foreground)' }}>Genre Presets</span>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-3">
-                {[
-                  { icon: SpeakerWaveIcon,           name: 'R&B SMOOTH',   desc: 'Warm lows, silky vocals, laid-back groove' },
-                  { icon: BoltIcon,                  name: 'ROCK POWER',   desc: 'Aggressive mids, punchy drums, raw energy'  },
-                  { icon: SparklesIcon,              name: 'EDM FESTIVAL', desc: 'Massive drops, tight lows, festival energy' },
-                  { icon: SunIcon,                   name: 'LO-FI CHILL',  desc: 'Vintage warmth, rolled-off highs, tape vibe' },
-                  { icon: AdjustmentsHorizontalIcon, name: 'TRAP HARD',    desc: 'Deep 808s, sharp hi-hats, dark energy'      },
-                  { icon: FilmIcon,                  name: 'CINEMATIC',    desc: 'Lush reverbs, wide stereo, epic dynamics'   },
-                ].map(({ icon: Icon, name, desc }) => (
-                  <div key={name} className="flex items-start gap-2.5 cursor-pointer group py-1"
-                    onMouseEnter={e => (e.currentTarget.style.opacity = '0.8')}
-                    onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
-                  >
-                    <Icon className="w-4 h-4 flex-shrink-0 mt-0.5" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
-                    <div>
-                      <p className="text-xs font-semibold tracking-wide leading-none mb-0.5" style={{ color: 'var(--color-foreground)' }}>{name}</p>
-                      <p className="text-xs" style={{ color: 'var(--color-muted-foreground)' }}>{desc}</p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-2">
+                {([
+                  { icon: SpeakerWaveIcon,           name: 'R&B SMOOTH',   desc: 'Warm lows, silky vocals, laid-back groove',    intensity: 'balanced'   as const, focus: ['Balanced', 'Drum-driven']              },
+                  { icon: BoltIcon,                  name: 'ROCK POWER',   desc: 'Aggressive mids, punchy drums, raw energy',    intensity: 'aggressive' as const, focus: ['Vocals up front', 'Low-end heavy']      },
+                  { icon: SparklesIcon,              name: 'EDM FESTIVAL', desc: 'Massive drops, tight lows, festival energy',   intensity: 'aggressive' as const, focus: ['Wide stereo', 'Low-end heavy']          },
+                  { icon: SunIcon,                   name: 'LO-FI CHILL',  desc: 'Vintage warmth, rolled-off highs, tape vibe',  intensity: 'subtle'     as const, focus: ['Balanced']                             },
+                  { icon: AdjustmentsHorizontalIcon, name: 'TRAP HARD',    desc: 'Deep 808s, sharp hi-hats, dark energy',        intensity: 'aggressive' as const, focus: ['Low-end heavy', 'Drum-driven']          },
+                  { icon: FilmIcon,                  name: 'CINEMATIC',    desc: 'Lush reverbs, wide stereo, epic dynamics',     intensity: 'aggressive' as const, focus: ['Wide stereo', 'Vocals up front']        },
+                ] as const).map(({ icon: Icon, name, desc, intensity, focus }) => {
+                  const isSelected = selectedGenre === name
+                  return (
+                    <div
+                      key={name}
+                      className="flex items-start gap-2.5 cursor-pointer rounded-lg px-2 py-2 transition-all"
+                      style={{
+                        background:  isSelected ? 'rgba(0,17,255,0.14)' : 'transparent',
+                        border:      `1px solid ${isSelected ? 'rgba(0,17,255,0.55)' : 'transparent'}`,
+                      }}
+                      onClick={() => {
+                        if (isSelected) {
+                          setSelectedGenre(null)
+                        } else {
+                          setSelectedGenre(name)
+                          setMixIntensity(intensity)
+                          setMixFocus(new Set(focus))
+                        }
+                      }}
+                      onMouseEnter={e => { if (!isSelected) e.currentTarget.style.background = 'rgba(255,255,255,0.04)' }}
+                      onMouseLeave={e => { if (!isSelected) e.currentTarget.style.background = 'transparent' }}
+                    >
+                      <Icon
+                        className="w-4 h-4 flex-shrink-0 mt-0.5"
+                        strokeWidth={S}
+                        style={{ color: isSelected ? '#5577ff' : 'var(--color-muted-foreground)' }}
+                      />
+                      <div>
+                        <p className="text-xs font-semibold tracking-wide leading-none mb-0.5"
+                          style={{ color: isSelected ? '#ffffff' : 'var(--color-foreground)' }}>
+                          {name}
+                        </p>
+                        <p className="text-xs" style={{ color: 'var(--color-muted-foreground)' }}>{desc}</p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             </section>
 
