@@ -140,6 +140,7 @@ const navLinks = [
   { id: 'modals',      label: 'Modals'      },
   { id: 'components',  label: 'Components'  },
   { id: 'gallery',     label: 'Gallery'     },
+  { id: 'install',     label: 'Installation' },
 ]
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1581,6 +1582,204 @@ import { Label } from '@/components/ui/label'
               </div>
             </Preview>
 
+          </Section>
+
+          {/* ── INSTALLATION GUIDE ──────────────────────────────────────── */}
+          <Section title="Installation Guide" id="install">
+
+            {/* Stack */}
+            <div className="rounded-xl border overflow-hidden mb-6" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
+              <div className="px-4 py-3 border-b" style={{ borderColor: 'rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.02)' }}>
+                <p className="text-xs font-semibold tracking-widest uppercase" style={{ color: 'var(--color-primary)' }}>Tech Stack</p>
+              </div>
+              <div className="overflow-x-auto">
+                <table className="w-full text-xs">
+                  <thead>
+                    <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                      {['Layer','Technology','Version'].map(h => (
+                        <th key={h} className="text-left px-4 py-2.5 font-semibold" style={{ color: 'rgba(255,255,255,0.45)' }}>{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      ['Build tool',    'Vite',                              '8.x'],
+                      ['UI framework',  'React',                             '19.x'],
+                      ['Types',         'TypeScript',                        '6.x'],
+                      ['Styles',        'Tailwind CSS',                      '4.x'],
+                      ['UI components', 'Radix UI + CVA (shadcn/ui pattern)','—'],
+                      ['Router',        'React Router',                      '7.x'],
+                      ['Icons',         'Heroicons',                         '2.x'],
+                      ['Deploy',        'Vercel',                            '—'],
+                    ].map(([layer, tech, ver]) => (
+                      <tr key={layer} style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+                        <td className="px-4 py-2.5 font-medium" style={{ color: 'rgba(255,255,255,0.7)' }}>{layer}</td>
+                        <td className="px-4 py-2.5 font-mono" style={{ color: 'var(--color-primary)' }}>{tech}</td>
+                        <td className="px-4 py-2.5" style={{ color: 'rgba(255,255,255,0.4)' }}>{ver}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <div className="px-4 py-3 border-t" style={{ borderColor: 'rgba(255,255,255,0.06)', background: 'rgba(255,255,255,0.02)' }}>
+                <p className="text-xs" style={{ color: 'rgba(255,255,255,0.45)' }}>
+                  <strong className="text-white">Note:</strong> This project does <em>not</em> use DaisyUI. The component system follows the <strong className="text-white">shadcn/ui pattern</strong>: Radix UI primitives + CVA for variants + Tailwind for styles.
+                </p>
+              </div>
+            </div>
+
+            {/* Steps */}
+            {[
+              {
+                n: '1', title: 'Prerequisites',
+                content: (
+                  <ul className="space-y-1.5 text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                    <li>Node.js ≥ 20</li>
+                    <li>npm ≥ 10 (or pnpm / yarn)</li>
+                    <li>An <strong className="text-white">fonts.adobe.com</strong> account with access to kit <code className="font-mono px-1 rounded" style={{ background: 'rgba(255,255,255,0.08)' }}>dcc5mne</code> (Neue Haas Grotesk Display Pro)</li>
+                  </ul>
+                ),
+              },
+              {
+                n: '2', title: 'Clone & install',
+                content: (
+                  <pre className="text-xs rounded-lg p-3 overflow-x-auto" style={{ background: '#08080e', color: '#a8b4d8', fontFamily: 'var(--font-mono)' }}>
+{`git clone https://github.com/lhbidesign/inmix.git
+cd inmix-redesign
+npm install
+npm run dev        # → http://localhost:5174`}
+                  </pre>
+                ),
+              },
+              {
+                n: '3', title: 'Typography — Adobe Fonts',
+                content: (
+                  <div className="space-y-3">
+                    <ol className="space-y-1.5 text-xs list-decimal list-inside" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                      <li>Go to <strong className="text-white">fonts.adobe.com</strong> → Web Projects</li>
+                      <li>Open or create kit <code className="font-mono px-1 rounded" style={{ background: 'rgba(255,255,255,0.08)' }}>dcc5mne</code></li>
+                      <li>Activate weights: <strong className="text-white">45 Light</strong>, <strong className="text-white">55 Roman</strong>, <strong className="text-white">65 Medium</strong></li>
+                      <li>Paste the generated link tag in <code className="font-mono px-1 rounded" style={{ background: 'rgba(255,255,255,0.08)' }}>index.html</code> before <code className="font-mono px-1 rounded" style={{ background: 'rgba(255,255,255,0.08)' }}>&lt;/head&gt;</code></li>
+                    </ol>
+                    <pre className="text-xs rounded-lg p-3 overflow-x-auto" style={{ background: '#08080e', color: '#a8b4d8', fontFamily: 'var(--font-mono)' }}>
+{`<link rel="stylesheet" href="https://use.typekit.net/dcc5mne.css">`}
+                    </pre>
+                    <p className="text-xs" style={{ color: 'rgba(255,255,255,0.4)' }}>Without this the font falls back to Helvetica Neue / Arial.</p>
+                  </div>
+                ),
+              },
+              {
+                n: '4', title: 'Design tokens',
+                content: (
+                  <div className="space-y-3">
+                    <p className="text-xs" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                      All tokens are defined in <code className="font-mono px-1 rounded" style={{ background: 'rgba(255,255,255,0.08)', color: 'var(--color-primary)' }}>src/index.css</code> under Tailwind v4's <code className="font-mono px-1 rounded" style={{ background: 'rgba(255,255,255,0.08)' }}>@theme</code> directive.
+                      <strong className="text-white"> Electric Blue</strong> <code className="font-mono px-1 rounded" style={{ background: 'rgba(255,255,255,0.08)' }}>#0011FF</code> is applied directly as inline style — it is not a CSS variable.
+                    </p>
+                    <pre className="text-xs rounded-lg p-3 overflow-x-auto" style={{ background: '#08080e', color: '#a8b4d8', fontFamily: 'var(--font-mono)' }}>
+{`@theme {
+  --font-sans: "neue-haas-grotesk-display", ...;
+  --color-primary: #73ABBF;           /* teal — secondary UI */
+  --color-input:   #1D1C22;           /* input backgrounds */
+  --gradient-bg:      linear-gradient(160deg, #000000 0%, #1D1C22 100%);
+  --gradient-sidebar: linear-gradient(180deg, #0D1258 0%, #050722 100%);
+  --gradient-card:    linear-gradient(145deg, #0a0a0a 0%, #1a191f 100%);
+}`}
+                    </pre>
+                  </div>
+                ),
+              },
+              {
+                n: '5', title: 'Integrating into the client\'s project',
+                content: (
+                  <div className="space-y-3">
+                    <ol className="space-y-2 text-xs list-decimal list-inside" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                      <li><strong className="text-white">Copy tokens</strong> — paste the <code className="font-mono px-1 rounded" style={{ background: 'rgba(255,255,255,0.08)' }}>@theme {'{ ... }'}</code> block from <code className="font-mono px-1 rounded" style={{ background: 'rgba(255,255,255,0.08)' }}>src/index.css</code> into the client's global CSS.</li>
+                      <li><strong className="text-white">Copy utilities</strong> — <code className="font-mono px-1 rounded" style={{ background: 'rgba(255,255,255,0.08)' }}>src/lib/utils.ts</code> (requires <code className="font-mono">clsx</code> and <code className="font-mono">tailwind-merge</code>).</li>
+                      <li><strong className="text-white">Install dependencies</strong></li>
+                    </ol>
+                    <pre className="text-xs rounded-lg p-3 overflow-x-auto" style={{ background: '#08080e', color: '#a8b4d8', fontFamily: 'var(--font-mono)' }}>
+{`npm install @radix-ui/react-slot class-variance-authority clsx tailwind-merge
+npm install @heroicons/react`}
+                    </pre>
+                    <ol className="space-y-2 text-xs list-decimal list-inside" style={{ color: 'rgba(255,255,255,0.6)', counterReset: 'item 3' }}>
+                      <li style={{ listStyleType: 'none' }}><span style={{ color: 'rgba(255,255,255,0.6)' }}>4. <strong className="text-white">Copy UI components</strong> — <code className="font-mono px-1 rounded" style={{ background: 'rgba(255,255,255,0.08)' }}>src/components/ui/</code> into the client's project.</span></li>
+                      <li style={{ listStyleType: 'none' }}><span>5. <strong className="text-white">Tailwind v4</strong> — ensure the client project uses Tailwind 4.x (not 3.x) — the <code className="font-mono px-1 rounded" style={{ background: 'rgba(255,255,255,0.08)' }}>@theme</code> directive is v4 only.</span></li>
+                      <li style={{ listStyleType: 'none' }}><span>6. <strong className="text-white">Activate the font</strong> — see step 3 above.</span></li>
+                      <li style={{ listStyleType: 'none' }}><span>7. <strong className="text-white">Reference pages</strong> — each <code className="font-mono px-1 rounded" style={{ background: 'rgba(255,255,255,0.08)' }}>src/pages/*.tsx</code> file is a ready-to-adapt implementation reference.</span></li>
+                    </ol>
+                  </div>
+                ),
+              },
+              {
+                n: '6', title: 'Build & deploy',
+                content: (
+                  <div className="space-y-3">
+                    <pre className="text-xs rounded-lg p-3 overflow-x-auto" style={{ background: '#08080e', color: '#a8b4d8', fontFamily: 'var(--font-mono)' }}>
+{`npm run build          # production build → dist/
+npm run preview        # preview the build locally
+npx vercel --prod      # deploy to Vercel`}
+                    </pre>
+                    <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                      <code className="font-mono px-1 rounded" style={{ background: 'rgba(255,255,255,0.08)' }}>vercel.json</code> is already configured to redirect all routes to <code className="font-mono">index.html</code> (SPA).
+                    </p>
+                  </div>
+                ),
+              },
+            ].map(({ n, title, content }) => (
+              <div key={n} className="flex gap-5 mb-8">
+                <div className="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold mt-0.5"
+                  style={{ background: 'rgba(115,171,191,0.15)', color: 'var(--color-primary)', border: '1px solid rgba(115,171,191,0.3)' }}>
+                  {n}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-sm font-semibold mb-3" style={{ color: '#ffffff' }}>{title}</h3>
+                  {content}
+                </div>
+              </div>
+            ))}
+
+            {/* File structure */}
+            <div className="rounded-xl border overflow-hidden" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
+              <div className="px-4 py-3 border-b" style={{ borderColor: 'rgba(255,255,255,0.08)', background: 'rgba(255,255,255,0.02)' }}>
+                <p className="text-xs font-semibold tracking-widest uppercase" style={{ color: 'var(--color-primary)' }}>File Structure</p>
+              </div>
+              <pre className="p-4 text-xs overflow-x-auto leading-relaxed" style={{ background: '#08080e', color: '#a8b4d8', fontFamily: 'var(--font-mono)' }}>
+{`inmix-redesign/
+├── public/
+│   ├── logo.svg                  # INMIX SVG logo
+│   └── images/                   # Image assets
+├── src/
+│   ├── components/
+│   │   ├── AppSidebar.tsx        # Global sidebar (collapse/expand)
+│   │   └── ui/
+│   │       ├── button.tsx        # Button with CVA (variants + sizes)
+│   │       ├── card.tsx          # Card + CardContent
+│   │       ├── input.tsx         # Base input
+│   │       ├── badge.tsx         # Badge / chip
+│   │       ├── tab-group.tsx     # Generic TabGroup<T>
+│   │       ├── separator.tsx     # Radix Separator
+│   │       └── label.tsx         # Radix Label
+│   ├── pages/
+│   │   ├── Dashboard.tsx         # Stats dashboard and project table
+│   │   ├── Projects.tsx          # Project list
+│   │   ├── ProjectDetail.tsx     # Mix / Arrange editor (main page)
+│   │   ├── Presets.tsx           # Preset library
+│   │   ├── Settings.tsx          # Account settings
+│   │   ├── Auth.tsx              # Login / Register
+│   │   ├── Landing.tsx           # Marketing landing page
+│   │   └── DesignSystem.tsx      # This page
+│   ├── lib/
+│   │   └── utils.ts              # cn() helper (clsx + tailwind-merge)
+│   ├── App.tsx                   # Main router
+│   ├── main.tsx                  # Entry point
+│   └── index.css                 # @theme tokens + base styles
+├── vercel.json                   # SPA redirect config
+├── INSTALL.md                    # This guide (also at /design-system#install)
+├── vite.config.ts
+└── package.json`}
+              </pre>
+            </div>
           </Section>
 
           {/* Footer */}
