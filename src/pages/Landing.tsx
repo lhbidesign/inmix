@@ -13,9 +13,24 @@ const vibeTabs = [
 ]
 
 const steps = [
-  { num: '01', title: 'Drop your stems',    desc: 'Drag your individual tracks straight into the engine.' },
-  { num: '02', title: 'Let the engine cook', desc: 'AI analysis detects genre, dynamics, and frequency balance.' },
-  { num: '03', title: 'Export & release',   desc: 'Download your polished mix, ready for distribution.' },
+  {
+    num: '01',
+    title: 'Drop your stems',
+    desc: 'Upload your individual tracks — vocals, drums, bass, synths. WAV, MP3, FLAC. Our engine runs them at 48 kHz with zero quality loss.',
+    bg: '#0a0a2e',
+  },
+  {
+    num: '02',
+    title: 'Let the engine cook',
+    desc: 'Our AI analyzes genre, dynamics, and frequency balance across every stem — and applies professional-grade processing in seconds.',
+    bg: '#0d1a0d',
+  },
+  {
+    num: '03',
+    title: 'Export & release',
+    desc: 'Download your polished mix at 24-bit / 48 kHz, delivered at 11 LUFS — ready for streaming, distribution, or your next session.',
+    bg: '#1a0a0a',
+  },
 ]
 
 const features = [
@@ -44,6 +59,7 @@ const features = [
 
 export default function Landing() {
   const [activeVibe, setActiveVibe] = useState('original')
+  const [activeStep, setActiveStep] = useState('01')
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
@@ -230,27 +246,38 @@ export default function Landing() {
           </h2>
 
           <div className="grid lg:grid-cols-2 gap-16 items-center">
-            {/* Steps */}
+            {/* Steps — interactive */}
             <div className="space-y-10">
-              {steps.map(step => (
-                <div key={step.num} className="flex items-start gap-5">
-                  <span className="text-xs font-bold tracking-widest flex-shrink-0 mt-0.5" style={{ color: 'var(--color-primary)' }}>
-                    {step.num}
-                  </span>
-                  <div>
-                    <p className="mb-1.5" style={{ fontSize: '48px', fontWeight: 400, lineHeight: 1.1 }}>{step.title}</p>
+              {steps.map(step => {
+                const active = activeStep === step.num
+                return (
+                  <div key={step.num} className="flex items-start gap-5 cursor-pointer"
+                       onClick={() => setActiveStep(step.num)}>
+                    <span className="text-xs font-bold tracking-widest flex-shrink-0 mt-0.5"
+                          style={{ color: 'var(--color-primary)' }}>
+                      {step.num}
+                    </span>
+                    <p className="mb-1.5 transition-colors duration-200"
+                       style={{ fontSize: '48px', fontWeight: 400, lineHeight: 1.1, color: active ? 'var(--color-primary)' : '#ffffff' }}>
+                      {step.title}
+                    </p>
                   </div>
-                </div>
-              ))}
+                )
+              })}
             </div>
 
-            {/* Right — image placeholder + caption */}
-            <div className="flex flex-col gap-5">
-              <img src="/images/drums.png" alt="App Screenshot" className="w-full rounded-2xl" style={{ aspectRatio: '800 / 312', objectFit: 'cover' }} />
-              <p style={{ fontSize: '24px', fontWeight: 400, lineHeight: '130%', letterSpacing: '0%', color: '#ffffff' }}>
-                Vocals, drums, bass, synths — WAV, MP3, FLAC. Our engine runs them at 48 kHz with zero quality loss.
-              </p>
-            </div>
+            {/* Right — changes with active step */}
+            {(() => {
+              const step = steps.find(s => s.num === activeStep)!
+              return (
+                <div className="flex flex-col gap-5">
+                  <div className="w-full rounded-2xl" style={{ aspectRatio: '800 / 312', background: step.bg, border: '1px solid rgba(255,255,255,0.07)' }} />
+                  <p style={{ fontSize: '24px', fontWeight: 400, lineHeight: '130%', color: '#ffffff' }}>
+                    {step.desc}
+                  </p>
+                </div>
+              )
+            })()}
           </div>
         </div>
       </section>
