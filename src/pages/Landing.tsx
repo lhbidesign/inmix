@@ -179,7 +179,7 @@ export default function Landing() {
                  style={{ border: '1px solid rgba(255,255,255,0.3)', color: '#ffffff', background: 'transparent' }}>
               Hear It In Action
             </div>
-            <h2 style={{ fontSize: '80px', fontWeight: 300, lineHeight: '95%', letterSpacing: '0%', color: '#ffffff' }}>
+            <h2 className="text-[40px] sm:text-[80px]" style={{ fontWeight: 300, lineHeight: '95%', letterSpacing: '0%', color: '#ffffff' }}>
               Your track.<br />inMixed your way.
             </h2>
           </div>
@@ -225,7 +225,7 @@ export default function Landing() {
               The Workflow
             </div>
           </div>
-          <h2 className="text-center mb-20" style={{ fontSize: '80px', fontWeight: 300, lineHeight: '95%', letterSpacing: '0%', color: '#ffffff' }}>
+          <h2 className="text-center mb-20 text-[40px] sm:text-[80px]" style={{ fontWeight: 300, lineHeight: '95%', letterSpacing: '0%', color: '#ffffff' }}>
             Your track<br />ready for release
           </h2>
 
@@ -264,7 +264,7 @@ export default function Landing() {
               The Tools
             </div>
           </div>
-          <h2 className="text-center mb-24" style={{ fontSize: '80px', fontWeight: 300, lineHeight: '95%', letterSpacing: '0%', color: '#ffffff' }}>
+          <h2 className="text-center mb-24 text-[40px] sm:text-[80px]" style={{ fontWeight: 300, lineHeight: '95%', letterSpacing: '0%', color: '#ffffff' }}>
             Pro-Grade tools.<br />Zero learning Curve.
           </h2>
 
