@@ -257,8 +257,8 @@ export default function Landing() {
                           style={{ color: 'var(--color-primary)' }}>
                       {step.num}
                     </span>
-                    <p className="mb-1.5 transition-colors duration-200"
-                       style={{ fontSize: '48px', fontWeight: 400, lineHeight: 1.1, color: active ? 'var(--color-primary)' : '#ffffff' }}>
+                    <p className="mb-1.5 transition-colors duration-200 text-[24px] sm:text-[48px]"
+                       style={{ fontWeight: 400, lineHeight: 1.1, color: active ? 'var(--color-primary)' : '#ffffff' }}>
                       {step.title}
                     </p>
                   </div>
