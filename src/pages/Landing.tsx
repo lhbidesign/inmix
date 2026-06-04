@@ -93,7 +93,8 @@ export default function Landing() {
           <Link to="/register"
                 className="text-sm px-5 py-2 rounded-full font-medium transition-all hover:opacity-90"
                 style={{ background: '#ffffff', color: '#000000' }}>
-            Join InMix for free
+            <span className="sm:hidden">Join for Free</span>
+            <span className="hidden sm:inline">Join InMix for free</span>
           </Link>
         </div>
       </nav>
