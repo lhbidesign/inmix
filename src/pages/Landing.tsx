@@ -5,8 +5,6 @@ import {
 } from '@heroicons/react/24/outline'
 import { StarIcon } from '@heroicons/react/24/solid'
 
-const S = 1.5
-
 const vibeTabs = [
   { id: 'original', label: 'ORIGINAL',        sub: 'One subtle, note-perfect mix',              color: 'rgba(255,255,255,0.7)', bg: '/images/player1.png' },
   { id: 'street',   label: 'STREET HEAT MIX', sub: 'Urban grit — 808s pushed, vocals upfront',  color: '#f97316',               bg: '/images/player2.png' },
