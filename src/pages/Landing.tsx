@@ -247,11 +247,13 @@ export default function Landing() {
 
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Steps — interactive */}
-            <div className="space-y-10">
-              {steps.map(step => {
+            <div className="flex flex-col">
+              {steps.map((step, i) => {
                 const active = activeStep === step.num
                 return (
-                  <div key={step.num} className="flex items-start gap-5 cursor-pointer"
+                  <div key={step.num}>
+                  {i > 0 && <div className="w-full h-px my-8" style={{ background: 'var(--color-primary)' }} />}
+                  <div className="flex items-start gap-5 cursor-pointer"
                        onClick={() => setActiveStep(step.num)}>
                     <span className="text-xs font-bold tracking-widest flex-shrink-0 mt-0.5"
                           style={{ color: 'var(--color-primary)' }}>
@@ -261,6 +263,7 @@ export default function Landing() {
                        style={{ fontWeight: 400, lineHeight: 1.1, color: active ? 'var(--color-primary)' : '#ffffff' }}>
                       {step.title}
                     </p>
+                  </div>
                   </div>
                 )
               })}
