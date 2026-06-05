@@ -73,22 +73,6 @@ export default function Auth() {
             ))}
           </div>
         </div>
-
-        {/* Testimonial */}
-        <div className="relative z-10 p-5 rounded-xl border" style={{ background: 'var(--color-accent)', borderColor: 'rgba(255,255,255,0.08)' }}>
-          <p className="text-sm italic leading-relaxed" style={{ color: 'var(--color-muted-foreground)' }}>
-            "INMIX transformed how I deliver mixes to clients. What used to take days now takes hours."
-          </p>
-          <div className="flex items-center gap-2 mt-3">
-            <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold" style={{ background: 'var(--color-primary)', color: 'var(--color-primary-foreground)' }}>
-              JR
-            </div>
-            <div>
-              <p className="text-xs font-medium">James Rivera</p>
-              <p className="text-xs" style={{ color: 'var(--color-muted-foreground)' }}>Music Producer · LA</p>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Right panel — form */}

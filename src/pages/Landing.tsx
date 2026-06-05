@@ -61,6 +61,31 @@ export default function Landing() {
   const [activeVibe, setActiveVibe] = useState('original')
   const [activeStep, setActiveStep] = useState('01')
   const [scrolled, setScrolled] = useState(false)
+  const [activeTestimonial, setActiveTestimonial] = useState(0)
+
+  const testimonials = [
+    {
+      stars: 5,
+      quote: 'Hand\'s down the best.',
+      body: '"InMix helps us move faster without sacrificing quality. The mixes came back polished, balanced, and release ready in a fraction of the time."',
+      name: 'Andrew Packer, A&R',
+      company: 'WARNER MUSIC GROUP',
+    },
+    {
+      stars: 5,
+      quote: 'Finally, mixes that actually translate.',
+      body: '"I\'ve tried every auto-mix tool out there. InMix is the first one I trust enough to send to a client without touching it. The genre awareness is next level."',
+      name: 'Sofia Reyes, Music Producer',
+      company: 'UNIVERSAL MUSIC LATIN',
+    },
+    {
+      stars: 4,
+      quote: 'Cut my turnaround time in half.',
+      body: '"We\'re releasing more music than ever and InMix makes that possible. Clean, punchy mixes straight out of the platform — my artists are thrilled."',
+      name: 'Marcus Webb, A&R Manager',
+      company: 'SONY MUSIC ENTERTAINMENT',
+    },
+  ]
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -80,12 +105,13 @@ export default function Landing() {
           borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : 'none',
         }}
       >
-        <img src="/logo.svg" alt="inmix" style={{ height: '22px', width: 'auto' }} />
+        <Link to="/">
+          <img src="/logo.svg" alt="inmix" style={{ height: '22px', width: 'auto' }} />
+        </Link>
         <div className="hidden md:flex items-center gap-8">
-          {['Features', 'How It Works', 'Pricing'].map(item => (
-            <a key={item} href="#" className="text-sm transition-colors hover:text-white"
-               style={{ color: 'rgba(255,255,255,0.7)' }}>{item}</a>
-          ))}
+          <a href="#" className="text-sm transition-colors hover:text-white" style={{ color: 'rgba(255,255,255,0.7)' }}>Features</a>
+          <Link to="/about" className="text-sm transition-colors hover:text-white" style={{ color: 'rgba(255,255,255,0.7)' }}>How It Works</Link>
+          <Link to="/pricing" className="text-sm transition-colors hover:text-white" style={{ color: 'rgba(255,255,255,0.7)' }}>Pricing</Link>
         </div>
         <div className="flex items-center gap-3">
           <Link to="/login" className="text-sm px-4 py-1.5 rounded-full transition-colors hover:text-white"
@@ -287,8 +313,8 @@ export default function Landing() {
       </section>
 
       {/* ── PRO-GRADE TOOLS ──────────────────────────────────────────────── */}
-      <section className="py-24 px-6">
-        <div className="max-w-5xl mx-auto">
+      <section className="relative py-24 px-6 overflow-hidden" style={{ backgroundImage: 'url(/images/wave.png)', backgroundSize: '100% auto', backgroundPosition: 'center top', backgroundRepeat: 'no-repeat' }}>
+        <div className="relative z-10 max-w-5xl mx-auto">
           <div className="flex justify-center mb-5">
             <div className="inline-flex items-center px-5 py-2 rounded-full text-[11px] font-semibold tracking-widest uppercase"
                  style={{ border: '1px solid rgba(255,255,255,0.3)', color: '#ffffff', background: 'transparent' }}>
@@ -364,7 +390,7 @@ export default function Landing() {
       </section>
 
       {/* ── TESTIMONIALS ─────────────────────────────────────────────────── */}
-      <section className="py-24 px-6">
+      <section className="relative py-24 px-6 overflow-hidden" style={{ backgroundImage: 'url(/images/wave.png)', backgroundSize: '100% auto', backgroundPosition: 'center center', backgroundRepeat: 'no-repeat' }}>
         <div className="max-w-4xl mx-auto">
           <div className="flex justify-center mb-6">
             <img src="/images/check.svg" alt="" style={{ width: '72px', height: 'auto' }} />
@@ -377,27 +403,25 @@ export default function Landing() {
           {/* Testimonial card */}
           <div className="rounded-2xl overflow-hidden mb-6 grid sm:[grid-template-columns:1fr_2fr]"
                style={{ border: '1px solid rgba(0,17,255,0.5)', background: '#0a0a0f' }}>
-            {/* Image — hidden on mobile */}
-            <img src="/images/testimonial.png" alt="Andrew Packer"
+            <img src="/images/testimonial.png" alt={testimonials[activeTestimonial].name}
                  className="hidden sm:block w-full h-full object-cover object-top" style={{ minHeight: '360px' }} />
-            {/* Content */}
             <div className="flex flex-col justify-center p-10 gap-5">
               <div className="flex gap-1">
-                {[...Array(5)].map((_, i) => (
+                {[...Array(testimonials[activeTestimonial].stars)].map((_, i) => (
                   <StarIcon key={i} className="w-5 h-5" style={{ color: '#0011FF' }} />
                 ))}
               </div>
               <h3 style={{ fontSize: '36px', fontWeight: 300, lineHeight: '100%', color: '#ffffff' }}>
-                Hand's down the best.
+                {testimonials[activeTestimonial].quote}
               </h3>
               <p style={{ fontSize: '16px', lineHeight: '150%', color: 'rgba(255,255,255,0.7)' }}>
-                "InMix helps us move faster without sacrificing quality. The mixes came back polished, balanced, and release ready in a fraction of the time."
+                {testimonials[activeTestimonial].body}
               </p>
               <div className="w-8 h-px" style={{ background: 'rgba(255,255,255,0.25)' }} />
               <div>
-                <p style={{ fontSize: '16px', fontWeight: 400, color: '#ffffff' }}>Andrew Packer, A&R</p>
+                <p style={{ fontSize: '16px', fontWeight: 400, color: '#ffffff' }}>{testimonials[activeTestimonial].name}</p>
                 <p style={{ fontSize: '12px', fontWeight: 500, letterSpacing: '0.1em', color: 'rgba(255,255,255,0.45)' }}>
-                  WARNER MUSIC GROUP
+                  {testimonials[activeTestimonial].company}
                 </p>
               </div>
             </div>
@@ -405,13 +429,14 @@ export default function Landing() {
 
           {/* Pagination dots */}
           <div className="flex items-center justify-center gap-2 mb-16">
-            {[0, 1, 2].map(i => (
-              <div key={i} className="rounded-full transition-all"
-                   style={{
-                     width: '12px', height: '12px',
-                     background: i === 0 ? '#0011FF' : 'transparent',
-                     border: i === 0 ? 'none' : '1.5px solid rgba(255,255,255,0.45)',
-                   }} />
+            {testimonials.map((_, i) => (
+              <button key={i} onClick={() => setActiveTestimonial(i)}
+                      className="rounded-full transition-all cursor-pointer"
+                      style={{
+                        width: '12px', height: '12px',
+                        background: i === activeTestimonial ? '#0011FF' : 'transparent',
+                        border: i === activeTestimonial ? 'none' : '1.5px solid rgba(255,255,255,0.45)',
+                      }} />
             ))}
           </div>
 

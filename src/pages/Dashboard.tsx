@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom'
 import { StarIcon as StarSolidIcon } from '@heroicons/react/24/solid'
 import {
   MagnifyingGlassIcon,
-  BellIcon,
   PlusIcon,
   ClockIcon,
   BoltIcon,
   EllipsisHorizontalIcon,
   PlayIcon,
   ArrowDownTrayIcon,
+  ArrowRightIcon,
   ChevronRightIcon,
   SpeakerWaveIcon,
   PlusCircleIcon,
@@ -20,6 +20,7 @@ import {
   AdjustmentsHorizontalIcon,
 } from '@heroicons/react/24/outline'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { AppSidebar } from '@/components/AppSidebar'
@@ -28,9 +29,9 @@ import { TabGroup } from '@/components/ui/tab-group'
 const S = 1 // strokeWidth global para todos los heroicons
 
 const stats = [
-  { label: 'Active Projects', value: '12',   delta: '+2 this week',   icon: FolderOpenIcon,       color: 'text-violet-400' },
+  { label: 'Projects',        value: '12',   delta: '+2 this week',   icon: FolderOpenIcon,       color: 'text-violet-400' },
   { label: 'Mixes Created',   value: '48',   delta: '+8 this month',  icon: SpeakerWaveIcon,      color: 'text-sky-400' },
-  { label: 'Hours Mixed',     value: '134h', delta: '+22h this week', icon: ClockIcon,            color: 'text-emerald-400' },
+  { label: 'Total Time Mixed',value: '134h', delta: '+22h this week', icon: ClockIcon,            color: 'text-emerald-400' },
   { label: 'AI Suggestions',  value: '319',  delta: 'Used this month',icon: BoltIcon,             color: 'text-amber-400' },
 ]
 
@@ -76,6 +77,9 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<'projects' | 'exports'>('projects')
   const [search, setSearch] = useState('')
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [statsVisible, setStatsVisible] = useState(true)
+  const [showNewProject, setShowNewProject] = useState(false)
+  const [projectName, setProjectName] = useState('')
   const navigate = useNavigate()
 
   return (
@@ -97,10 +101,6 @@ export default function Dashboard() {
           >
             <Bars3Icon className="w-5 h-5" strokeWidth={S} />
           </button>
-          <Button variant="ghost" size="icon" className="relative hover:text-white">
-            <BellIcon className="w-[18px] h-[18px]" strokeWidth={S} />
-            <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full" style={{ background: 'var(--color-primary)' }} />
-          </Button>
         </div>
 
         {/* Content */}
@@ -115,14 +115,11 @@ export default function Dashboard() {
                 <h1 className="font-light text-2xl lg:text-[36px]" style={{ color: '#ffffff' }}>Welcome back, David</h1>
               </div>
               <div className="flex items-center gap-3">
-                <Button variant="ghost" size="icon" className="relative hover:text-white hidden lg:inline-flex">
-                  <BellIcon className="w-[18px] h-[18px]" strokeWidth={S} />
-                  <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full" style={{ background: 'var(--color-primary)' }} />
-                </Button>
                 <Button
                   variant="outline"
                   className="gap-2 flex-1 lg:flex-none rounded-full px-5 font-medium"
                   style={{ borderColor: 'rgba(255,255,255,0.5)', color: '#ffffff', borderWidth: '1px' }}
+                  onClick={() => navigate('/projects/1?wizard=true')}
                 >
                   <SpeakerWaveIcon className="w-4 h-4" strokeWidth={S} />
                   Demo Mix
@@ -130,6 +127,7 @@ export default function Dashboard() {
                 <Button
                   className="gap-2 flex-1 lg:flex-none rounded-full px-5 font-medium"
                   style={{ background: '#ffffff', color: '#000' }}
+                  onClick={() => setShowNewProject(true)}
                 >
                   <PlusIcon className="w-4 h-4" strokeWidth={S} />
                   New Project
@@ -139,20 +137,37 @@ export default function Dashboard() {
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
-            {stats.map(({ label, value, icon: Icon }) => (
-              <Card key={label}>
-                <CardContent className="p-5">
-                  <div className="flex items-start justify-between mb-1">
-                    <p className="text-xs font-medium" style={{ color: 'var(--color-muted-foreground)' }}>{label}</p>
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: '#0011FF' }}>
-                      <Icon className="w-[16px] h-[16px]" strokeWidth={S} style={{ color: '#ffffff' }} />
-                    </div>
-                  </div>
-                  <p className="text-[44px] font-normal tracking-tight leading-none">{value}</p>
-                </CardContent>
-              </Card>
-            ))}
+          <div>
+            <button
+              onClick={() => setStatsVisible(v => !v)}
+              className="flex items-center gap-2 mb-3 text-xs font-medium transition-opacity hover:opacity-80"
+              style={{ color: 'var(--color-muted-foreground)' }}
+            >
+              <ChevronRightIcon
+                className="w-3.5 h-3.5 transition-transform duration-200"
+                strokeWidth={2}
+                style={{ transform: statsVisible ? 'rotate(90deg)' : 'rotate(0deg)' }}
+              />
+              {statsVisible ? 'Hide stats' : 'Show stats'}
+            </button>
+
+            {statsVisible && (
+              <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
+                {stats.map(({ label, value, icon: Icon }) => (
+                  <Card key={label}>
+                    <CardContent className="p-5">
+                      <div className="flex items-start justify-between mb-1">
+                        <p className="text-xs font-medium" style={{ color: 'var(--color-muted-foreground)' }}>{label}</p>
+                        <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: '#0011FF' }}>
+                          <Icon className="w-[16px] h-[16px]" strokeWidth={S} style={{ color: '#ffffff' }} />
+                        </div>
+                      </div>
+                      <p className="text-[44px] font-normal tracking-tight leading-none">{value}</p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Projects + Activity */}
@@ -380,6 +395,87 @@ export default function Dashboard() {
 
         </main>
       </div>
+
+      {/* ── NEW PROJECT MODAL ─────────────────────────────────────────────── */}
+      {showNewProject && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center px-4"
+          style={{ background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(12px)' }}
+          onClick={() => setShowNewProject(false)}
+        >
+          <div
+            className="relative w-full max-w-md space-y-6 rounded-2xl p-8"
+            style={{ background: 'var(--color-card)', border: '1px solid rgba(255,255,255,0.08)' }}
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Close */}
+            <button
+              onClick={() => setShowNewProject(false)}
+              className="absolute top-5 right-5 w-7 h-7 flex items-center justify-center rounded-full transition-colors hover:bg-white/10"
+              style={{ color: 'var(--color-muted-foreground)' }}
+            >
+              <PlusIcon className="w-4 h-4 rotate-45" strokeWidth={S} />
+            </button>
+
+            {/* Header */}
+            <div className="space-y-1">
+              <h2 className="text-2xl font-normal tracking-tight" style={{ color: 'var(--color-foreground)' }}>
+                Create New Project
+              </h2>
+              <p className="text-sm" style={{ color: 'var(--color-muted-foreground)' }}>
+                Name your session and optionally pick a genre for smarter auto-mix results.
+              </p>
+            </div>
+
+            {/* Input */}
+            <div className="space-y-1.5">
+              <label className="text-sm font-medium" style={{ color: 'var(--color-foreground)' }}>Project Name</label>
+              <div className="relative">
+                <FolderOpenIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
+                <Input
+                  type="text"
+                  placeholder="My Awesome Mix"
+                  value={projectName}
+                  onChange={e => setProjectName(e.target.value)}
+                  className="pl-9"
+                  autoFocus
+                />
+              </div>
+            </div>
+
+            {/* Primary CTA */}
+            <Button
+              size="lg"
+              className="w-full rounded-full font-medium gap-2"
+              style={{ background: '#ffffff', color: '#000000' }}
+              onClick={() => { setShowNewProject(false); setProjectName('') }}
+            >
+              Create Project
+              <ArrowRightIcon className="w-4 h-4" strokeWidth={S} />
+            </Button>
+
+            {/* Divider */}
+            <div className="flex items-center gap-3">
+              <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,0.08)' }} />
+              <span className="text-xs" style={{ color: 'var(--color-muted-foreground)' }}>or</span>
+              <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,0.08)' }} />
+            </div>
+
+            {/* Secondary CTA */}
+            <Button
+              variant="outline"
+              size="lg"
+              className="w-full rounded-full font-medium gap-2"
+              style={{ borderColor: 'rgba(255,255,255,0.3)', color: 'var(--color-muted-foreground)', borderWidth: '1px' }}
+              onClick={() => setShowNewProject(false)}
+            >
+              <DocumentDuplicateIcon className="w-4 h-4" strokeWidth={S} />
+              Browse Templates
+            </Button>
+          </div>
+        </div>
+      )}
+
     </div>
   )
 }

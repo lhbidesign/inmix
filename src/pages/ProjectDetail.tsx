@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
+import { WizardTour } from '@/components/WizardTour'
 import {
   MusicalNoteIcon,
   MagnifyingGlassIcon, XMarkIcon, Bars3Icon, ChevronLeftIcon,
@@ -154,6 +155,95 @@ const initialStems = [
   { id: 8, name: 'Synth',          type: 'KEYS',  volume: 80, pan: 0, muted: false, soloed: false },
 ]
 
+// ── Chain presets per stem type ───────────────────────────────────────────────
+const chainPresets: Record<string, { name: string; desc: string }[]> = {
+  VOCAL: [
+    { name: 'Clean Vocal',   desc: 'Transparent, open, natural presence'      },
+    { name: 'Air Boost',     desc: 'High-shelf lift, breathy, airy feel'       },
+    { name: 'Radio Ready',   desc: 'Compressed, de-essed, forward vocals'      },
+    { name: 'Intimate',      desc: 'Close, dry, bedroom recording vibe'        },
+    { name: 'Dark & Warm',   desc: 'Low-mid body, rolled-off highs'            },
+    { name: 'Wide Chorus',   desc: 'Doubled, spread, wide stereo image'        },
+    { name: 'Hip-Hop Lead',  desc: 'Punchy, in-your-face, club-ready'          },
+    { name: 'Gospel Choir',  desc: 'Lush reverb, full harmonics, presence'     },
+    { name: 'Whisper Close', desc: 'Ultra-intimate, breathy, lo-fi feel'       },
+  ],
+  DRUMS: [
+    { name: 'Punchy Kit',    desc: 'Fast attack, tight transients, presence'   },
+    { name: 'Room Bleed',    desc: 'Natural room, slight bleed, live feel'     },
+    { name: 'Tight & Dry',   desc: 'No reverb, punchy, studio-direct sound'   },
+    { name: 'Vintage Room',  desc: 'Tape warmth, roomy, classic 70s vibe'     },
+    { name: 'Lo-Fi Crunch',  desc: 'Bit-crushed, gritty, lo-fi texture'       },
+    { name: 'Hip-Hop Kit',   desc: '808 emphasis, heavy compression, boom'    },
+    { name: 'Jazz Brush',    desc: 'Soft, airy, minimal compression'          },
+    { name: 'Electronic',    desc: 'Gate reverb, sampled, electronic punch'   },
+    { name: 'Heavy Metal',   desc: 'Tight snare, aggressive kick, full mix'   },
+  ],
+  KEYS: [
+    { name: 'Bright & Poppy',desc: 'Sparkly highs, wide, commercial pop'      },
+    { name: 'Ambient Pad',   desc: 'Washed out, spacious, atmospheric'        },
+    { name: 'Cinematic',     desc: 'Huge dynamic range, wide hall reverb, filmscore weight' },
+    { name: 'Rhodes Warmth', desc: 'Warm mid presence, subtle tremolo feel'   },
+    { name: 'Lo-Fi Piano',   desc: 'Dusty, tape-sat, bedroom producer vibe'   },
+    { name: 'Honky Tonk',    desc: 'Slightly detuned, saloon piano, old and charming' },
+    { name: 'Organ Drive',   desc: 'Full, driven, gospel/soul organ'          },
+    { name: 'Synth Lead',    desc: 'Bright, cutting, analog synth lead — forward and sharp' },
+    { name: 'Synth Pad',     desc: 'Lush, wide, evolving — bed texture under everything' },
+  ],
+  BASS: [
+    { name: 'Clean DI',      desc: 'Direct input, clean, punchy low end'      },
+    { name: 'Sub Heavy',     desc: 'Sub-boosted, deep, floor-shaking bass'    },
+    { name: 'Punchy Mid',    desc: 'Mid-forward, present, cuts through mix'   },
+    { name: 'Growl',         desc: 'Driven, gritty, harmonic saturation'      },
+    { name: 'Round & Warm',  desc: 'Smooth attack, warm, vintage tone'        },
+    { name: 'Slapback',      desc: 'Slap technique, punchy, funky feel'       },
+    { name: 'Upright',       desc: 'Acoustic upright, woody, natural decay'   },
+    { name: 'Synth Bass',    desc: 'Electronic, tight, modern EDM/pop bass'   },
+    { name: 'Reggae Dub',    desc: 'Deep, slow decay, heavy dub presence'     },
+  ],
+  INSTR: [
+    { name: 'Clean',         desc: 'Flat, transparent, natural instrument tone'},
+    { name: 'Warm Acoustic', desc: 'Mid-forward, body, natural room feel'     },
+    { name: 'Bright & Air',  desc: 'High-shelf lift, sparkly, modern pop'     },
+    { name: 'Crunch',        desc: 'Light overdrive, gritty, edge and presence'},
+    { name: 'Orchestral',    desc: 'Full hall reverb, wide, cinematic scoring' },
+    { name: 'Lead Cut',      desc: 'Upper-mid boost, cuts through dense mix'  },
+    { name: 'Rhythm Glue',   desc: 'Compressed, locked, tight rhythm section' },
+    { name: 'Vintage Tape',  desc: 'Warm saturation, rolled highs, retro vibe'},
+    { name: 'Ambient Wash',  desc: 'Long reverb, soft, atmospheric texture'   },
+  ],
+}
+
+interface StemFx {
+  preset: string
+  reverbType: string
+  compType: string
+  reverb: number
+  compress: number
+  distortion: number
+  decay: number
+  exciter: number
+  width: number
+  routeToBus: string
+  delayLevel: number
+  delayRate: string
+  delayType: string
+  eq: [number, number, number, number, number] // LOW L-MID MID H-MID HIGH (-12..+12)
+}
+
+function defaultFx(type: string): StemFx {
+  const presets = chainPresets[type] ?? chainPresets.INSTR
+  return {
+    preset: presets[0].name,
+    reverbType: 'Hall', compType: 'VCA',
+    reverb: 0, compress: 0, distortion: 0, decay: 30,
+    exciter: 0, width: 0,
+    routeToBus: 'MASTER',
+    delayLevel: 0, delayRate: '1/8', delayType: 'Tape',
+    eq: [0, 0, 0, 0, 0],
+  }
+}
+
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function ProjectDetail() {
@@ -177,6 +267,25 @@ export default function ProjectDetail() {
   const [canUndo]                             = useState(false)
   const [canRedo]                             = useState(false)
   const [showMobileMenu, setShowMobileMenu]        = useState(false)
+  const [expandedStems, setExpandedStems]          = useState<Set<number>>(new Set())
+  const [stemFx, setStemFx]                        = useState<Record<number, StemFx>>(() =>
+    Object.fromEntries(initialStems.map(s => [s.id, defaultFx(s.type)]))
+  )
+
+  function toggleStemExpand(id: number) {
+    setExpandedStems(prev => {
+      const next = new Set(prev)
+      next.has(id) ? next.delete(id) : next.add(id)
+      return next
+    })
+  }
+  function updateFx(id: number, patch: Partial<StemFx>) {
+    setStemFx(prev => ({ ...prev, [id]: { ...prev[id], ...patch } }))
+  }
+  const [searchParams, setSearchParams]            = useSearchParams()
+  const [wizardStep, setWizardStep]               = useState(0)
+  const wizardActive = searchParams.get('wizard') === 'true'
+  const closeWizard = () => { const p = new URLSearchParams(searchParams); p.delete('wizard'); setSearchParams(p) }
   const [mixConsoleOpen, setMixConsoleOpen]       = useState(false)
   const [selectedMix, setSelectedMix]             = useState<string | null>(null)
   const [selectedGenre, setSelectedGenre]         = useState<string | null>(null)
@@ -250,7 +359,7 @@ export default function ProjectDetail() {
               <span className="text-sm font-medium truncate">Fools Gold</span>
 
               {/* Genre dropdown */}
-              <div className="relative hidden md:block flex-shrink-0">
+              <div className="relative hidden md:block flex-shrink-0" data-wizard="genre">
                 <button
                   onClick={() => setShowGenreMenu(v => !v)}
                   className="flex items-center gap-1 px-2 py-0.5 rounded-md text-xs border transition-colors hover:text-white hover:border-white/40"
@@ -281,6 +390,7 @@ export default function ProjectDetail() {
               <div className="flex gap-1 p-1 rounded-lg" style={{ background: 'var(--color-accent)' }}>
                 {(['mix', 'arrange'] as const).map(m => (
                   <button key={m} onClick={() => setMode(m)}
+                    data-wizard={m === 'arrange' ? 'arrange' : undefined}
                     className="px-3 py-1 rounded-md text-xs transition-all capitalize hover:text-white"
                     style={mode === m
                       ? { background: '#000', color: '#ffffff', fontWeight: 400 }
@@ -305,6 +415,7 @@ export default function ProjectDetail() {
             <div className="flex items-center gap-1.5 flex-shrink-0 ml-auto">
               {/* AI MIX */}
               <button
+                data-wizard="ai-mix"
                 onClick={() => setMixConsoleOpen(true)}
                 className="hidden md:flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-medium transition-all flex-shrink-0"
                 style={{
@@ -327,7 +438,7 @@ export default function ProjectDetail() {
               </Button>
 
               {/* Export + format dropdown */}
-              <div className="relative hidden sm:block">
+              <div className="relative hidden sm:block" data-wizard="export">
                 <div className="flex items-center rounded-full" style={{ border: '1px solid rgba(255,255,255,0.5)' }}>
                   <button className="flex items-center gap-1.5 pl-3 pr-2 py-1.5 text-xs font-medium transition-opacity hover:opacity-80"
                     style={{ color: '#ffffff' }}>
@@ -364,14 +475,14 @@ export default function ProjectDetail() {
 
               <div className="w-px h-4 hidden md:block" style={{ background: 'rgba(255,255,255,0.1)' }} />
 
-              {/* Refresh */}
-              <Button variant="ghost" size="sm" className="hidden md:flex gap-1.5 text-xs hover:text-white text-[--color-muted-foreground]">
+              {/* Compare / Refresh */}
+              <Button data-wizard="compare" variant="ghost" size="sm" className="hidden md:flex gap-1.5 text-xs hover:text-white text-[--color-muted-foreground]">
                 <ArrowPathIcon className="w-3.5 h-3.5" strokeWidth={S} />
-                Refresh
+                Compare
               </Button>
 
               {/* Versions */}
-              <Button variant="ghost" size="sm" className="hidden md:flex gap-1.5 text-xs hover:text-white text-[--color-muted-foreground]">
+              <Button data-wizard="history" variant="ghost" size="sm" className="hidden md:flex gap-1.5 text-xs hover:text-white text-[--color-muted-foreground]">
                 <ClockIcon className="w-3.5 h-3.5" strokeWidth={S} />
                 Versions
               </Button>
@@ -429,6 +540,7 @@ export default function ProjectDetail() {
           {/* ── Row 2 — metadata bar ── */}
           <div className="flex items-center px-5 py-1.5 gap-1 border-t" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
             {/* BPM */}
+            <span data-wizard="bpm" className="flex items-center gap-1">
             <ClockIcon className="w-3.5 h-3.5 flex-shrink-0" strokeWidth={S} style={{ color: 'var(--color-muted-foreground)' }} />
             <span className="font-mono text-xs font-medium tabular-nums ml-1" style={{ color: 'var(--color-foreground)' }}>{bpm}</span>
             <span className="text-xs mr-1.5" style={{ color: 'var(--color-muted-foreground)' }}>BPM</span>
@@ -442,6 +554,7 @@ export default function ProjectDetail() {
               style={{ color: 'var(--color-muted-foreground)', background: 'var(--color-input)' }}>
               AUTO
             </button>
+            </span>{/* end bpm wizard span */}
 
             <div className="w-px h-3 mx-3" style={{ background: 'rgba(255,255,255,0.1)' }} />
 
@@ -489,6 +602,7 @@ export default function ProjectDetail() {
               <BackwardSolid className="w-4 h-4" />
             </Button>
             <button
+              data-wizard="play"
               onClick={() => setIsPlaying(!isPlaying)}
               className="w-10 h-10 rounded-full flex items-center justify-center transition-opacity hover:opacity-85 flex-shrink-0"
               style={{ background: '#ffffff', color: '#000' }}
@@ -510,6 +624,7 @@ export default function ProjectDetail() {
               <StopSolid className="w-3.5 h-3.5" />
             </Button>
             <button
+              data-wizard="loop"
               onClick={() => setLoop(!loop)}
               className="h-8 w-8 flex items-center justify-center rounded-md transition-colors hover:text-white"
               style={{ color: loop ? 'var(--color-primary)' : 'rgba(255,255,255,0.35)' }}
@@ -525,7 +640,7 @@ export default function ProjectDetail() {
 
           {/* Right — volume + Reset + Add — pushed to far right */}
           <div className="flex items-center gap-3 ml-auto">
-            <div className="hidden sm:flex items-center gap-1.5">
+            <div className="hidden sm:flex items-center gap-1.5" data-wizard="volume">
               <SpeakerWaveIcon className="w-4 h-4" strokeWidth={S} style={{ color: 'rgba(255,255,255,0.35)' }} />
               <input
                 type="range" min={0} max={100} defaultValue={80}
@@ -538,7 +653,7 @@ export default function ProjectDetail() {
               <ArrowUturnLeftIcon className="w-3.5 h-3.5" strokeWidth={S} />
               Reset
             </Button>
-            <Button variant="ghost" size="sm" className="hidden sm:flex gap-1.5 text-xs hover:text-white transition-colors" style={{ color: 'rgba(255,255,255,0.35)' }}>
+            <Button data-wizard="upload" variant="ghost" size="sm" className="hidden sm:flex gap-1.5 text-xs hover:text-white transition-colors" style={{ color: 'rgba(255,255,255,0.35)' }}>
               <ArrowUpTrayIcon className="w-3.5 h-3.5" strokeWidth={S} />
               Add
             </Button>
@@ -567,6 +682,7 @@ export default function ProjectDetail() {
 
             {/* Meters column — separated, never overlapping waveform */}
             <div
+              data-wizard="lufs"
               className="flex flex-col justify-center items-end gap-0.5 px-3 flex-shrink-0"
               style={{ borderLeft: '1px solid rgba(255,255,255,0.06)', minWidth: '80px' }}
             >
@@ -591,7 +707,7 @@ export default function ProjectDetail() {
         {mode === 'mix' ? (<><main className="flex-1 overflow-y-auto pb-16">
 
           {/* Master Mixing Bus */}
-          <section className="px-5 pt-8 pb-7 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+          <section data-wizard="bus-presets" className="px-5 pt-8 pb-7 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
             <div className="flex items-center gap-2 mb-4">
               <AdjustmentsHorizontalIcon className="w-4 h-4" strokeWidth={S} style={{ color: 'var(--color-primary)' }} />
               <h2 className="text-sm font-medium uppercase tracking-widest" style={{ color: 'var(--color-primary)', letterSpacing: '0.08em' }}>
@@ -637,7 +753,7 @@ export default function ProjectDetail() {
           </section>
 
           {/* Bus Sends */}
-          <section className="px-5 py-4 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)', background: 'linear-gradient(180deg, #1a1a1f 0%, #111114 100%)' }}>
+          <section data-wizard="bus-sends" className="px-5 py-4 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)', background: 'linear-gradient(180deg, #1a1a1f 0%, #111114 100%)' }}>
             <div className="flex items-center gap-2 mb-4">
               <SpeakerWaveIcon className="w-4 h-4" strokeWidth={S} style={{ color: 'var(--color-primary)' }} />
               <h2 className="text-sm font-medium uppercase tracking-widest" style={{ color: 'var(--color-primary)', letterSpacing: '0.08em' }}>
@@ -684,6 +800,7 @@ export default function ProjectDetail() {
               return (
                 <div
                   key={stem.id}
+                  data-wizard={idx === 0 ? 'track-strip' : undefined}
                   className="border-b group"
                   style={{ borderColor: 'rgba(255,255,255,0.05)' }}
                 >
@@ -752,7 +869,7 @@ export default function ProjectDetail() {
                     </div>
 
                     {/* M / S */}
-                    <div className="flex items-center gap-1 flex-shrink-0">
+                    <div className="flex items-center gap-1 flex-shrink-0" data-wizard={idx === 0 ? 'mute-solo' : undefined}>
                       <button
                         onClick={() => updateStem(stem.id, { muted: !stem.muted })}
                         className="w-6 h-6 rounded text-xs font-bold transition-all hover:text-white"
@@ -788,6 +905,19 @@ export default function ProjectDetail() {
                     >
                       <TrashIcon className="w-3.5 h-3.5 hover:text-red-400" strokeWidth={S} />
                     </Button>
+
+                    {/* Expand / collapse FX panel */}
+                    <button
+                      onClick={() => toggleStemExpand(stem.id)}
+                      className="h-6 w-6 flex items-center justify-center rounded transition-colors hover:bg-white/10 flex-shrink-0"
+                      style={{ color: expandedStems.has(stem.id) ? 'var(--color-primary)' : 'var(--color-muted-foreground)' }}
+                    >
+                      <ChevronDownIcon
+                        className="w-3.5 h-3.5 transition-transform duration-200"
+                        strokeWidth={2}
+                        style={{ transform: expandedStems.has(stem.id) ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                      />
+                    </button>
                   </div>
 
                   {/* Simulated waveform — color-coded per type */}
@@ -811,6 +941,256 @@ export default function ProjectDetail() {
                     {/* Playhead */}
                     <div className="absolute top-0 bottom-0 left-2 w-px" style={{ background: 'rgba(255,255,255,0.1)' }} />
                   </div>
+
+                  {/* ── Expanded FX panel ─────────────────────────────────── */}
+                  {expandedStems.has(stem.id) && (() => {
+                    const fx   = stemFx[stem.id]
+                    const presets = chainPresets[stem.type] ?? chainPresets.INSTR
+                    const eqBands = [
+                      { label: 'LOW',   freq: '80Hz',   color: '#4466ff' },
+                      { label: 'L-MID', freq: '250Hz',  color: '#4466ff' },
+                      { label: 'MID',   freq: '1kHz',   color: '#4466ff' },
+                      { label: 'H-MID', freq: '4kHz',   color: '#ef4444' },
+                      { label: 'HIGH',  freq: '12kHz',  color: '#22c55e' },
+                    ]
+                    return (
+                      <div className="border-t" style={{ borderColor: 'rgba(255,255,255,0.07)', background: '#0a0b12' }}>
+
+                        {/* ── CHAIN PRESETS ── */}
+                        <div className="px-5 pt-5 pb-4 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+                          <p className="text-[10px] font-bold tracking-widest uppercase mb-3" style={{ color: stemAccentColors[stem.type] }}>
+                            {stem.type} Chain
+                          </p>
+                          <div className="grid grid-cols-3 gap-2">
+                            {presets.map(p => (
+                              <button key={p.name} onClick={() => updateFx(stem.id, { preset: p.name })}
+                                className="text-left px-3 py-2.5 rounded-xl border transition-all"
+                                style={{
+                                  borderColor: fx.preset === p.name ? 'var(--color-primary)' : 'rgba(255,255,255,0.07)',
+                                  background: fx.preset === p.name ? 'rgba(0,17,255,0.15)' : 'rgba(255,255,255,0.02)',
+                                }}>
+                                <p className="text-xs font-medium leading-tight mb-0.5" style={{ color: fx.preset === p.name ? '#ffffff' : 'rgba(255,255,255,0.75)' }}>{p.name}</p>
+                                <p className="text-[10px] leading-tight" style={{ color: 'rgba(255,255,255,0.38)' }}>{p.desc}</p>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* ── EFFECTS (Reverb + Compressor types) ── */}
+                        <div className="px-5 py-4 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+                          <p className="text-[10px] font-bold tracking-widest uppercase mb-3" style={{ color: 'rgba(255,255,255,0.4)' }}>Effects</p>
+                          <div className="space-y-3">
+                            <div>
+                              <p className="text-[9px] font-semibold tracking-widest uppercase mb-1.5" style={{ color: 'rgba(255,255,255,0.3)' }}>Reverb Type</p>
+                              <div className="flex flex-wrap gap-1.5">
+                                {['Room', 'Hall', 'Plate', 'Spring', 'Chamber', 'Shimmer'].map(t => (
+                                  <button key={t} onClick={() => updateFx(stem.id, { reverbType: t })}
+                                    className="px-3 py-1 rounded-full text-[11px] font-medium transition-all"
+                                    style={{
+                                      background: fx.reverbType === t ? '#0011FF' : 'rgba(255,255,255,0.05)',
+                                      color: fx.reverbType === t ? '#fff' : 'rgba(255,255,255,0.55)',
+                                      border: `1px solid ${fx.reverbType === t ? '#0011FF' : 'rgba(255,255,255,0.1)'}`,
+                                    }}>{t}</button>
+                                ))}
+                              </div>
+                            </div>
+                            <div>
+                              <p className="text-[9px] font-semibold tracking-widest uppercase mb-1.5" style={{ color: 'rgba(255,255,255,0.3)' }}>Compressor Type</p>
+                              <div className="flex flex-wrap gap-1.5">
+                                {['Gentle', 'Opto', 'VCA', 'Punchy', 'Limiting', 'Vintage'].map(t => (
+                                  <button key={t} onClick={() => updateFx(stem.id, { compType: t })}
+                                    className="px-3 py-1 rounded-full text-[11px] font-medium transition-all"
+                                    style={{
+                                      background: fx.compType === t ? '#0011FF' : 'rgba(255,255,255,0.05)',
+                                      color: fx.compType === t ? '#fff' : 'rgba(255,255,255,0.55)',
+                                      border: `1px solid ${fx.compType === t ? '#0011FF' : 'rgba(255,255,255,0.1)'}`,
+                                    }}>{t}</button>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* ── 5-BAND EQ ── */}
+                        <div className="px-5 py-4 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+                          <div className="flex items-center justify-between mb-3">
+                            <p className="text-[10px] font-bold tracking-widest uppercase" style={{ color: 'rgba(255,255,255,0.4)' }}>5-Band EQ</p>
+                            <button onClick={() => updateFx(stem.id, { eq: [0,0,0,0,0] })}
+                                    className="text-[9px] tracking-widest uppercase transition-opacity hover:opacity-80"
+                                    style={{ color: 'rgba(255,255,255,0.25)' }}>
+                              Dbl-click resets
+                            </button>
+                          </div>
+                          {/* EQ visual */}
+                          <div className="relative h-16 mb-3 rounded-lg overflow-hidden" style={{ background: 'rgba(0,0,0,0.4)' }}>
+                            {/* Center line */}
+                            <div className="absolute top-1/2 left-0 right-0 h-px" style={{ background: 'rgba(0,17,255,0.3)' }} />
+                            {/* Band nodes — spaced evenly */}
+                            <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 500 64">
+                              {/* EQ curve from bands */}
+                              <polyline
+                                points={[0,1,2,3,4].map(i => `${50 + i * 100},${32 - fx.eq[i] * 2}`).join(' ')}
+                                fill="none" stroke="rgba(0,17,255,0.5)" strokeWidth="1.5"
+                              />
+                            </svg>
+                            {eqBands.map((band, bi) => {
+                              const x = `${10 + bi * 20}%`
+                              const y = `${50 - fx.eq[bi] * 3.5}%`
+                              return (
+                                <div key={band.label}
+                                     className="absolute w-4 h-4 rounded-full border-2 cursor-ns-resize transform -translate-x-1/2 -translate-y-1/2"
+                                     style={{ left: x, top: y, background: band.color, borderColor: '#fff' }}
+                                     onMouseDown={e => {
+                                       const startY = e.clientY
+                                       const startVal = fx.eq[bi]
+                                       const onMove = (me: MouseEvent) => {
+                                         const delta = Math.round((startY - me.clientY) / 4)
+                                         const newEq = [...fx.eq] as [number,number,number,number,number]
+                                         newEq[bi] = Math.max(-12, Math.min(12, startVal + delta))
+                                         updateFx(stem.id, { eq: newEq })
+                                       }
+                                       const onUp = () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp) }
+                                       window.addEventListener('mousemove', onMove)
+                                       window.addEventListener('mouseup', onUp)
+                                     }}
+                                />
+                              )
+                            })}
+                          </div>
+                          <div className="grid grid-cols-5 gap-1">
+                            {eqBands.map((band, bi) => (
+                              <div key={band.label} className="text-center">
+                                <input type="range" min={-12} max={12} value={fx.eq[bi]}
+                                       onChange={e => {
+                                         const newEq = [...fx.eq] as [number,number,number,number,number]
+                                         newEq[bi] = Number(e.target.value)
+                                         updateFx(stem.id, { eq: newEq })
+                                       }}
+                                       className="w-full h-0.5 rounded cursor-pointer"
+                                       style={{ accentColor: band.color }} />
+                                <p className="text-[9px] font-bold mt-1" style={{ color: band.color }}>{fx.eq[bi] >= 0 ? '+' : ''}{fx.eq[bi]}</p>
+                                <p className="text-[8px]" style={{ color: 'rgba(255,255,255,0.3)' }}>{band.label}</p>
+                                <p className="text-[8px]" style={{ color: 'rgba(255,255,255,0.2)' }}>{band.freq}</p>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* ── SLIDERS (Reverb, Compress, Distortion, Decay) ── */}
+                        <div className="px-5 py-4 border-b grid grid-cols-2 gap-x-8 gap-y-4" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+                          {[
+                            { label: 'Reverb',     key: 'reverb'     as const, max: 100, unit: '%'  },
+                            { label: 'Compress',   key: 'compress'   as const, max: 100, unit: '%'  },
+                            { label: 'Distortion', key: 'distortion' as const, max: 100, unit: '%'  },
+                            { label: 'Decay',      key: 'decay'      as const, max: 200, unit: 's', displayVal: (v: number) => `${(v/100).toFixed(1)}s` },
+                          ].map(({ label, key, max, unit, displayVal }) => (
+                            <div key={label}>
+                              <div className="flex items-center justify-between mb-1">
+                                <p className="text-[9px] font-bold tracking-widest uppercase" style={{ color: 'rgba(255,255,255,0.4)' }}>{label}</p>
+                                <p className="text-[10px] font-mono tabular-nums" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                                  {displayVal ? displayVal(fx[key]) : `${fx[key]}${unit}`}
+                                </p>
+                              </div>
+                              <input type="range" min={0} max={max} value={fx[key]}
+                                     onChange={e => updateFx(stem.id, { [key]: Number(e.target.value) })}
+                                     className="w-full h-0.5 rounded cursor-pointer"
+                                     style={{ accentColor: '#0011FF' }} />
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* ── ENHANCE ── */}
+                        <div className="px-5 py-4 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+                          <div className="flex items-center justify-between mb-3">
+                            <p className="text-[10px] font-bold tracking-widest uppercase" style={{ color: 'rgba(255,255,255,0.4)' }}>
+                              ✦ Enhance
+                            </p>
+                            <button className="text-[9px] px-2 py-0.5 rounded" style={{ background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.35)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                              Spectral Off
+                            </button>
+                          </div>
+                          <div className="grid grid-cols-2 gap-x-8 gap-y-3">
+                            {[
+                              { label: 'Exciter', key: 'exciter' as const },
+                              { label: 'Width',   key: 'width'   as const },
+                            ].map(({ label, key }) => (
+                              <div key={label}>
+                                <div className="flex items-center justify-between mb-1">
+                                  <p className="text-[9px] font-bold tracking-widest uppercase" style={{ color: 'rgba(255,255,255,0.4)' }}>{label}</p>
+                                  <p className="text-[10px] font-mono" style={{ color: 'rgba(255,255,255,0.5)' }}>{fx[key]}%</p>
+                                </div>
+                                <input type="range" min={0} max={100} value={fx[key]}
+                                       onChange={e => updateFx(stem.id, { [key]: Number(e.target.value) })}
+                                       className="w-full h-0.5 rounded cursor-pointer"
+                                       style={{ accentColor: '#0011FF' }} />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* ── ROUTE TO BUS ── */}
+                        <div className="px-5 py-4 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+                          <p className="text-[9px] font-bold tracking-widest uppercase mb-2" style={{ color: 'rgba(255,255,255,0.3)' }}>Route to Bus</p>
+                          <div className="flex gap-2">
+                            {['MASTER', 'DRUMS', 'VOCALS', 'INSTR', 'FX'].map(bus => (
+                              <button key={bus} onClick={() => updateFx(stem.id, { routeToBus: bus })}
+                                className="px-3 py-1.5 rounded-full text-[10px] font-bold tracking-wide transition-all"
+                                style={{
+                                  background: fx.routeToBus === bus ? '#0011FF' : 'rgba(255,255,255,0.05)',
+                                  color: fx.routeToBus === bus ? '#fff' : 'rgba(255,255,255,0.45)',
+                                  border: `1px solid ${fx.routeToBus === bus ? '#0011FF' : 'rgba(255,255,255,0.1)'}`,
+                                }}>{bus}</button>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* ── DELAY ── */}
+                        <div className="px-5 py-4">
+                          <p className="text-[10px] font-bold tracking-widest uppercase mb-3" style={{ color: 'rgba(255,255,255,0.4)' }}>Delay</p>
+                          <div className="grid grid-cols-2 gap-6">
+                            {/* Level */}
+                            <div>
+                              <div className="flex items-center justify-between mb-1">
+                                <p className="text-[9px] font-bold tracking-widest uppercase" style={{ color: 'rgba(255,255,255,0.35)' }}>Level</p>
+                                <p className="text-[10px] font-mono" style={{ color: 'rgba(255,255,255,0.5)' }}>{fx.delayLevel}%</p>
+                              </div>
+                              <input type="range" min={0} max={100} value={fx.delayLevel}
+                                     onChange={e => updateFx(stem.id, { delayLevel: Number(e.target.value) })}
+                                     className="w-full h-0.5 rounded cursor-pointer"
+                                     style={{ accentColor: '#0011FF' }} />
+                              <div className="flex gap-1 mt-2">
+                                {['1/1','1/2','1/4','1/8','1/16','1/32'].map(r => (
+                                  <button key={r} onClick={() => updateFx(stem.id, { delayRate: r })}
+                                    className="flex-1 py-1 rounded text-[9px] font-bold transition-all"
+                                    style={{
+                                      background: fx.delayRate === r ? '#0011FF' : 'rgba(255,255,255,0.05)',
+                                      color: fx.delayRate === r ? '#fff' : 'rgba(255,255,255,0.4)',
+                                      border: `1px solid ${fx.delayRate === r ? '#0011FF' : 'rgba(255,255,255,0.08)'}`,
+                                    }}>{r}</button>
+                                ))}
+                              </div>
+                            </div>
+                            {/* Type */}
+                            <div>
+                              <p className="text-[9px] font-bold tracking-widest uppercase mb-2" style={{ color: 'rgba(255,255,255,0.35)' }}>Type</p>
+                              <div className="grid grid-cols-2 gap-1.5">
+                                {['Tape','Slapback','Dub','Digital','Ping Pong','Shimmer'].map(t => (
+                                  <button key={t} onClick={() => updateFx(stem.id, { delayType: t })}
+                                    className="px-2 py-1.5 rounded text-[10px] text-left transition-all"
+                                    style={{
+                                      background: fx.delayType === t ? 'rgba(0,17,255,0.2)' : 'rgba(255,255,255,0.03)',
+                                      color: fx.delayType === t ? '#fff' : 'rgba(255,255,255,0.5)',
+                                      border: `1px solid ${fx.delayType === t ? 'rgba(0,17,255,0.6)' : 'rgba(255,255,255,0.07)'}`,
+                                    }}>{t}</button>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                    )
+                  })()}
                 </div>
               )
             })}
@@ -819,6 +1199,7 @@ export default function ProjectDetail() {
 
         {/* ── Mastering bar (fixed bottom) ──────────────────────────────────── */}
         <div
+          data-wizard="mastering"
           className="flex items-center justify-between px-5 py-3 border-t flex-shrink-0"
           style={{
             borderColor: masteringEnabled ? 'rgba(115,171,191,0.3)' : 'rgba(255,255,255,0.08)',
@@ -1643,6 +2024,17 @@ export default function ProjectDetail() {
         </div>
       </div>
     )}
+    <>
+      {wizardActive && (
+        <WizardTour
+          step={wizardStep}
+          onNext={() => setWizardStep(s => Math.min(s + 1, 19))}
+          onBack={() => setWizardStep(s => Math.max(s - 1, 0))}
+          onSkip={closeWizard}
+          onClose={closeWizard}
+        />
+      )}
+    </>
     </>
   )
 }

@@ -7,7 +7,7 @@
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
   /* Colores base INMIX (dark-first) */
-  --color-background: oklch(9% 0.005 285);
+  --color-background: #07070b;
   --color-foreground: oklch(98% 0.005 285);
 
   --color-card: oklch(12% 0.008 285);
