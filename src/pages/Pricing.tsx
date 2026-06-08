@@ -272,7 +272,7 @@ export default function Pricing() {
       </section>
 
       {/* ── PRICING CARDS ────────────────────────────────────────────────── */}
-      <section className="relative pt-10 pb-28 px-6" style={{ zIndex: 2 }}>
+      <section className="relative pt-10 pb-28 px-6" style={{ zIndex: 2, backgroundImage: 'url(/images/wavespricing.png)', backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}>
         <div className="relative z-10 max-w-5xl mx-auto">
 
           {/* Toggle */}
