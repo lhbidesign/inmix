@@ -172,63 +172,50 @@ export default function Pricing() {
           </div>
 
           {/* Cards */}
-          <div className="grid md:grid-cols-3 gap-5 items-stretch">
+          <div className="grid md:grid-cols-3 gap-5 items-end">
             {plans.map(plan => (
-              <div key={plan.id} className="relative rounded-2xl flex flex-col"
-                   style={{
-                     background: plan.highlight ? '#0011FF' : 'rgba(255,255,255,0.04)',
-                     border: plan.highlight ? 'none' : '1px solid rgba(255,255,255,0.09)',
-                     padding: plan.highlight ? '44px 28px 28px' : '28px',
-                   }}>
+              <div key={plan.id} className="flex flex-col">
 
-                {/* Badge */}
-                {plan.badge && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full text-[10px] font-semibold tracking-widest uppercase whitespace-nowrap"
-                       style={{ background: 'rgba(255,255,255,0.15)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.2)' }}>
-                    {plan.badge}
-                  </div>
-                )}
-
-                <p className="text-lg font-medium mb-1" style={{ color: '#ffffff' }}>{plan.name}</p>
-                <p className="text-xs mb-6" style={{ color: plan.highlight ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.45)' }}>
-                  {plan.sub}
-                </p>
-
-                {/* Price */}
-                <div className="flex items-baseline gap-1 mb-6">
-                  <span className="text-[48px] font-light leading-none" style={{ color: '#ffffff' }}>
-                    ${billing === 'monthly' ? plan.price.monthly : plan.price.annual}
-                  </span>
-                  <span className="text-sm" style={{ color: plan.highlight ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.45)' }}>/month</span>
+                {/* "Most Popular Plan" label — only for highlighted, sits above card */}
+                <div className="h-8 flex items-center justify-center mb-2">
+                  {plan.badge && (
+                    <p className="text-[11px] font-semibold tracking-widest uppercase"
+                       style={{ color: 'rgba(255,255,255,0.55)' }}>
+                      {plan.badge}
+                    </p>
+                  )}
                 </div>
 
-                {/* Features */}
-                <p className="text-xs font-semibold mb-4" style={{ color: plan.highlight ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.6)' }}>
-                  {plan.featuresLabel}
-                </p>
-                <ul className="space-y-3 mb-8 flex-1">
-                  {plan.features.map(f => (
-                    <li key={f} className="flex items-start gap-2.5">
-                      <span className="mt-0.5 flex-shrink-0 w-4 h-4 rounded-full flex items-center justify-center"
-                            style={{ background: plan.highlight ? 'rgba(255,255,255,0.2)' : 'rgba(0,17,255,0.25)' }}>
-                        <svg width="8" height="6" viewBox="0 0 8 6" fill="none">
-                          <path d="M1 3l2 2 4-4" stroke={plan.highlight ? '#fff' : '#0011FF'} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-                      </span>
-                      <span className="text-sm" style={{ color: plan.highlight ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.65)' }}>{f}</span>
-                    </li>
-                  ))}
-                </ul>
+                <div className="rounded-2xl flex flex-col"
+                     style={{
+                       background: plan.highlight ? '#0011FF' : 'rgba(255,255,255,0.04)',
+                       border: plan.highlight ? 'none' : '1px solid rgba(255,255,255,0.09)',
+                       padding: '32px 28px',
+                     }}>
 
-                {/* CTA */}
-                <button className="w-full py-3 rounded-full text-sm font-semibold transition-all hover:opacity-90"
-                        style={{
-                          background: plan.highlight ? '#ffffff' : 'transparent',
-                          color: plan.highlight ? '#0011FF' : '#ffffff',
-                          border: plan.highlight ? 'none' : '1.5px solid rgba(255,255,255,0.3)',
-                        }}>
-                  Select plan
-                </button>
+                  <p className="text-xl font-bold mb-1" style={{ color: '#ffffff' }}>{plan.name}</p>
+                  <p className="text-sm mb-8" style={{ color: plan.highlight ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.45)' }}>
+                    {plan.sub}
+                  </p>
+
+                  {/* Price */}
+                  <div className="flex items-baseline gap-1 mb-8">
+                    <span className="text-[56px] font-bold leading-none" style={{ color: '#ffffff' }}>
+                      ${billing === 'monthly' ? plan.price.monthly : plan.price.annual}
+                    </span>
+                    <span className="text-base" style={{ color: plan.highlight ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.45)' }}>/month</span>
+                  </div>
+
+                  {/* CTA */}
+                  <button className="w-full py-3.5 rounded-full text-sm font-semibold transition-all hover:opacity-90"
+                          style={{
+                            background: plan.highlight ? '#000000' : '#ffffff',
+                            color: plan.highlight ? '#ffffff' : '#000000',
+                            border: 'none',
+                          }}>
+                    Select plan
+                  </button>
+                </div>
               </div>
             ))}
           </div>
