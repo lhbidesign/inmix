@@ -223,13 +223,26 @@ export default function Pricing() {
           <img src="/logo.svg" alt="inmix" style={{ height: '22px', width: 'auto' }} />
         </Link>
         <div className="hidden md:flex items-center gap-8">
-          <a href="#" className="text-sm transition-colors hover:text-white" style={{ color: 'rgba(255,255,255,0.7)' }}>Features</a>
-          <Link to="/about" className="text-sm transition-colors hover:text-white" style={{ color: 'rgba(255,255,255,0.7)' }}>How It Works</Link>
-          <Link to="/pricing" className="text-sm transition-colors hover:text-white" style={{ color: 'rgba(255,255,255,0.7)' }}>Pricing</Link>
+          {[
+            { to: '/',        label: 'Features'    },
+            { to: '/about',   label: 'How It Works'},
+            { to: '/pricing', label: 'Pricing'     },
+          ].map(({ to, label }) => (
+            <Link key={label} to={to}
+              className="text-sm transition-colors cursor-pointer"
+              style={{ color: 'rgba(255,255,255,0.7)' }}
+              onMouseEnter={e => e.currentTarget.style.color = '#ffffff'}
+              onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.7)'}>
+              {label}
+            </Link>
+          ))}
         </div>
         <div className="flex items-center gap-3">
-          <Link to="/login" className="text-sm px-4 py-1.5 rounded-full transition-colors hover:text-white"
-                style={{ color: 'rgba(255,255,255,0.7)' }}>Sign in</Link>
+          <Link to="/login"
+                className="text-sm px-4 py-1.5 rounded-full transition-colors cursor-pointer"
+                style={{ color: 'rgba(255,255,255,0.7)' }}
+                onMouseEnter={e => e.currentTarget.style.color = '#ffffff'}
+                onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.7)'}>Sign in</Link>
           <Link to="/register"
                 className="text-sm px-5 py-2 rounded-full font-medium transition-all hover:opacity-90"
                 style={{ background: '#ffffff', color: '#000000' }}>
