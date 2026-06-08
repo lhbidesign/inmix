@@ -129,7 +129,7 @@ export default function About() {
 
           <h2 className="mb-8 text-[40px] sm:text-[80px]"
               style={{ fontWeight: 300, lineHeight: '95%', color: '#ffffff' }}>
-            Your Music Deserves to Be Heard
+            More Music Deserves to Be Heard
           </h2>
           <p className="mb-5" style={{ fontSize: '20px', fontWeight: 400, lineHeight: '150%', color: 'rgba(255,255,255,0.65)' }}>
             Some of the best songs are sitting unfinished on hard drives.
@@ -218,7 +218,7 @@ export default function About() {
 
           <div className="flex flex-col sm:flex-row items-center justify-between gap-2 border-t pt-8"
                style={{ borderColor: 'rgba(255,255,255,0.07)' }}>
-            <p className="text-xs" style={{ color: 'rgba(255,255,255,0.28)' }}>© 2026 INMIX, LLC. All rights reserved.</p>
+            <p className="text-xs" style={{ color: 'rgba(255,255,255,0.28)' }}>© INMIX. All rights reserved.</p>
             <p className="text-xs" style={{ color: 'rgba(255,255,255,0.28)' }}>Privacy Policy</p>
           </div>
         </div>
