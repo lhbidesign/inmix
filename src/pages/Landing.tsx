@@ -16,7 +16,7 @@ const steps = [
   {
     num: '01',
     title: 'Drop your stems',
-    desc: 'Upload your individual tracks — vocals, drums, bass, synths. WAV, MP3, FLAC. Our engine runs them at 48 kHz with zero quality loss.',
+    desc: 'Vocals, drums, bass, synths — WAV, MP3, FLAC. Our engine runs them at 48 kHz with zero quality loss.',
     bg: '#0a0a2e',
   },
   {
@@ -44,7 +44,7 @@ const features = [
   {
     title: 'Pro console',
     desc: '5-band parametric EQ, glue compressor, convolution reverb, brickwall limiter — surgical control.',
-    link: 'Learn more',
+    link: 'Get control',
     image: '/images/proconsole.png',
     right: false,
   },
@@ -142,7 +142,7 @@ export default function Landing() {
           {/* Pill label */}
           <div className="inline-flex items-center px-4 py-1.5 rounded-full text-[11px] font-semibold tracking-widest uppercase mb-8"
                style={{ background: '#0011FF', color: '#ffffff' }}>
-            The Producer Studio
+            The Producer's Studio
           </div>
 
           <h1 className="mb-6 text-[65px] sm:text-[130px]" style={{ fontWeight: 300, lineHeight: '95%', letterSpacing: '0%', color: '#ffffff' }}>
@@ -366,10 +366,10 @@ export default function Landing() {
                 The Studio Is In Session
               </div>
               <h2 className="font-light leading-none mb-6" style={{ fontSize: 'clamp(56px, 10vw, 100px)' }}>
-                Start mixing<br />your music today
+                Start inMixing<br />your music today
               </h2>
               <p className="text-xl lg:text-2xl mb-12 mx-auto" style={{ color: 'rgba(255,255,255,0.75)', maxWidth: '780px' }}>
-                Upload your stems. Hit Mix. Walk away with a broadcast-ready mix.<br />No plugins, no DAW, no guesswork.
+                No studio. No engineer, no problem.<br />Upload your stems, Hit Mix. Walk away with a broadcast-ready mix.
               </p>
               {/* Upload zone */}
               <div className="max-w-2xl mx-auto rounded-2xl py-10 px-8 flex flex-col items-center gap-4"
@@ -395,7 +395,7 @@ export default function Landing() {
           <div className="flex justify-center mb-6">
             <img src="/images/check.svg" alt="" style={{ width: '72px', height: 'auto' }} />
           </div>
-          <h2 className="text-center mb-3" style={{ fontSize: '60px', fontWeight: 300, lineHeight: '100%', letterSpacing: '0%', color: '#ffffff' }}>Trusted by the industry</h2>
+          <h2 className="text-center mb-3" style={{ fontSize: '60px', fontWeight: 300, lineHeight: '100%', letterSpacing: '0%', color: '#ffffff' }}>Trusted by the best</h2>
           <p className="text-center mb-16 max-w-2xl mx-auto" style={{ fontSize: '24px', fontWeight: 400, lineHeight: '130%', letterSpacing: '0%', color: '#ffffff' }}>
             From label executives and A&Rs to emerging artists, InMix helps talent bring music to market faster.
           </p>

@@ -54,41 +54,149 @@ const plans = [
   },
 ]
 
-const faqs = [
+type RichSegment = { text: string; bold?: boolean; italic?: boolean }
+type FaqItem = {
+  q: string
+  a?: string
+  aBold?: string        // bold prefix before normal text (e.g. "No. " + rest)
+  aBoldSuffix?: string  // the non-bold part after aBold
+  aRich?: RichSegment[] // mixed bold/normal inline text
+  bullets?: string[]
+  note?: { bold: string; normal: string }
+  table?: { headers: string[]; rows: string[][] }
+}
+type FaqCategory = { category: string; items: FaqItem[] }
+
+const faqCategories: FaqCategory[] = [
   {
-    q: 'What is INMIX?',
-    a: 'Think of us as a professional audio mixing and mastering studio, minus the soul-crushing price tags and the cables you constantly trip over. It\'s an entire pro-studio suite packed neatly inside your browser.',
+    category: 'General',
+    items: [
+      {
+        q: 'What is INMIX?',
+        a: "Think of us as a professional audio mixing and mastering studio, minus the soul-crushing price tags and the cables you constantly trip over. It's an entire pro-studio suite packed neatly inside your browser.",
+      },
+      {
+        q: 'What is this going to cost me?',
+        a: 'We keep it simple, transparent, and significantly cheaper than renting a studio for an hour. Pick the tier that matches your monthly output:',
+        table: {
+          headers: ['Monthly Plan', 'Tracks Included', 'The Price'],
+          rows: [
+            ['The Starter',    '3 tracks / mo',  '$10'],
+            ['The Producer',   '10 tracks / mo', '$30'],
+            ['The Studio Pro', '25 tracks / mo', '$60'],
+          ],
+        },
+        note: {
+          bold: 'In a creative groove?',
+          normal: " If you blow past your monthly limit because inspiration struck hard, don't sweat it. You can unlock additional tracks for just $5 per track.",
+        },
+      },
+      {
+        q: 'Do I need to install anything? (Please say no.)',
+        aBold: 'No.',
+        aBoldSuffix: ' Your hard drive can breathe a sigh of relief. INMIX runs entirely in your browser. No sketchy plugins, no heavy DAWs, and absolutely zero installation progress bars to stare at.',
+      },
+    ],
   },
   {
-    q: 'Do I need to install anything?',
-    a: 'No. Your hard drive can breathe a sigh of relief. INMIX runs entirely in your browser. No sketchy plugins, no heavy DAWs, and absolutely zero installation progress bars to stare at.',
+    category: 'Uploads & File Formats',
+    items: [
+      {
+        q: 'What file formats can I throw at this thing?',
+        a: 'We accept WAV, MP3, and FLAC stem files. Everything is processed at a pristine 48 kHz with absolutely zero quality loss. If you upload garbage, we\'ll make it pristine garbage, but the quality stays intact.',
+      },
+      {
+        q: 'What are "stems," anyway?',
+        a: 'Stems are the individual ingredients of your musical soup, vocals, drums, bass, synths. Exporting these separate tracks from your DAW and feeding them to INMIX gives our engine the best possible chance to make you sound like a genius.',
+      },
+      {
+        q: 'Is there a limit on file size or stem count?',
+        a: '',
+        bullets: [
+          'The Size: Each stem can be up to 100MB, which is more than enough for full-length WAVs unless your song is a 45-minute avant-garde space opera.',
+          'The Count: Go nuts. There is no cap on how many stems you can add to a project.',
+          'The Exception: Our live homepage demo has a smaller limit just so your browser doesn\'t melt before you even make an account.',
+        ],
+      },
+    ],
   },
   {
-    q: 'What file formats can I upload?',
-    a: 'We accept WAV, MP3, and FLAC stem files. Everything is processed at a pristine 48 kHz with absolutely zero quality loss.',
+    category: 'Mixing & Mastering',
+    items: [
+      {
+        q: 'How does the Auto-Mix work? Is it magic?',
+        aRich: [
+          { text: "Close, it's algorithms. INMIX analyzes your stems and applies genre-aware processing (frequency balancing, dynamics, stereo imaging, and EQ) in " },
+          { text: 'under a minute', bold: true },
+          { text: ". It's like having a legendary audio engineer living inside your laptop, minus the ego." },
+        ],
+      },
+      {
+        q: 'Can I actually adjust the mix manually, or am I powerless?',
+        aRich: [
+          { text: 'Oh, you have full control. The ' },
+          { text: 'Pro Console', bold: true },
+          { text: ' gives you a 5-band parametric EQ, glue compression, convolution reverb, and sidechain delay. Go ahead, get surgical.' },
+        ],
+      },
+      {
+        q: "What's happening in the mastering chain?",
+        aRich: [
+          { text: 'We pump your track through a dedicated mastering panel designed to hit broadcast-ready loudness (' },
+          { text: '-11 LUFS', bold: true },
+          { text: '). Armed with multi-band processing and a precise LUFS meter, it ensures your track won\'t sound like a whisper next to a major-label release.' },
+        ],
+      },
+    ],
   },
   {
-    q: 'How does the Auto-Mix work?',
-    a: 'Close to magic — it\'s algorithms. INMIX analyzes your stems and applies genre-aware processing (frequency balancing, dynamics, stereo imaging, and EQ) in under a minute. It\'s like having a legendary audio engineer living inside your laptop, minus the ego.',
+    category: 'Export',
+    items: [
+      {
+        q: 'What quality are the final exports?',
+        aRich: [
+          { text: 'You get ' },
+          { text: '24-bit / 48 kHz WAV', bold: true },
+          { text: ' files. That is the gold standard for streaming platforms, sync licensing, or showing off to your audiophile friends.' },
+        ],
+      },
+      {
+        q: 'Can I export both a mix and a master?',
+        a: 'Why choose? INMIX hands you both the mix and the master in a single, seamless export flow.',
+      },
+      {
+        q: 'Will the output play nice with Spotify, Apple Music, etc.?',
+        aRich: [
+          { text: 'Yes. Because we master to ' },
+          { text: '-11 LUFS', bold: true },
+          { text: ', your tracks will perfectly match the loudness normalization targets of major streaming platforms. No getting squashed by the Spotify algorithm here.' },
+        ],
+      },
+    ],
   },
   {
-    q: 'Can I adjust the mix manually?',
-    a: 'Oh, you have full control. The Pro Console gives you a 5-band parametric EQ, glue compression, convolution reverb, and sidechain delay. Go ahead, get surgical.',
-  },
-  {
-    q: 'What quality are the final exports?',
-    a: 'You get 24-bit / 48 kHz WAV files — the gold standard for streaming platforms, sync licensing, or showing off to your audiophile friends. INMIX hands you both the mix and the master in a single, seamless export flow.',
-  },
-  {
-    q: 'Are my audio files kept private?',
-    a: 'Your music is your music. Your stems and mixes are stored securely and are locked away from everyone except you. We don\'t train AI on your tracks, we don\'t advertise with them, and we don\'t peek. If you delete your project or account, it\'s gone forever. Promise.',
+    category: 'Account & Privacy',
+    items: [
+      {
+        q: 'Do I really need to make an account?',
+        a: "If you want to save your work and actually see your dashboard, yes. Don't worry—sign-up is completely free and takes about as long as it does to press 'Play.'",
+      },
+      {
+        q: 'Are my audio files kept private? Or are you selling them to a loop library?',
+        aRich: [
+          { text: 'Your music is ' },
+          { text: 'your', italic: true },
+          { text: " music. Your stems and mixes are stored securely and are locked away from everyone except you (and whoever you share the project link with). We don't train AI on your tracks, we don't advertise with them, and we don't peek. If you delete your project or account, it's gone forever. Promise." },
+        ],
+      },
+    ],
   },
 ]
 
 export default function Pricing() {
   const [scrolled, setScrolled] = useState(false)
   const [billing, setBilling] = useState<'monthly' | 'annual'>('monthly')
-  const [openFaq, setOpenFaq] = useState<number | null>(1)
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20)
@@ -99,8 +207,8 @@ export default function Pricing() {
   return (
     <div className="relative min-h-screen" style={{ color: 'var(--color-foreground)', fontFamily: 'inherit' }}>
       {/* Page-wide background */}
-      <img src="/images/pricing.png" alt="" className="fixed inset-0 w-full h-full object-cover object-top pointer-events-none" style={{ zIndex: 0 }} />
-      <div className="fixed inset-0 pointer-events-none" style={{ background: 'linear-gradient(180deg, rgba(7,7,11,0.55) 0%, rgba(7,7,11,0.82) 40%, rgba(7,7,11,0.97) 75%)', zIndex: 1 }} />
+      <img src="/images/pricing.png" alt="" className="absolute top-0 left-0 w-full object-cover object-top pointer-events-none" style={{ zIndex: 0, height: '100vh' }} />
+      <div className="absolute top-0 left-0 w-full pointer-events-none" style={{ background: 'linear-gradient(180deg, rgba(7,7,11,0.55) 0%, rgba(7,7,11,0.82) 40%, rgba(7,7,11,0.97) 75%)', zIndex: 1, height: '100vh' }} />
 
       {/* ── NAVBAR ──────────────────────────────────────────────────────── */}
       <nav
@@ -238,26 +346,98 @@ export default function Pricing() {
           </h2>
 
           <div className="space-y-3">
-            {faqs.map((faq, i) => (
-              <div key={i} className="rounded-2xl overflow-hidden transition-all duration-200"
+            {faqCategories.map((cat, i) => (
+              <div key={i} className="overflow-hidden transition-all duration-200"
                    style={{
-                     background: openFaq === i ? '#0011FF' : 'rgba(255,255,255,0.04)',
-                     border: openFaq === i ? 'none' : '1px solid rgba(255,255,255,0.08)',
+                     borderRadius: '8px',
+                     background: openFaq === i ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.03)',
+                     border: '1px solid rgba(255,255,255,0.08)',
                    }}>
+                {/* Category header */}
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
                   className="w-full flex items-center justify-between px-6 py-5 text-left gap-4"
                 >
-                  <span className="text-sm font-medium" style={{ color: '#ffffff' }}>{faq.q}</span>
-                  <span className="flex-shrink-0" style={{ color: '#ffffff' }}>
-                    {openFaq === i
-                      ? <MinusIcon className="w-4 h-4" />
-                      : <PlusIcon className="w-4 h-4" />}
+                  <span className="text-base font-medium" style={{ color: '#ffffff' }}>{cat.category}</span>
+                  <span className="flex-shrink-0" style={{ color: 'rgba(255,255,255,0.6)' }}>
+                    {openFaq === i ? <MinusIcon className="w-4 h-4" /> : <PlusIcon className="w-4 h-4" />}
                   </span>
                 </button>
-                {openFaq === i && (
-                  <div className="px-6 pb-5">
-                    <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.8)' }}>{faq.a}</p>
+
+                {/* Q&A items inside category */}
+                {openFaq === i && cat.items.length > 0 && (
+                  <div className="px-6 pb-6 space-y-6"
+                       style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '24px' }}>
+                    {cat.items.map((item, j) => (
+                      <div key={j}>
+                        <h3 className="text-sm font-semibold mb-2" style={{ color: '#ffffff' }}>{item.q}</h3>
+
+                        {/* Normal answer */}
+                        {item.a && (
+                          <p className="text-sm leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.65)' }}>{item.a}</p>
+                        )}
+
+                        {/* Rich inline text (mixed bold/normal) */}
+                        {item.aRich && (
+                          <p className="text-sm leading-relaxed mb-3" style={{ color: 'rgba(255,255,255,0.65)' }}>
+                            {item.aRich.map((seg, k) =>
+                              seg.bold
+                                ? <strong key={k} style={{ color: '#ffffff' }}>{seg.text}</strong>
+                                : seg.italic
+                                  ? <em key={k}>{seg.text}</em>
+                                  : <span key={k}>{seg.text}</span>
+                            )}
+                          </p>
+                        )}
+
+                        {/* Bold prefix + normal text */}
+                        {item.aBold && (
+                          <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.65)' }}>
+                            <strong style={{ color: '#ffffff' }}>{item.aBold}</strong>{item.aBoldSuffix}
+                          </p>
+                        )}
+
+                        {/* Table */}
+                        {item.table && (
+                          <div className="mb-3 overflow-hidden" style={{ borderRadius: '6px', border: '1px solid rgba(255,255,255,0.12)' }}>
+                            <table className="w-full text-sm">
+                              <thead>
+                                <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.12)' }}>
+                                  {item.table.headers.map((h, k) => (
+                                    <th key={k} className="text-left px-4 py-3 font-semibold" style={{ color: '#ffffff' }}>{h}</th>
+                                  ))}
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {item.table.rows.map((row, k) => (
+                                  <tr key={k} style={{ borderBottom: k < item.table!.rows.length - 1 ? '1px solid rgba(255,255,255,0.08)' : 'none' }}>
+                                    {row.map((cell, l) => (
+                                      <td key={l} className="px-4 py-3" style={{ color: l === 0 ? '#ffffff' : 'rgba(255,255,255,0.65)', fontWeight: l === 0 ? 600 : 400 }}>{cell}</td>
+                                    ))}
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
+                        )}
+
+                        {/* Inline note: bold + normal */}
+                        {item.note && (
+                          <p className="text-sm leading-relaxed mt-2" style={{ color: 'rgba(255,255,255,0.65)' }}>
+                            <strong style={{ color: '#ffffff' }}>{item.note.bold}</strong>{item.note.normal}
+                          </p>
+                        )}
+
+                        {/* Bullet list */}
+                        {item.bullets && item.bullets.length > 0 && (
+                          <ul className="mt-2 space-y-1.5 list-disc list-inside">
+                            {item.bullets.map((b, k) => (
+                              <li key={k} className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.65)' }}>{b}</li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    ))}
                   </div>
                 )}
               </div>
