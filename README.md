@@ -1,73 +1,36 @@
-# React + TypeScript + Vite
+# INMIX — Frontend Redesign
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Redesigned frontend for INMIX (AI audio mixing & mastering studio), built to be integrated into the existing platform. This is a standalone Vite + React app that doubles as the design source of truth.
 
-Currently, two official plugins are available:
+**Live reference:** https://inmix-redesign.vercel.app *(temporary password-gated — see [INTEGRATION.md](INTEGRATION.md)).*
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Stack
+Vite 8 · React 19 · TypeScript · Tailwind v4 · Radix UI (shadcn pattern) · React Router v7 · Heroicons
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Getting started
+```bash
+npm install
+npm run dev      # http://localhost:5174
+npm run build    # tsc -b && vite build
+npm run preview  # serve the production build
+npm run lint
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Project structure
 ```
+src/
+  pages/         Landing, About, Pricing, Terms, Privacy   (marketing — no backend)
+                 Dashboard, Projects, ProjectDetail,
+                 Settings, Presets, Auth                   (app — mock data, reskin over Supabase)
+                 Index, DesignSystem                       (internal — do not ship)
+  components/    SiteNav, SiteFooter, AppSidebar, PasswordGate, ui/
+  index.css      Tailwind v4 @theme — design tokens (source of truth)
+public/images/   images, videos, icons
+```
+
+## For integrators
+Two docs cover the handoff:
+- **[INTEGRATION.md](INTEGRATION.md)** — how to merge this into the existing platform, page by page.
+- **[DESIGN_TOKENS.md](DESIGN_TOKENS.md)** — colors, fonts, gradients, radii.
+
+> Integration, QA, and publishing are handled by the client's team. This repo is the design deliverable.

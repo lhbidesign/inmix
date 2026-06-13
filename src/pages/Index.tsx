@@ -2,10 +2,22 @@ import { Link } from 'react-router-dom'
 import {
   Squares2X2Icon, FolderOpenIcon, DocumentDuplicateIcon,
   Cog6ToothIcon, MagnifyingGlassCircleIcon, ArrowRightIcon,
-  SparklesIcon, SwatchIcon,
+  SparklesIcon, SwatchIcon, GlobeAltIcon, UserGroupIcon,
+  TagIcon, DocumentTextIcon, ShieldCheckIcon, ArrowRightEndOnRectangleIcon,
 } from '@heroicons/react/24/outline'
 
 const groups = [
+  {
+    title: 'Public pages',
+    pages: [
+      { label: 'Landing',        route: '/',         desc: 'Hero, workflow, pro tools, testimonials, FAQ',   icon: GlobeAltIcon,                  color: '#73ABBF', bg: 'rgba(115,171,191,0.1)' },
+      { label: 'About',          route: '/about',    desc: 'Built for Artists — mission, technology, story', icon: UserGroupIcon,                 color: '#f472b6', bg: 'rgba(244,114,182,0.1)' },
+      { label: 'Pricing',        route: '/pricing',  desc: 'Plans with monthly / annual toggle (−20%)',      icon: TagIcon,                       color: '#34d399', bg: 'rgba(52,211,153,0.1)'  },
+      { label: 'Sign in / Up',   route: '/login',    desc: 'Auth — login and register flows',                icon: ArrowRightEndOnRectangleIcon,  color: '#818cf8', bg: 'rgba(129,140,248,0.1)' },
+      { label: 'Terms',          route: '/terms',    desc: 'Terms & Conditions — INMIX AI LLC',              icon: DocumentTextIcon,              color: '#fbbf24', bg: 'rgba(251,191,36,0.1)'  },
+      { label: 'Privacy',        route: '/privacy',  desc: 'Privacy Policy — data and audio handling',       icon: ShieldCheckIcon,               color: '#a78bfa', bg: 'rgba(167,139,250,0.1)' },
+    ],
+  },
   {
     title: 'App',
     pages: [

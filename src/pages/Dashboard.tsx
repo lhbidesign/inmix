@@ -77,7 +77,7 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState<'projects' | 'exports'>('projects')
   const [search, setSearch] = useState('')
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [statsVisible, setStatsVisible] = useState(true)
+  const [statsVisible, setStatsVisible] = useState(false)
   const [showNewProject, setShowNewProject] = useState(false)
   const [projectName, setProjectName] = useState('')
   const navigate = useNavigate()

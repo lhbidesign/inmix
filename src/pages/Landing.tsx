@@ -4,32 +4,34 @@ import {
   ChevronRightIcon,
 } from '@heroicons/react/24/outline'
 import { StarIcon } from '@heroicons/react/24/solid'
+import SiteNav from '@/components/SiteNav'
+import SiteFooter from '@/components/SiteFooter'
 
 const vibeTabs = [
-  { id: 'original', label: 'ORIGINAL',        sub: 'One subtle, note-perfect mix',              color: 'rgba(255,255,255,0.7)', bg: '/images/player1.png' },
+  { id: 'original', label: 'ORIGINAL',        sub: 'One subtle, note-perfect mix',              color: '#ffffff', bg: '/images/player1.png' },
   { id: 'street',   label: 'STREET HEAT MIX', sub: 'Urban grit — 808s pushed, vocals upfront',  color: '#f97316',               bg: '/images/player2.png' },
   { id: 'sparks',   label: 'SPARKS MIX',       sub: 'Billboard Pop — bright, wide, radio sheen', color: '#818cf8',               bg: '/images/player3.png' },
   { id: 'smiles',   label: 'SMILES MIX',       sub: 'SoCal Reggae — sun-soaked, warm bass',      color: '#34d399',               bg: '/images/player4.png' },
 ]
 
-const steps = [
+const steps: { num: string; title: string; desc: string; img?: string; video?: string }[] = [
   {
     num: '01',
     title: 'Drop your stems',
     desc: 'Vocals, drums, bass, synths — WAV, MP3, FLAC. Our engine runs them at 48 kHz with zero quality loss.',
-    bg: '#0a0a2e',
+    img: '/images/drums.png',
   },
   {
     num: '02',
     title: 'Let the engine cook',
-    desc: 'Our AI analyzes genre, dynamics, and frequency balance across every stem — and applies professional-grade processing in seconds.',
-    bg: '#0d1a0d',
+    desc: 'After uploading, let InMix do the heavy lifting. Professional enhancements applied in seconds with a few clicks.',
+    video: '/images/waves.mp4',
   },
   {
     num: '03',
     title: 'Export & release',
-    desc: 'Download your polished mix at 24-bit / 48 kHz, delivered at 11 LUFS — ready for streaming, distribution, or your next session.',
-    bg: '#1a0a0a',
+    desc: 'Your mix, polished and ready to go. Export high-quality files in seconds for streaming or wherever your music lives.',
+    img: '/images/export.png',
   },
 ]
 
@@ -60,89 +62,57 @@ const features = [
 export default function Landing() {
   const [activeVibe, setActiveVibe] = useState('original')
   const [activeStep, setActiveStep] = useState('01')
-  const [scrolled, setScrolled] = useState(false)
   const [activeTestimonial, setActiveTestimonial] = useState(0)
 
   const testimonials = [
     {
       stars: 5,
       quote: 'Hand\'s down the best.',
-      body: '"InMix helps us move faster without sacrificing quality. The mixes came back polished, balanced, and release ready in a fraction of the time."',
-      name: 'Andrew Packer, A&R',
-      company: 'WARNER MUSIC GROUP',
+      body: '"InMix changed the game for me. I can be at the beach with my laptop, turning ideas into radio-ready hits. InMix gives me the power to create from start to finish, on my own terms."',
+      name: 'Casey Smiles',
+      company: 'Artist, digital marketing creative',
+      image: '/images/Casey.jpg',
     },
     {
       stars: 5,
-      quote: 'Finally, mixes that actually translate.',
-      body: '"I\'ve tried every auto-mix tool out there. InMix is the first one I trust enough to send to a client without touching it. The genre awareness is next level."',
-      name: 'Sofia Reyes, Music Producer',
-      company: 'UNIVERSAL MUSIC LATIN',
+      quote: 'Major sound, finally.',
+      body: '"One of the most asked questions I hear from artists is how can I get my music mixed? But what they really mean is, how can I get it mixed with major quality for cheap? The answer is now inMix!"',
+      name: 'Clinton Sparks',
+      company: 'Grammy nominated, multi-platinum producer, songwriter',
+      image: '/images/Clinton.jpg',
     },
     {
       stars: 4,
-      quote: 'Cut my turnaround time in half.',
-      body: '"We\'re releasing more music than ever and InMix makes that possible. Clean, punchy mixes straight out of the platform — my artists are thrilled."',
-      name: 'Marcus Webb, A&R Manager',
-      company: 'SONY MUSIC ENTERTAINMENT',
+      quote: 'Create from anywhere.',
+      body: '"With InMix, inspiration isn\'t tied to a studio desk. I can transform concepts into polished, radio-ready tracks right from my laptop at the beach. It gives creators the ultimate freedom to produce from start to finish."',
+      name: 'Nick Ditri',
+      company: 'Producer, music executive',
+      image: '/images/nick.png',
     },
   ]
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20)
-    window.addEventListener('scroll', onScroll)
-    return () => window.removeEventListener('scroll', onScroll)
+    const id = window.location.hash.slice(1)
+    if (id) {
+      setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }), 100)
+    }
   }, [])
+
+  useEffect(() => {
+    const id = setInterval(() => setActiveTestimonial(p => (p + 1) % testimonials.length), 7000)
+    return () => clearInterval(id)
+  }, [testimonials.length])
 
   return (
     <div className="min-h-screen" style={{ background: '#08080d', color: 'var(--color-foreground)', fontFamily: 'inherit' }}>
 
       {/* ── NAVBAR ──────────────────────────────────────────────────────── */}
-      <nav
-        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-8 py-4 transition-all duration-300"
-        style={{
-          background: scrolled ? 'rgba(8,8,13,0.92)' : 'transparent',
-          backdropFilter: scrolled ? 'blur(16px)' : 'none',
-          borderBottom: scrolled ? '1px solid rgba(255,255,255,0.06)' : 'none',
-        }}
-      >
-        <Link to="/">
-          <img src="/logo.svg" alt="inmix" style={{ height: '22px', width: 'auto' }} />
-        </Link>
-        <div className="hidden md:flex items-center gap-8">
-          {[
-            { to: '/',        label: 'Features'    },
-            { to: '/about',   label: 'How It Works'},
-            { to: '/pricing', label: 'Pricing'     },
-          ].map(({ to, label }) => (
-            <Link key={label} to={to}
-              className="text-sm transition-colors cursor-pointer"
-              style={{ color: 'rgba(255,255,255,0.7)' }}
-              onMouseEnter={e => e.currentTarget.style.color = '#ffffff'}
-              onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.7)'}>
-              {label}
-            </Link>
-          ))}
-        </div>
-        <div className="flex items-center gap-3">
-          <Link to="/login"
-                className="text-sm px-4 py-1.5 rounded-full transition-colors cursor-pointer"
-                style={{ color: 'rgba(255,255,255,0.7)' }}
-                onMouseEnter={e => e.currentTarget.style.color = '#ffffff'}
-                onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.7)'}>Sign in</Link>
-          <Link to="/register"
-                className="text-sm px-5 py-2 rounded-full font-medium transition-all hover:opacity-90"
-                style={{ background: '#ffffff', color: '#000000' }}>
-            <span className="sm:hidden">Join for Free</span>
-            <span className="hidden sm:inline">Join InMix for free</span>
-          </Link>
-        </div>
-      </nav>
+      <SiteNav />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section
-        className="relative pt-36 pb-24 px-6 text-center overflow-hidden"
+        className="relative pt-[300px] pb-24 px-6 text-center overflow-hidden bg-[url('/images/m_herobkg.jpg')] md:bg-[url('/images/herobkg.jpg')]"
         style={{
-          backgroundImage: 'url(/images/Hero1.png)',
           backgroundSize: 'cover',
           backgroundPosition: 'center top',
         }}
@@ -153,13 +123,13 @@ export default function Landing() {
         <div className="relative z-10 max-w-4xl mx-auto">
 
           {/* Pill label */}
-          <div className="inline-flex items-center px-4 py-1.5 rounded-full text-[11px] font-semibold tracking-widest uppercase mb-8"
+          <div className="inline-flex items-center px-4 py-1.5 rounded-full text-[11px] font-normal tracking-[0.3em] uppercase mb-8"
                style={{ background: '#0011FF', color: '#ffffff' }}>
             The Producer's Studio
           </div>
 
-          <h1 className="mb-6 text-[65px] sm:text-[130px]" style={{ fontWeight: 300, lineHeight: '95%', letterSpacing: '0%', color: '#ffffff' }}>
-            Your track mixed in minutes
+          <h1 className="mb-6 text-[80px]" style={{ fontWeight: 300, lineHeight: '95%', letterSpacing: '0%', color: '#ffffff' }}>
+            Your track<br />mixed in minutes
           </h1>
           <p className="mx-auto mb-14" style={{ fontSize: '24px', fontWeight: 400, lineHeight: '130%', letterSpacing: '0%', color: '#ffffff', maxWidth: '560px' }}>
             Drop your stems in and get back a mix that's balanced, clean, and ready for release.
@@ -168,9 +138,9 @@ export default function Landing() {
           {/* Upload Zone */}
           <div
             className="relative max-w-lg mx-auto mb-16 rounded-2xl p-10 cursor-pointer transition-all duration-200"
-            style={{ border: '1.5px dashed rgba(255,255,255,0.15)', background: 'rgba(255,255,255,0.015)' }}
-            onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(115,171,191,0.45)'; e.currentTarget.style.background = 'rgba(115,171,191,0.03)' }}
-            onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)'; e.currentTarget.style.background = 'rgba(255,255,255,0.015)' }}
+            style={{ backgroundImage: `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect x='0' y='0' width='100%25' height='100%25' fill='none' rx='15' ry='15' stroke='%2373ABBF' stroke-opacity='0.85' stroke-width='2' stroke-dasharray='20 14'/%3e%3c/svg%3e")`, backgroundColor: 'rgba(255,255,255,0.015)' }}
+            onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(115,171,191,0.06)' }}
+            onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.015)' }}
           >
             <div className="flex flex-col items-center gap-3">
               <div className="flex items-center justify-center mb-2">
@@ -180,9 +150,9 @@ export default function Landing() {
                 className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-sm font-semibold"
                 style={{ background: 'rgba(10,10,15,0.85)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.15)' }}
               >
-                Upload Your Track
+                Upload Your Track or Stems
               </button>
-              <p className="text-xs" style={{ color: 'rgba(255,255,255,0.35)' }}>
+              <p className="text-xs" style={{ color: '#ffffff' }}>
                 Accepted formats: WAV, AIFF, MP3, MP4, OGG, and more
               </p>
             </div>
@@ -231,12 +201,12 @@ export default function Landing() {
       <section className="py-24 px-6">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-14">
-            <div className="inline-flex items-center px-5 py-2 rounded-full mb-5 text-[11px] font-semibold tracking-widest uppercase"
+            <div className="inline-flex items-center px-5 py-2 rounded-full mb-5 text-[11px] font-normal tracking-[0.3em] uppercase"
                  style={{ border: '1px solid rgba(255,255,255,0.3)', color: '#ffffff', background: 'transparent' }}>
               Hear It In Action
             </div>
             <h2 className="text-[40px] sm:text-[80px]" style={{ fontWeight: 300, lineHeight: '95%', letterSpacing: '0%', color: '#ffffff' }}>
-              Your track.<br />inMixed your way.
+              Your track<br />inMixed your way.
             </h2>
           </div>
 
@@ -273,12 +243,12 @@ export default function Landing() {
       </section>
 
       {/* ── THREE STEPS ──────────────────────────────────────────────────── */}
-      <section className="py-24 px-6">
+      <section id="workflow" className="py-24 px-6 scroll-mt-24">
         <div className="max-w-5xl mx-auto">
           <div className="flex justify-center mb-5">
-            <div className="inline-flex items-center px-5 py-2 rounded-full text-[11px] font-semibold tracking-widest uppercase"
+            <div className="inline-flex items-center px-5 py-2 rounded-full text-[11px] font-normal tracking-[0.3em] uppercase"
                  style={{ border: '1px solid rgba(255,255,255,0.3)', color: '#ffffff', background: 'transparent' }}>
-              The Workflow
+              How It Works
             </div>
           </div>
           <h2 className="text-center mb-20 text-[40px] sm:text-[80px]" style={{ fontWeight: 300, lineHeight: '95%', letterSpacing: '0%', color: '#ffffff' }}>
@@ -314,7 +284,9 @@ export default function Landing() {
               const step = steps.find(s => s.num === activeStep)!
               return (
                 <div className="flex flex-col gap-5">
-                  <div className="w-full rounded-2xl" style={{ aspectRatio: '800 / 312', background: step.bg, border: '1px solid rgba(255,255,255,0.07)' }} />
+                  {step.video
+                    ? <video src={step.video} autoPlay muted loop playsInline className="w-full object-cover" style={{ aspectRatio: '800 / 312', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.07)' }} />
+                    : <img src={step.img} alt={step.title} className="w-full rounded-2xl" style={{ aspectRatio: '800 / 312', border: '1px solid rgba(255,255,255,0.07)' }} />}
                   <p style={{ fontSize: '24px', fontWeight: 400, lineHeight: '130%', color: '#ffffff' }}>
                     {step.desc}
                   </p>
@@ -326,12 +298,12 @@ export default function Landing() {
       </section>
 
       {/* ── PRO-GRADE TOOLS ──────────────────────────────────────────────── */}
-      <section className="relative py-24 px-6 overflow-hidden" style={{ backgroundImage: 'url(/images/wave.png)', backgroundSize: '100% auto', backgroundPosition: 'center top', backgroundRepeat: 'no-repeat' }}>
+      <section id="tools" className="relative py-24 px-6 overflow-hidden scroll-mt-24" style={{ backgroundImage: 'url(/images/wave.png)', backgroundSize: '100% auto', backgroundPosition: 'center top', backgroundRepeat: 'no-repeat' }}>
         <div className="relative z-10 max-w-5xl mx-auto">
           <div className="flex justify-center mb-5">
-            <div className="inline-flex items-center px-5 py-2 rounded-full text-[11px] font-semibold tracking-widest uppercase"
+            <div className="inline-flex items-center px-5 py-2 rounded-full text-[11px] font-normal tracking-[0.3em] uppercase"
                  style={{ border: '1px solid rgba(255,255,255,0.3)', color: '#ffffff', background: 'transparent' }}>
-              The Tools
+              Features
             </div>
           </div>
           <h2 className="text-center mb-24 text-[40px] sm:text-[80px]" style={{ fontWeight: 300, lineHeight: '95%', letterSpacing: '0%', color: '#ffffff' }}>
@@ -352,12 +324,12 @@ export default function Landing() {
                 </div>
 
                 {/* Image */}
-                <div className={`rounded-2xl overflow-hidden ${right ? 'order-2' : 'order-2 lg:order-1'}`}
+                <div className={`overflow-hidden ${right ? 'order-2' : 'order-2 lg:order-1'}`}
                      style={{ background: image ? 'none' : 'rgba(255,255,255,0.04)', border: image ? 'none' : '1px solid rgba(255,255,255,0.07)' }}>
                   {image
                     ? <img src={image} alt={title} className="w-full h-auto block" />
                     : <div className="flex items-center justify-center" style={{ minHeight: '280px' }}>
-                        <p className="text-[11px] font-semibold tracking-widest uppercase" style={{ color: 'rgba(255,255,255,0.15)' }}>Feature Screenshot</p>
+                        <p className="text-[11px] font-semibold tracking-widest uppercase" style={{ color: '#ffffff' }}>Feature Screenshot</p>
                       </div>
                   }
                 </div>
@@ -368,42 +340,55 @@ export default function Landing() {
       </section>
 
       {/* ── FINAL CTA ────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden py-32 px-8 text-center">
-            {/* Background image */}
-            <img src="/images/studiosession.png" alt=""
-                 className="absolute inset-0 w-full h-full object-cover" />
-            {/* Content */}
-            <div className="relative z-10 max-w-5xl mx-auto">
-              <div className="inline-flex items-center px-4 py-1.5 rounded-full text-[11px] font-semibold tracking-widest uppercase mb-8"
-                   style={{ background: '#0011FF', color: '#ffffff' }}>
-                The Studio Is In Session
+      <section className="relative overflow-hidden rounded-t-[150px] py-32 px-8 text-center">
+        <picture>
+          <source media="(max-width: 767px)" srcSet="/images/m_studiosession.jpg" />
+          <img src="/images/studiosession.jpg" alt="" className="absolute inset-0 w-full h-full object-cover object-top" />
+        </picture>
+        <div className="absolute inset-0 pointer-events-none"
+             style={{ background: 'linear-gradient(180deg, rgba(7,7,11,0.5) 0%, rgba(7,7,11,0.2) 50%, rgba(7,7,11,0.85) 100%)' }} />
+
+        <div className="relative z-10 max-w-3xl mx-auto mt-16">
+          <div className="inline-flex items-center px-4 py-1.5 rounded-full text-[11px] font-normal tracking-[0.3em] uppercase mb-8"
+               style={{ background: '#0011FF', color: '#ffffff' }}>
+            The Studio Is In Session
+          </div>
+
+          <h2 className="mb-6 text-[80px]"
+              style={{ fontWeight: 300, lineHeight: '95%', letterSpacing: '0%', color: '#ffffff' }}>
+            Start inMixing <br /> your music today
+          </h2>
+          <p className="mb-12 mx-auto" style={{ fontSize: '20px', fontWeight: 400, lineHeight: '130%', color: '#ffffff', maxWidth: '480px' }}>
+            No studio, no engineer, no problem.<br />
+            Upload your stems. Hit Mix. Walk away with a release-ready mix.
+          </p>
+
+          {/* Upload Zone */}
+          <div
+            className="relative max-w-md mx-auto rounded-2xl p-10 cursor-pointer transition-all duration-200"
+            style={{ backgroundImage: `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect x='0' y='0' width='100%25' height='100%25' fill='none' rx='15' ry='15' stroke='%2373ABBF' stroke-opacity='0.85' stroke-width='2' stroke-dasharray='20 14'/%3e%3c/svg%3e")`, backgroundColor: 'rgba(255,255,255,0.015)' }}
+            onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'rgba(115,171,191,0.06)' }}
+            onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.015)' }}
+          >
+            <div className="flex flex-col items-center gap-3">
+              <div className="flex items-center justify-center mb-2">
+                <img src="/images/logofavicon.png" alt="inmix" style={{ width: '75px', height: '48px', objectFit: 'contain' }} />
               </div>
-              <h2 className="font-light leading-none mb-6" style={{ fontSize: 'clamp(56px, 10vw, 100px)' }}>
-                Start inMixing<br />your music today
-              </h2>
-              <p className="text-xl lg:text-2xl mb-12 mx-auto" style={{ color: 'rgba(255,255,255,0.75)', maxWidth: '780px' }}>
-                No studio. No engineer, no problem.<br />Upload your stems, Hit Mix. Walk away with a broadcast-ready mix.
+              <Link to="/register"
+                    className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-sm font-semibold"
+                    style={{ background: 'rgba(10,10,15,0.85)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.15)' }}>
+                Upload Your Track or Stems
+              </Link>
+              <p className="text-xs" style={{ color: '#ffffff' }}>
+                Accepted formats: WAV, AIFF, MP3, MP4, OGG, and more
               </p>
-              {/* Upload zone */}
-              <div className="max-w-2xl mx-auto rounded-2xl py-10 px-8 flex flex-col items-center gap-4"
-                   style={{ border: '1.5px dashed rgba(115,171,191,0.45)' }}>
-                <button
-                  className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-sm font-semibold transition-all"
-                  style={{ background: 'rgba(10,10,15,0.85)', color: '#ffffff', border: '1px solid rgba(255,255,255,0.15)' }}
-                  onMouseEnter={e => { e.currentTarget.style.background = 'rgba(30,30,40,0.95)' }}
-                  onMouseLeave={e => { e.currentTarget.style.background = 'rgba(10,10,15,0.85)' }}
-                >
-                  Upload Your Track
-                </button>
-                <p className="text-sm" style={{ color: 'rgba(255,255,255,0.35)' }}>
-                  Accepted file formats: &nbsp;MP3, M4A, WAV, AAC, OGG, AIFF
-                </p>
-              </div>
             </div>
+          </div>
+        </div>
       </section>
 
       {/* ── TESTIMONIALS ─────────────────────────────────────────────────── */}
-      <section className="relative py-24 px-6 overflow-hidden" style={{ backgroundImage: 'url(/images/wave.png)', backgroundSize: '100% auto', backgroundPosition: 'center center', backgroundRepeat: 'no-repeat' }}>
+      <section className="relative py-24 px-6 overflow-hidden">
         <div className="max-w-4xl mx-auto">
           <div className="flex justify-center mb-6">
             <img src="/images/check.svg" alt="" style={{ width: '72px', height: 'auto' }} />
@@ -415,8 +400,8 @@ export default function Landing() {
 
           {/* Testimonial card */}
           <div className="rounded-2xl overflow-hidden mb-6 grid sm:[grid-template-columns:1fr_2fr]"
-               style={{ border: '1px solid rgba(0,17,255,0.5)', background: '#0a0a0f' }}>
-            <img src="/images/testimonial.png" alt={testimonials[activeTestimonial].name}
+               style={{ border: '1px solid rgba(0,17,255,0.5)', background: '#0a0a0f', minHeight: '470px' }}>
+            <img src={testimonials[activeTestimonial].image} alt={testimonials[activeTestimonial].name}
                  className="hidden sm:block w-full h-full object-cover object-top" style={{ minHeight: '360px' }} />
             <div className="flex flex-col justify-center p-10 gap-5">
               <div className="flex gap-1">
@@ -427,13 +412,13 @@ export default function Landing() {
               <h3 style={{ fontSize: '36px', fontWeight: 300, lineHeight: '100%', color: '#ffffff' }}>
                 {testimonials[activeTestimonial].quote}
               </h3>
-              <p style={{ fontSize: '16px', lineHeight: '150%', color: 'rgba(255,255,255,0.7)' }}>
+              <p style={{ fontSize: '16px', lineHeight: '130%', color: '#ffffff' }}>
                 {testimonials[activeTestimonial].body}
               </p>
               <div className="w-8 h-px" style={{ background: 'rgba(255,255,255,0.25)' }} />
               <div>
                 <p style={{ fontSize: '16px', fontWeight: 400, color: '#ffffff' }}>{testimonials[activeTestimonial].name}</p>
-                <p style={{ fontSize: '12px', fontWeight: 500, letterSpacing: '0.1em', color: 'rgba(255,255,255,0.45)' }}>
+                <p style={{ fontSize: '12px', fontWeight: 500, color: '#ffffff' }}>
                   {testimonials[activeTestimonial].company}
                 </p>
               </div>
@@ -471,8 +456,11 @@ export default function Landing() {
                   { n: 2, w: 148, h: 58 },
                   { n: 4, w: 120, h: 105 },
                   { n: 3, w: 134, h: 94 },
-                ].map(({ n, w, h }) => (
-                  <img key={`${set}-${n}`} src={`/images/logo${n}.png`} alt={`logo ${n}`}
+                  { n: 6, w: 100, h: 95 },
+                  { n: 7, w: 130, h: 72 },
+                  { n: 8, w: 95, h: 95, ext: 'webp' },
+                ].map(({ n, w, h, ext }) => (
+                  <img key={`${set}-${n}`} src={`/images/logo${n}.${ext ?? 'png'}`} alt={`logo ${n}`}
                        style={{ width: `${w}px`, height: `${h}px`, objectFit: 'contain', flexShrink: 0 }} />
                 ))
               )}
@@ -483,65 +471,23 @@ export default function Landing() {
 
       {/* ── MID CTA ──────────────────────────────────────────────────────── */}
       <section className="py-20 px-6 text-center relative overflow-hidden"
-               style={{ background: 'linear-gradient(180deg, #08080d 0%, #0a1628 45%, #08080d 100%)' }}>
-        {/* Glow */}
-        <div className="absolute inset-0 pointer-events-none" style={{
-          background: 'radial-gradient(ellipse 60% 50% at 50% 50%, rgba(60,120,200,0.18) 0%, transparent 70%)'
-        }} />
+               style={{ backgroundImage: 'url(/images/wavespricing.png)', backgroundSize: 'contain', backgroundPosition: 'center top', backgroundRepeat: 'no-repeat' }}>
         <div className="relative z-10 max-w-xl mx-auto flex flex-col items-center gap-6">
           <img src="/logo.svg" alt="inmix"
-               style={{ height: '60px', width: 'auto', filter: 'brightness(10) saturate(0)' }} />
-          <p className="text-xl lg:text-2xl font-light leading-relaxed" style={{ color: 'rgba(255,255,255,0.7)' }}>
-            giving you the power ...
+               style={{ width: '500px', height: 'auto', filter: 'brightness(10) saturate(0)' }} />
+          <p className="text-xl lg:text-2xl font-light leading-[1.3]" style={{ color: '#ffffff' }}>
+            Giving you the power to release more music.
           </p>
           <Link to="/register"
                 className="inline-flex items-center gap-2 px-8 py-3 rounded-full text-sm font-medium transition-all hover:opacity-90"
                 style={{ background: '#ffffff', color: '#000000' }}>
-            Get INMIX for free
+            Join InMix for free
           </Link>
         </div>
       </section>
 
       {/* ── FOOTER ───────────────────────────────────────────────────────── */}
-      <footer className="py-16 px-6 border-t" style={{ borderColor: 'rgba(255,255,255,0.07)', background: 'linear-gradient(to bottom, #000000, #1D1C22)' }}>
-        <div className="max-w-5xl mx-auto">
-          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-12 mb-12">
-            {/* Brand */}
-            <div className="sm:col-span-2 md:col-span-1">
-              <img src="/logo.svg" alt="inmix" style={{ height: '22px', width: 'auto' }} className="mb-4" />
-              <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.42)' }}>
-                AI-powered online mixing and mastering that gives your music a polished, professional sound in minutes.
-              </p>
-            </div>
-
-            {/* Link columns */}
-            {[
-              { title: 'Product',  links: ['Features', 'How It Works', 'Pricing'] },
-              { title: 'Company',  links: ['About Us', 'Contact Us'] },
-              { title: 'Help',     links: ['FAQs', 'License', 'Privacy Policy', 'Terms of Use'] },
-            ].map(col => (
-              <div key={col.title}>
-                <p className="text-[10px] font-semibold tracking-widest uppercase mb-5"
-                   style={{ color: 'rgba(255,255,255,0.35)' }}>{col.title}</p>
-                <ul className="space-y-3">
-                  {col.links.map(l => (
-                    <li key={l}>
-                      <a href="#" className="text-sm transition-colors hover:text-white"
-                         style={{ color: 'rgba(255,255,255,0.52)' }}>{l}</a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 border-t pt-8"
-               style={{ borderColor: 'rgba(255,255,255,0.07)' }}>
-            <p className="text-xs" style={{ color: 'rgba(255,255,255,0.28)' }}>© INMIX. All rights reserved.</p>
-            <p className="text-xs" style={{ color: 'rgba(255,255,255,0.28)' }}>Privacy Policy</p>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   )
 }
